@@ -12,8 +12,9 @@ VERILATOR ?= /foss/tools/bin/verilator
 YOSYS     ?= yosys
 OPENROAD  ?= openroad
 KLAYOUT   ?= klayout
-VSIM      ?= vsim
+VSIM      ?= questa-2025.1 vsim
 REGGEN    ?= $(PYTHON3) $(shell $(BENDER) path register_interface)/vendor/lowrisc_opentitan/util/regtool.py
+PEAKRDL   ?= $(PYTHON3) -m peakrdl
 
 # Directories
 # directory of the path to the last called Makefile (this one)
@@ -44,6 +45,13 @@ clean-deps:
 
 .PHONY: checkout clean-deps
 
+##################
+# RTL generation #
+##################
+registers: rtl/soc_ctrl/fault_monitor_reg_top.sv rtl/soc_ctrl/fault_monitor_reg_pkg.sv
+
+rtl/soc_ctrl/fault_monitor_reg_top.sv rtl/soc_ctrl/fault_monitor_reg_pkg.sv: rtl/soc_ctrl/fault_monitor.rdl
+	$(PEAKRDL) regblock $< -o rtl/soc_ctrl --cpuif obi-flat --default-reset arst_n --module-name fault_monitor_reg_top --package-name fault_monitor_reg_pkg
 
 ############
 # Software #
@@ -69,7 +77,7 @@ VSIM_ARGS  = -t 1ns -voptargs=+acc
 VSIM_ARGS += -suppress vsim-3009 -suppress vsim-8683 -suppress vsim-8386
 
 vsim/compile_rtl.tcl: Bender.lock Bender.yml
-	$(BENDER) script vsim -t rtl -t vsim -t simulation -t verilator -DSYNTHESIS -DSIMULATION  --vlog-arg="$(VLOG_ARGS)" > $@
+	$(BENDER) script vsim -t rtl -t vsim -t simulation -t verilator -DSYNTHESIS -DSIMULATION -t tmrg --vlog-arg="$(VLOG_ARGS)" > $@
 
 vsim/compile_netlist.tcl: Bender.lock Bender.yml
 	$(BENDER) script vsim -t ihp13 -t vsim -t simulation -t verilator -t netlist_yosys -DSYNTHESIS -DSIMULATION > $@

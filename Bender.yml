@@ -34,6 +34,14 @@ sources:
   - rtl/gpio/gpio_reg_pkg.sv
   # add your design files containing anything but modules (packages) here
 
+  - target: tmrg
+    include_dirs:
+      - rtl/cve2/include
+    files:
+      - rtl/soc_ctrl/fault_monitor_reg_pkg.sv
+      - rtl/soc_ctrl/fault_monitor_reg_top.sv
+      - tmrg_croc/tmrg_files/*
+
     # RTL
   - target: not(netlist_yosys)
     files:
@@ -49,7 +57,7 @@ sources:
       # Level 3
       - rtl/croc_soc.sv
 
-  - target: not(fpga)
+  - target: all(not(fpga), not(tmrg))
     files:
       # Level 0
       - rtl/croc_chip.sv
@@ -59,9 +67,13 @@ sources:
     files:
       - yosys/out/croc_chip_yosys_debug.v
 
-  - target: any(simulation, verilator)
+  - target: all(any(simulation, verilator), not(tmrg))
     files:
       - rtl/tb_croc_soc.sv
+
+  - target: all(any(simulation, verilator), tmrg)
+    files:
+      - tmrg_croc/tb_croc_socTMR.sv
 
   - target: genesys2
     files:
@@ -188,3 +200,4 @@ vendor_package:
       - { from: 'README.md',                                    to: 'README.md',             patch_dir: '' }
       - { from: 'doc/03_reference/images/blockdiagram.svg',     to: 'blockdiagram.svg',      patch_dir: '' }
       - { from: 'vendor/lowrisc_ip/ip/prim/rtl/',               to: 'include/lowrisc_prim/', patch_dir: 'lowrisc_prim/' }
+      - { from: 'include/cve2/',   to: 'include/cve2/', patch_dir: 'include/' }
