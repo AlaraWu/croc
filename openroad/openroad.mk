@@ -15,7 +15,7 @@ OR_DIR    := $(realpath $(dir $(realpath $(lastword $(MAKEFILE_LIST)))))
 # Project variables
 # if you are running the entire flow these are set by the top level Makefile
 # in that case do not change them here
-TOP_DESIGN 	?= croc_chip
+TOP_DESIGN 	?= croc_chipTMR
 PROJ_NAME	?= croc
 NETLIST		?= $(realpath $(OR_DIR)/../yosys/out/$(PROJ_NAME)_yosys.v)
 
