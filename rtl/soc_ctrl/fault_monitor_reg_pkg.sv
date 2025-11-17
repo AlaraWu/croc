@@ -5,7 +5,7 @@ package fault_monitor_reg_pkg;
 
     localparam FAULT_MONITOR_REG_TOP_DATA_WIDTH = 32;
     localparam FAULT_MONITOR_REG_TOP_MIN_ADDR_WIDTH = 5;
-    localparam FAULT_MONITOR_REG_TOP_SIZE = 'h1c;
+    localparam FAULT_MONITOR_REG_TOP_SIZE = 'h20;
     localparam NumSramBanks = 'h2;
 
     typedef struct {
@@ -22,6 +22,7 @@ package fault_monitor_reg_pkg;
         fault_monitor__fault_counter__in_t uart_fault;
         fault_monitor__fault_counter__in_t gpio_fault;
         fault_monitor__fault_counter__in_t timer_fault;
+        fault_monitor__fault_counter__in_t soc_fault;
         fault_monitor__fault_counter__in_t sram_fault[2];
     } fault_monitor__in_t;
 endpackage

@@ -1,0 +1,20 @@
+diff --git a/tmrg_files/tc_sram_implTMR.sv b/tmrg_files/tc_sram_implTMR.sv
+index 323f28b..f3ded99 100644
+--- a/tmrg_files/tc_sram_implTMR.sv
++++ b/tmrg_files/tc_sram_implTMR.sv
+@@ -48,9 +48,14 @@ module tc_sram_impl #(
+   parameter SimInit = "none",
+   parameter bit PrintSimCfg = 1'b0,
+   parameter ImplKey = "none",
++  parameter type         impl_in_t    = logic,
++  parameter type         impl_out_t   = logic,
+   parameter impl_out_t ImplOutSim = 'X,
+   parameter int unsigned AddrWidth = (NumWords>32'd1) ? $clog2(NumWords) : 32'd1,
+-  parameter int unsigned BeWidth =  (DataWidth+ByteWidth-32'd1)  / ByteWidth
++  parameter int unsigned BeWidth =  (DataWidth+ByteWidth-32'd1)  / ByteWidth,
++  parameter type         addr_t    = logic [AddrWidth-1:0],
++  parameter type         data_t    = logic [DataWidth-1:0],
++  parameter type         be_t      = logic [BeWidth-1:0]
+ ) (
+   input logic clk_i,
+   input logic rst_ni,

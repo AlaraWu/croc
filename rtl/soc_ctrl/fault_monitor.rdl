@@ -22,5 +22,6 @@ addrmap fault_monitor #(
     fault_counter uart_fault;
     fault_counter gpio_fault;
     fault_counter timer_fault;
+    fault_counter soc_fault;
     fault_counter sram_fault[NumSramBanks];
 };

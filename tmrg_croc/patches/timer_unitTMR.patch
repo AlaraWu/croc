@@ -1,0 +1,61 @@
+diff --git a/tmrg_files/timer_unitTMR.sv b/tmrg_files/timer_unitTMR.sv
+index ada9659..e1eaafd 100644
+--- a/tmrg_files/timer_unitTMR.sv
++++ b/tmrg_files/timer_unitTMR.sv
+@@ -39,6 +39,30 @@
+  *                                                                                                  *
+  ****************************************************************************************************/
+ 
++`define CFG_REG_LO         6'h0
++`define CFG_REG_HI         6'h4
++`define TIMER_VAL_LO       6'h8
++`define TIMER_VAL_HI       6'hC
++`define TIMER_CMP_LO       6'h10
++`define TIMER_CMP_HI       6'h14
++`define TIMER_START_LO     6'h18
++`define TIMER_START_HI     6'h1C
++`define TIMER_RESET_LO     6'h20
++`define TIMER_RESET_HI     6'h24
++
++
++`define ENABLE_BIT          'd0
++`define RESET_BIT           'd1
++`define IRQ_BIT             'd2
++`define IEM_BIT             'd3
++`define CMP_CLR_BIT         'd4
++`define ONE_SHOT_BIT        'd5
++`define PRESCALER_EN_BIT    'd6
++`define REF_CLK_EN_BIT      'd7
++`define PRESCALER_START_BIT 'd8
++`define PRESCALER_STOP_BIT  'd15
++`define MODE_64_BIT         'd31
++
+ module timer_unitTMR #(
+   parameter ID_WIDTH = 5
+ ) (
+@@ -103,8 +127,7 @@ module timer_unitTMR #(
+   output tmrErrorB,
+   output tmrErrorC
+ );
+-parameter TRANS_IDLE = 2'b00;
+-parameter TRANS_RUN = 2'b01;
++enum logic [1:0] { TRANS_IDLE, TRANS_RUN } CSA, NSA, CSVotedA, CSB, NSB, CSVotedB, CSC, NSC, CSVotedC;
+ wor s_wenTmrErrorC;
+ wor s_timer_cmp_lo_regTmrErrorC;
+ wor s_timer_cmp_hi_regTmrErrorC;
+@@ -318,15 +341,6 @@ logic s_clear_reset_loC;
+ logic s_clear_reset_hiA;
+ logic s_clear_reset_hiB;
+ logic s_clear_reset_hiC;
+-reg [1:0] CSA;
+-reg [1:0] CSB;
+-reg [1:0] CSC;
+-reg [1:0] NSA;
+-reg [1:0] NSB;
+-reg [1:0] NSC;
+-reg [1:0] CSVotedA;
+-reg [1:0] CSVotedB;
+-reg [1:0] CSVotedC;
+ assign r_id_oA = r_id_qA;
+ assign r_id_oB = r_id_qB;
+ assign r_id_oC = r_id_qC;

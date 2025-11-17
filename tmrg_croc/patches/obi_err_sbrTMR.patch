@@ -1,0 +1,13 @@
+diff --git a/tmrg_files/obi_err_sbrTMR.sv b/tmrg_files/obi_err_sbrTMR.sv
+index 1ddcd2b..9df18fb 100644
+--- a/tmrg_files/obi_err_sbrTMR.sv
++++ b/tmrg_files/obi_err_sbrTMR.sv
+@@ -41,6 +41,8 @@
+ 
+ module obi_err_sbrTMR #(
+   parameter obi_pkg::obi_cfg_t ObiCfg = obi_pkg::ObiDefaultConfig,
++  parameter type                         obi_req_t   = logic,
++  parameter type                         obi_rsp_t   = logic,
+   parameter int unsigned NumMaxTrans = 1,
+   parameter logic [ObiCfg.DataWidth - 1:0] RspData = 32'hBADCAB1E
+ ) (

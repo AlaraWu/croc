@@ -1,0 +1,17 @@
+diff --git a/tmrg_files/obi_demuxTMR.sv b/tmrg_files/obi_demuxTMR.sv
+index 8811031..45c8eae 100644
+--- a/tmrg_files/obi_demuxTMR.sv
++++ b/tmrg_files/obi_demuxTMR.sv
+@@ -41,8 +41,11 @@
+ 
+ module obi_demuxTMR #(
+   parameter obi_pkg::obi_cfg_t ObiCfg = obi_pkg::ObiDefaultConfig,
++  parameter type               obi_req_t   = logic,
++  parameter type               obi_rsp_t   = logic,
+   parameter int unsigned NumMgrPorts = 32'd0,
+-  parameter int unsigned NumMaxTrans = 32'd0
++  parameter int unsigned NumMaxTrans = 32'd0,
++  parameter type               select_t    = logic [cf_math_pkg::idx_width(NumMgrPorts)-1:0]
+ ) (
+   input logic clk_iA,
+   input logic clk_iB,

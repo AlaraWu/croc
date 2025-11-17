@@ -1,0 +1,268 @@
+diff --git a/tmrg_files/cve2_id_stageTMR.sv b/tmrg_files/cve2_id_stageTMR.sv
+index c095dea..0341a47 100644
+--- a/tmrg_files/cve2_id_stageTMR.sv
++++ b/tmrg_files/cve2_id_stageTMR.sv
+@@ -328,8 +328,7 @@ module cve2_id_stageTMR #(
+   output tmrErrorC
+ );
+ import cve2_pkg::*;
+-parameter FIRST_CYCLE = 1'b0;
+-parameter MULTI_CYCLE = 1'b1;
++typedef enum logic { FIRST_CYCLE, MULTI_CYCLE } id_fsm_e;
+ wor id_fsm_qTmrErrorC;
+ wor decoder_itmrErrorC;
+ wor controller_itmrErrorC;
+@@ -1296,15 +1295,9 @@ assign jump_setC = jump_set_rawC&~branch_jump_set_done_qVotedC;
+ assign branch_setA = branch_set_rawA&~branch_jump_set_done_qVotedA;
+ assign branch_setB = branch_set_rawB&~branch_jump_set_done_qVotedB;
+ assign branch_setC = branch_set_rawC&~branch_jump_set_done_qVotedC;
+-reg id_fsm_qA;
+-reg id_fsm_qB;
+-reg id_fsm_qC;
+-reg id_fsm_dA;
+-reg id_fsm_dB;
+-reg id_fsm_dC;
+-reg id_fsm_qVotedA;
+-reg id_fsm_qVotedB;
+-reg id_fsm_qVotedC;
++id_fsm_e id_fsm_qA, id_fsm_dA, id_fsm_qVotedA;
++id_fsm_e id_fsm_qB, id_fsm_dB, id_fsm_qVotedB;
++id_fsm_e id_fsm_qC, id_fsm_dC, id_fsm_qVotedC;
+ 
+ always_ff @( posedge clk_iA or negedge rst_niA )
+   begin : id_pipeline_regA
+@@ -1364,47 +1357,40 @@ always_comb
+         unique case (id_fsm_qVotedA)
+           FIRST_CYCLE : 
+             begin
+-              if (lsu_req_decA)
+-                begin
+-                  id_fsm_dA = MULTI_CYCLE;
+-                end
+-              else
+-                if (multdiv_en_decA)
++              unique case (1'b1)
++                lsu_req_decA: begin
+                   begin
+-                    if (~ex_valid_iA)
+-                      begin
+-                        id_fsm_dA = MULTI_CYCLE;
+-                        rf_we_rawA = 1'b0;
+-                        stall_multdivA = 1'b1;
+-                      end
+-
++                    id_fsm_dA = MULTI_CYCLE;
+                   end
+-                else
+-                  if (branch_in_decA)
++                end
++                multdiv_en_decA: begin
++                  if (~ex_valid_iA)
+                     begin
+-                      id_fsm_dA = (branch_decision_iA) ? MULTI_CYCLE : FIRST_CYCLE;
+-                      stall_branchA = branch_decision_iA;
+-                      branch_set_raw_dA = branch_decision_iA;
+-                      perf_branch_oA = 1'b1;
++                      id_fsm_dA = MULTI_CYCLE;
++                      rf_we_rawA = 1'b0;
++                      stall_multdivA = 1'b1;
+                     end
+-                  else
+-                    if (jump_in_decA)
+-                      begin
+-                        id_fsm_dA = MULTI_CYCLE;
+-                        stall_jumpA = 1'b1;
+-                        jump_set_rawA = jump_set_decA;
+-                      end
+-                    else
+-                      if (alu_multicycle_decA)
+-                        begin
+-                          stall_aluA = 1'b1;
+-                          id_fsm_dA = MULTI_CYCLE;
+-                          rf_we_rawA = 1'b0;
+-                        end
+-                      else
+-                        begin
+-                          id_fsm_dA = FIRST_CYCLE;
+-                        end
++                end
++                branch_in_decA: begin
++                  id_fsm_dA = (branch_decision_iA) ? MULTI_CYCLE : FIRST_CYCLE;
++                  stall_branchA = branch_decision_iA;
++                  branch_set_raw_dA = branch_decision_iA;
++                  perf_branch_oA = 1'b1;
++                end
++                jump_in_decA: begin
++                  id_fsm_dA = MULTI_CYCLE;
++                  stall_jumpA = 1'b1;
++                  jump_set_rawA = jump_set_decA;
++                end
++                alu_multicycle_decA: begin
++                  stall_aluA = 1'b1;
++                  id_fsm_dA = MULTI_CYCLE;
++                  rf_we_rawA = 1'b0;
++                end
++                default: begin
++                  id_fsm_dA = FIRST_CYCLE;
++                end
++              endcase
+             end
+           MULTI_CYCLE : 
+             begin
+@@ -1449,47 +1435,39 @@ always_comb
+         unique case (id_fsm_qVotedB)
+           FIRST_CYCLE : 
+             begin
+-              if (lsu_req_decB)
+-                begin
+-                  id_fsm_dB = MULTI_CYCLE;
+-                end
+-              else
+-                if (multdiv_en_decB)
++              unique case (1'b1)
++                lsu_req_decB: begin
+                   begin
+-                    if (~ex_valid_iB)
+-                      begin
+-                        id_fsm_dB = MULTI_CYCLE;
+-                        rf_we_rawB = 1'b0;
+-                        stall_multdivB = 1'b1;
+-                      end
+-
++                    id_fsm_dB = MULTI_CYCLE;
+                   end
+-                else
+-                  if (branch_in_decB)
+-                    begin
+-                      id_fsm_dB = (branch_decision_iB) ? MULTI_CYCLE : FIRST_CYCLE;
+-                      stall_branchB = branch_decision_iB;
+-                      branch_set_raw_dB = branch_decision_iB;
+-                      perf_branch_oB = 1'b1;
+-                    end
+-                  else
+-                    if (jump_in_decB)
+-                      begin
+-                        id_fsm_dB = MULTI_CYCLE;
+-                        stall_jumpB = 1'b1;
+-                        jump_set_rawB = jump_set_decB;
+-                      end
+-                    else
+-                      if (alu_multicycle_decB)
+-                        begin
+-                          stall_aluB = 1'b1;
+-                          id_fsm_dB = MULTI_CYCLE;
+-                          rf_we_rawB = 1'b0;
+-                        end
+-                      else
+-                        begin
+-                          id_fsm_dB = FIRST_CYCLE;
+-                        end
++                end
++                multdiv_en_decB: begin
++                  if (~ex_valid_iB) begin
++                    id_fsm_dB = MULTI_CYCLE;
++                    rf_we_rawB = 1'b0;
++                    stall_multdivB = 1'b1;
++                  end
++                end
++                branch_in_decB: begin
++                  id_fsm_dB = (branch_decision_iB) ? MULTI_CYCLE : FIRST_CYCLE;
++                  stall_branchB = branch_decision_iB;
++                  branch_set_raw_dB = branch_decision_iB;
++                  perf_branch_oB = 1'b1;
++                end
++                jump_in_decB: begin
++                  id_fsm_dB = MULTI_CYCLE;
++                  stall_jumpB = 1'b1;
++                  jump_set_rawB = jump_set_decB;
++                end
++                alu_multicycle_decB: begin
++                  stall_aluB = 1'b1;
++                  id_fsm_dB = MULTI_CYCLE;
++                  rf_we_rawB = 1'b0;
++                end
++                default: begin
++                  id_fsm_dB = FIRST_CYCLE;
++                end
++              endcase
+             end
+           MULTI_CYCLE : 
+             begin
+@@ -1534,47 +1512,40 @@ always_comb
+         unique case (id_fsm_qVotedC)
+           FIRST_CYCLE : 
+             begin
+-              if (lsu_req_decC)
+-                begin
+-                  id_fsm_dC = MULTI_CYCLE;
+-                end
+-              else
+-                if (multdiv_en_decC)
++              unique case (1'b1)
++                lsu_req_decC: begin
+                   begin
+-                    if (~ex_valid_iC)
+-                      begin
+-                        id_fsm_dC = MULTI_CYCLE;
+-                        rf_we_rawC = 1'b0;
+-                        stall_multdivC = 1'b1;
+-                      end
+-
++                    id_fsm_dC = MULTI_CYCLE;
+                   end
+-                else
+-                  if (branch_in_decC)
++                end 
++                multdiv_en_decC: begin
++                  if (~ex_valid_iC)
+                     begin
+-                      id_fsm_dC = (branch_decision_iC) ? MULTI_CYCLE : FIRST_CYCLE;
+-                      stall_branchC = branch_decision_iC;
+-                      branch_set_raw_dC = branch_decision_iC;
+-                      perf_branch_oC = 1'b1;
++                      id_fsm_dC = MULTI_CYCLE;
++                      rf_we_rawC = 1'b0;
++                      stall_multdivC = 1'b1;
+                     end
+-                  else
+-                    if (jump_in_decC)
+-                      begin
+-                        id_fsm_dC = MULTI_CYCLE;
+-                        stall_jumpC = 1'b1;
+-                        jump_set_rawC = jump_set_decC;
+-                      end
+-                    else
+-                      if (alu_multicycle_decC)
+-                        begin
+-                          stall_aluC = 1'b1;
+-                          id_fsm_dC = MULTI_CYCLE;
+-                          rf_we_rawC = 1'b0;
+-                        end
+-                      else
+-                        begin
+-                          id_fsm_dC = FIRST_CYCLE;
+-                        end
++                end
++                branch_in_decC: begin
++                  id_fsm_dC = (branch_decision_iC) ? MULTI_CYCLE : FIRST_CYCLE;
++                  stall_branchC = branch_decision_iC;
++                  branch_set_raw_dC = branch_decision_iC;
++                  perf_branch_oC = 1'b1;
++                end
++                jump_in_decC: begin
++                  id_fsm_dC = MULTI_CYCLE;
++                  stall_jumpC = 1'b1;
++                  jump_set_rawC = jump_set_decC;
++                end
++                alu_multicycle_decC: begin
++                  stall_aluC = 1'b1;
++                  id_fsm_dC = MULTI_CYCLE;
++                  rf_we_rawC = 1'b0;
++                end
++                default: begin
++                  id_fsm_dC = FIRST_CYCLE;
++                end
++              endcase
+             end
+           MULTI_CYCLE : 
+             begin

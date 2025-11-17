@@ -1,0 +1,37 @@
+diff --git a/tmrg_files/gpio_reg_topTMR.sv b/tmrg_files/gpio_reg_topTMR.sv
+index 43d64c5..986aeb5 100644
+--- a/tmrg_files/gpio_reg_topTMR.sv
++++ b/tmrg_files/gpio_reg_topTMR.sv
+@@ -41,6 +41,8 @@
+ 
+ module gpio_reg_topTMR import gpio_reg_pkg::*; #(
+   parameter obi_pkg::obi_cfg_t ObiCfg = obi_pkg::ObiDefaultConfig,
++  parameter type obi_req_t = logic,
++  parameter type obi_rsp_t = logic,
+   parameter int unsigned GpioCount = 16
+ ) (
+   input logic clk_iA,
+@@ -498,18 +500,11 @@ logic [GpioCount - 1:0] toggle_outC;
+ logic [ObiCfg.DataWidth - 1:0] bit_maskA;
+ logic [ObiCfg.DataWidth - 1:0] bit_maskB;
+ logic [ObiCfg.DataWidth - 1:0] bit_maskC;
+-assign bit_maskA[7:0] = {8{obi_req_iA.a.be[0]}};
+-assign bit_maskB[7:0] = {8{obi_req_iB.a.be[0]}};
+-assign bit_maskC[7:0] = {8{obi_req_iC.a.be[0]}};
+-assign bit_maskA[15:8] = {8{obi_req_iA.a.be[1]}};
+-assign bit_maskB[15:8] = {8{obi_req_iB.a.be[1]}};
+-assign bit_maskC[15:8] = {8{obi_req_iC.a.be[1]}};
+-assign bit_maskA[23:16] = {8{obi_req_iA.a.be[2]}};
+-assign bit_maskB[23:16] = {8{obi_req_iB.a.be[2]}};
+-assign bit_maskC[23:16] = {8{obi_req_iC.a.be[2]}};
+-assign bit_maskA[31:24] = {8{obi_req_iA.a.be[3]}};
+-assign bit_maskB[31:24] = {8{obi_req_iB.a.be[3]}};
+-assign bit_maskC[31:24] = {8{obi_req_iC.a.be[3]}};
++for (genvar i = 0; unsigned'(i) < ObiCfg.DataWidth/8; ++i ) begin : gen_write_mask
++  assign bit_maskA[8*i +: 8] = {8{obi_req_iA.a.be[i]}};
++  assign bit_maskB[8*i +: 8] = {8{obi_req_iB.a.be[i]}};
++  assign bit_maskC[8*i +: 8] = {8{obi_req_iC.a.be[i]}};
++end
+ 
+ always_comb
+   begin

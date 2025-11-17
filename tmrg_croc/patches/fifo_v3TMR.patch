@@ -1,0 +1,39 @@
+diff --git a/tmrg_files/fifo_v3TMR.sv b/tmrg_files/fifo_v3TMR.sv
+index 17a298a..d8366e1 100644
+--- a/tmrg_files/fifo_v3TMR.sv
++++ b/tmrg_files/fifo_v3TMR.sv
+@@ -43,6 +43,7 @@ module fifo_v3TMR #(
+   parameter bit FALL_THROUGH = 1'b0,
+   parameter int unsigned DATA_WIDTH = 32,
+   parameter int unsigned DEPTH = 8,
++  parameter type dtype = logic [DATA_WIDTH-1:0],
+   parameter int unsigned ADDR_DEPTH = (DEPTH>1) ? $clog2(DEPTH) : 1
+ ) (
+   input logic clk_iA,
+@@ -409,7 +410,7 @@ always_ff @( posedge clk_iC or negedge rst_niC )
+ 
+   end
+ 
+-majorityVoter #(.WIDTH( ($size(mem_qVotedA))  *  ((((FifoDepth-1)>0) ? (FifoDepth-1) : - ( FifoDepth-1 ) )+1) )) mem_qVoterA (
++majorityVoter #(.WIDTH( $size(dtype)*FifoDepth)) mem_qVoterA (
+     .inA(mem_qA),
+     .inB(mem_qB),
+     .inC(mem_qC),
+@@ -442,7 +443,7 @@ majorityVoter #(.WIDTH( ((((ADDR_DEPTH-1)>0) ? (ADDR_DEPTH-1) : - ( ADDR_DEPTH-1
+   );
+ assign tmrErrorA = mem_qTmrErrorA|read_pointer_qTmrErrorA|status_cnt_qTmrErrorA|write_pointer_qTmrErrorA;
+ 
+-majorityVoter #(.WIDTH( ($size(mem_qVotedA))  *  ((((FifoDepth-1)>0) ? (FifoDepth-1) : - ( FifoDepth-1 ) )+1) )) mem_qVoterB (
++majorityVoter #(.WIDTH( $size(dtype)*FifoDepth)) mem_qVoterB (
+     .inA(mem_qA),
+     .inB(mem_qB),
+     .inC(mem_qC),
+@@ -475,7 +476,7 @@ majorityVoter #(.WIDTH( ((((ADDR_DEPTH-1)>0) ? (ADDR_DEPTH-1) : - ( ADDR_DEPTH-1
+   );
+ assign tmrErrorB = mem_qTmrErrorB|read_pointer_qTmrErrorB|status_cnt_qTmrErrorB|write_pointer_qTmrErrorB;
+ 
+-majorityVoter #(.WIDTH( ($size(mem_qVotedA))  *  ((((FifoDepth-1)>0) ? (FifoDepth-1) : - ( FifoDepth-1 ) )+1) )) mem_qVoterC (
++majorityVoter #(.WIDTH( $size(dtype)*FifoDepth)) mem_qVoterC (
+     .inA(mem_qA),
+     .inB(mem_qB),
+     .inC(mem_qC),

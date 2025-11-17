@@ -57,11 +57,11 @@ module croc_socTMR import croc_pkg::*; #(
   output logic uart_tx_o,
   input logic [GpioCount - 1:0] gpio_i,
   output logic [GpioCount - 1:0] gpio_o,
-  output logic [GpioCount - 1:0] gpio_out_en_o,
-  output tmrError,
-  output tmrErrorA,
-  output tmrErrorB,
-  output tmrErrorC
+  output logic [GpioCount - 1:0] gpio_out_en_o
+  // output tmrError,
+  // output tmrErrorA,
+  // output tmrErrorB,
+  // output tmrErrorC
 );
 wire uart_rx_iC;
 wire uart_rx_iB;
@@ -131,6 +131,8 @@ logic synced_rst_nC;
 logic synced_fetch_enA;
 logic synced_fetch_enB;
 logic synced_fetch_enC;
+
+logic soc_faults;
 
 rstgen i_rstgenA (
     .clk_i(clk_iA),
@@ -261,7 +263,8 @@ croc_domainTMR #(.GpioCount(GpioCount)) i_croc (
     .core_busy_oC(status_oC),
     .tmrErrorA(i_croctmrErrorA),
     .tmrErrorB(i_croctmrErrorB),
-    .tmrErrorC(i_croctmrErrorC)
+    .tmrErrorC(i_croctmrErrorC),
+    .faults_i(soc_faults)
   );
 
 user_domainTMR #(.GpioCount(GpioCount)) i_user (
@@ -340,9 +343,10 @@ majorityVoter uart_tx_oVoter (
     .tmrErr(uart_tx_oTmrError)
   );
 assign tmrError = gpio_oTmrError|gpio_out_en_oTmrError|jtag_tdo_oTmrError|status_oTmrError|uart_tx_oTmrError;
-assign tmrErrorA = i_croctmrErrorA|i_ext_intr_synctmrErrorA|i_usertmrErrorA;
-assign tmrErrorB = i_croctmrErrorB|i_ext_intr_synctmrErrorB|i_usertmrErrorB;
-assign tmrErrorC = i_croctmrErrorC|i_ext_intr_synctmrErrorC|i_usertmrErrorC;
+assign tmrErrorA = i_ext_intr_synctmrErrorA|i_usertmrErrorA;
+assign tmrErrorB = i_ext_intr_synctmrErrorB|i_usertmrErrorB;
+assign tmrErrorC = i_ext_intr_synctmrErrorC|i_usertmrErrorC;
+assign soc_faults = tmrError | tmrErrorA | tmrErrorB | tmrErrorC;
 
 fanout clk_iFanout (
     .in(clk_i),
@@ -435,7 +439,8 @@ module majorityVoter #(
   output reg              tmrErr
 );
   assign out = (inA&inB) | (inA&inC) | (inB&inC);
-  always @(inA or inB or inC) begin
+  // always @(inA or inB or inC) begin
+  always_comb begin
     if (inA!=inB || inA!=inC || inB!=inC)
       tmrErr = 1;
     else

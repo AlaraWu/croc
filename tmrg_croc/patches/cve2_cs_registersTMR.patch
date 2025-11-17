@@ -1,0 +1,183 @@
+diff --git a/tmrg_files/cve2_cs_registersTMR.sv b/tmrg_files/cve2_cs_registersTMR.sv
+index 1598b75..9852cf3 100644
+--- a/tmrg_files/cve2_cs_registersTMR.sv
++++ b/tmrg_files/cve2_cs_registersTMR.sv
+@@ -260,11 +260,11 @@ localparam status_t MSTATUS_RST_VAL = '{mie: 1'b0, mpie: 1'b0, mpp: PRIV_LVL_M,
+ localparam dcsr_t DCSR_RESET_VAL = '{xdebugver: XDEBUGVER_STD, cause: DBG_CAUSE_NONE, prv: PRIV_LVL_M, default: '0};
+ localparam status_stk_t MSTACK_RESET_VAL = '{mpie: 1'b1, mpp: PRIV_LVL_U};
+ wor u_tselect_csrtmrErrorC;
+-wor u_tmatch_value_csrtmrErrorC;
+-wor u_tmatch_control_csrtmrErrorC;
++wor [DbgHwBreakNum-1:0] u_tmatch_value_csrtmrErrorC;
++wor [DbgHwBreakNum-1:0] u_tmatch_control_csrtmrErrorC;
+ wor u_pmp_mseccfgtmrErrorC;
+-wor u_pmp_cfg_csrtmrErrorC;
+-wor u_pmp_addr_csrtmrErrorC;
++wor [PMPNumRegions-1:0] u_pmp_cfg_csrtmrErrorC;
++wor [PMPNumRegions-1:0] u_pmp_addr_csrtmrErrorC;
+ wor u_mtvec_csrtmrErrorC;
+ wor u_mtval_csrtmrErrorC;
+ wor u_mstatus_csrtmrErrorC;
+@@ -283,13 +283,13 @@ wor priv_lvl_qTmrErrorC;
+ wor minstret_counter_itmrErrorC;
+ wor mcycle_counter_itmrErrorC;
+ wor mcountinhibit_qTmrErrorC;
+-wor mcounters_variable_itmrErrorC;
++wor [29-1:0] mcounters_variable_itmrErrorC;
+ wor u_tselect_csrtmrErrorB;
+-wor u_tmatch_value_csrtmrErrorB;
+-wor u_tmatch_control_csrtmrErrorB;
++wor [DbgHwBreakNum-1:0] u_tmatch_value_csrtmrErrorB;
++wor [DbgHwBreakNum-1:0] u_tmatch_control_csrtmrErrorB;
+ wor u_pmp_mseccfgtmrErrorB;
+-wor u_pmp_cfg_csrtmrErrorB;
+-wor u_pmp_addr_csrtmrErrorB;
++wor [PMPNumRegions-1:0] u_pmp_cfg_csrtmrErrorB;
++wor [PMPNumRegions-1:0] u_pmp_addr_csrtmrErrorB;
+ wor u_mtvec_csrtmrErrorB;
+ wor u_mtval_csrtmrErrorB;
+ wor u_mstatus_csrtmrErrorB;
+@@ -308,13 +308,13 @@ wor priv_lvl_qTmrErrorB;
+ wor minstret_counter_itmrErrorB;
+ wor mcycle_counter_itmrErrorB;
+ wor mcountinhibit_qTmrErrorB;
+-wor mcounters_variable_itmrErrorB;
++wor [29-1:0] mcounters_variable_itmrErrorB;
+ wor u_tselect_csrtmrErrorA;
+-wor u_tmatch_value_csrtmrErrorA;
+-wor u_tmatch_control_csrtmrErrorA;
++wor [DbgHwBreakNum-1:0] u_tmatch_value_csrtmrErrorA;
++wor [DbgHwBreakNum-1:0] u_tmatch_control_csrtmrErrorA;
+ wor u_pmp_mseccfgtmrErrorA;
+-wor u_pmp_cfg_csrtmrErrorA;
+-wor u_pmp_addr_csrtmrErrorA;
++wor [PMPNumRegions-1:0] u_pmp_cfg_csrtmrErrorA;
++wor [PMPNumRegions-1:0] u_pmp_addr_csrtmrErrorA;
+ wor u_mtvec_csrtmrErrorA;
+ wor u_mtval_csrtmrErrorA;
+ wor u_mstatus_csrtmrErrorA;
+@@ -333,7 +333,7 @@ wor priv_lvl_qTmrErrorA;
+ wor minstret_counter_itmrErrorA;
+ wor mcycle_counter_itmrErrorA;
+ wor mcountinhibit_qTmrErrorA;
+-wor mcounters_variable_itmrErrorA;
++wor [29-1:0] mcounters_variable_itmrErrorA;
+ logic [31:0] exception_pcA;
+ logic [31:0] exception_pcB;
+ logic [31:0] exception_pcC;
+@@ -1660,9 +1660,9 @@ always_comb
+       default : csr_wdata_intC = csr_wdata_iC;
+     endcase
+   end
+-assign csr_wrA =  (csr_op_iA==CSR_OP_WRITE) || (csr_op_iA==CSR_OP_SET) || (csr_op_iA==CSR_OP_CLEAR) ;
+-assign csr_wrB =  (csr_op_iB==CSR_OP_WRITE) || (csr_op_iB==CSR_OP_SET) || (csr_op_iB==CSR_OP_CLEAR) ;
+-assign csr_wrC =  (csr_op_iC==CSR_OP_WRITE) || (csr_op_iC==CSR_OP_SET) || (csr_op_iC==CSR_OP_CLEAR) ;
++assign csr_wrA = (csr_op_iA inside {CSR_OP_WRITE, CSR_OP_SET, CSR_OP_CLEAR});
++assign csr_wrB = (csr_op_iB inside {CSR_OP_WRITE, CSR_OP_SET, CSR_OP_CLEAR});
++assign csr_wrC = (csr_op_iC inside {CSR_OP_WRITE, CSR_OP_SET, CSR_OP_CLEAR});
+ assign csr_we_intA = csr_wrA&csr_op_en_iA&~illegal_csr_insn_oA;
+ assign csr_we_intB = csr_wrB&csr_op_en_iB&~illegal_csr_insn_oB;
+ assign csr_we_intC = csr_wrC&csr_op_en_iC&~illegal_csr_insn_oC;
+@@ -2049,6 +2049,11 @@ cve2_csrTMR #(.Width(7), .ShadowCopy(1'b0), .ResetValue('0)) u_mstack_cause_csr
+   );
+ if (PMPEnable)
+   begin : g_pmp_registers
++`ifdef CVE2_CUSTOM_PMP_RESET_VALUES
++  `include "cve2/cve2_pmp_reset.svh"
++`else
++  `include "cve2/cve2_pmp_reset_default.svh"
++`endif
+ pmp_mseccfg_t pmp_mseccfg_qA;
+ pmp_mseccfg_t pmp_mseccfg_qB;
+ pmp_mseccfg_t pmp_mseccfg_qC;
+@@ -2252,9 +2257,9 @@ logic any_pmp_entry_lockedC;
+             .rd_error_oA(pmp_cfg_errA[i]),
+             .rd_error_oB(pmp_cfg_errB[i]),
+             .rd_error_oC(pmp_cfg_errC[i]),
+-            .tmrErrorA(u_pmp_cfg_csrtmrErrorA),
+-            .tmrErrorB(u_pmp_cfg_csrtmrErrorB),
+-            .tmrErrorC(u_pmp_cfg_csrtmrErrorC)
++            .tmrErrorA(u_pmp_cfg_csrtmrErrorA[i]),
++            .tmrErrorB(u_pmp_cfg_csrtmrErrorB[i]),
++            .tmrErrorC(u_pmp_cfg_csrtmrErrorC[i])
+           );
+         assign pmp_cfg_lockedA[i] = pmp_cfgA[i].lock&~pmp_mseccfg_qA.rlb;
+         assign pmp_cfg_lockedB[i] = pmp_cfgB[i].lock&~pmp_mseccfg_qB.rlb;
+@@ -2292,9 +2297,9 @@ logic any_pmp_entry_lockedC;
+             .rd_error_oA(pmp_addr_errA[i]),
+             .rd_error_oB(pmp_addr_errB[i]),
+             .rd_error_oC(pmp_addr_errC[i]),
+-            .tmrErrorA(u_pmp_addr_csrtmrErrorA),
+-            .tmrErrorB(u_pmp_addr_csrtmrErrorB),
+-            .tmrErrorC(u_pmp_addr_csrtmrErrorC)
++            .tmrErrorA(u_pmp_addr_csrtmrErrorA[i]),
++            .tmrErrorB(u_pmp_addr_csrtmrErrorB[i]),
++            .tmrErrorC(u_pmp_addr_csrtmrErrorC[i])
+           );
+         assign csr_pmp_cfg_oA[i] = pmp_cfgA[i];
+         assign csr_pmp_cfg_oB[i] = pmp_cfgB[i];
+@@ -2627,9 +2632,9 @@ logic [63:0] mhpmcounter_nextC;
+             .counter_val_upd_oA(mhpmcounter_nextA),
+             .counter_val_upd_oB(mhpmcounter_nextB),
+             .counter_val_upd_oC(mhpmcounter_nextC),
+-            .tmrErrorA(mcounters_variable_itmrErrorA),
+-            .tmrErrorB(mcounters_variable_itmrErrorB),
+-            .tmrErrorC(mcounters_variable_itmrErrorC)
++            .tmrErrorA(mcounters_variable_itmrErrorA[i]),
++            .tmrErrorB(mcounters_variable_itmrErrorB[i]),
++            .tmrErrorC(mcounters_variable_itmrErrorC[i])
+           );
+         if (Cnt==10)
+                   begin : gen_compressed_instr_cnt
+@@ -2833,9 +2838,9 @@ logic [DbgHwBreakNum - 1:0] trigger_matchC;
+             .rd_error_oA(),
+             .rd_error_oB(),
+             .rd_error_oC(),
+-            .tmrErrorA(u_tmatch_control_csrtmrErrorA),
+-            .tmrErrorB(u_tmatch_control_csrtmrErrorB),
+-            .tmrErrorC(u_tmatch_control_csrtmrErrorC)
++            .tmrErrorA(u_tmatch_control_csrtmrErrorA[i]),
++            .tmrErrorB(u_tmatch_control_csrtmrErrorB[i]),
++            .tmrErrorC(u_tmatch_control_csrtmrErrorC[i])
+           );
+ 
+         cve2_csrTMR #(.Width(32), .ShadowCopy(1'b0), .ResetValue('0)) u_tmatch_value_csr (
+@@ -2857,9 +2862,9 @@ logic [DbgHwBreakNum - 1:0] trigger_matchC;
+             .rd_error_oA(),
+             .rd_error_oB(),
+             .rd_error_oC(),
+-            .tmrErrorA(u_tmatch_value_csrtmrErrorA),
+-            .tmrErrorB(u_tmatch_value_csrtmrErrorB),
+-            .tmrErrorC(u_tmatch_value_csrtmrErrorC)
++            .tmrErrorA(u_tmatch_value_csrtmrErrorA[i]),
++            .tmrErrorB(u_tmatch_value_csrtmrErrorB[i]),
++            .tmrErrorC(u_tmatch_value_csrtmrErrorC[i])
+           );
+       end
+ localparam int unsigned TSelectRdataPadlen = DbgHwNumLen>=32 ? 0 : (32-DbgHwNumLen);
+@@ -2933,7 +2938,7 @@ majorityVoter #(.WIDTH( ($size(priv_lvl_qVotedA)) )) priv_lvl_qVoterA (
+     .out(priv_lvl_qVotedA),
+     .tmrErr(priv_lvl_qTmrErrorA)
+   );
+-assign tmrErrorA = mcounters_variable_itmrErrorA|mcountinhibit_qTmrErrorA|mcycle_counter_itmrErrorA|minstret_counter_itmrErrorA|priv_lvl_qTmrErrorA|u_dcsr_csrtmrErrorA|u_depc_csrtmrErrorA|u_dscratch0_csrtmrErrorA|u_dscratch1_csrtmrErrorA|u_mcause_csrtmrErrorA|u_mepc_csrtmrErrorA|u_mie_csrtmrErrorA|u_mscratch_csrtmrErrorA|u_mstack_cause_csrtmrErrorA|u_mstack_csrtmrErrorA|u_mstack_epc_csrtmrErrorA|u_mstatus_csrtmrErrorA|u_mtval_csrtmrErrorA|u_mtvec_csrtmrErrorA|u_pmp_addr_csrtmrErrorA|u_pmp_cfg_csrtmrErrorA|u_pmp_mseccfgtmrErrorA|u_tmatch_control_csrtmrErrorA|u_tmatch_value_csrtmrErrorA|u_tselect_csrtmrErrorA;
++assign tmrErrorA = (|mcounters_variable_itmrErrorA)|mcountinhibit_qTmrErrorA|mcycle_counter_itmrErrorA|minstret_counter_itmrErrorA|priv_lvl_qTmrErrorA|u_dcsr_csrtmrErrorA|u_depc_csrtmrErrorA|u_dscratch0_csrtmrErrorA|u_dscratch1_csrtmrErrorA|u_mcause_csrtmrErrorA|u_mepc_csrtmrErrorA|u_mie_csrtmrErrorA|u_mscratch_csrtmrErrorA|u_mstack_cause_csrtmrErrorA|u_mstack_csrtmrErrorA|u_mstack_epc_csrtmrErrorA|u_mstatus_csrtmrErrorA|u_mtval_csrtmrErrorA|u_mtvec_csrtmrErrorA|(|u_pmp_addr_csrtmrErrorA)|(|u_pmp_cfg_csrtmrErrorA)|u_pmp_mseccfgtmrErrorA|(|u_tmatch_control_csrtmrErrorA)|(|u_tmatch_value_csrtmrErrorA)|u_tselect_csrtmrErrorA;
+ 
+ majorityVoter #(.WIDTH( ((((MHPMCounterNum+3-1)>0) ? (MHPMCounterNum+3-1) : - ( MHPMCounterNum+3-1 ) )+1) )) mcountinhibit_qVoterB (
+     .inA(mcountinhibit_qA),
+@@ -2950,7 +2955,7 @@ majorityVoter #(.WIDTH( ($size(priv_lvl_qVotedA)) )) priv_lvl_qVoterB (
+     .out(priv_lvl_qVotedB),
+     .tmrErr(priv_lvl_qTmrErrorB)
+   );
+-assign tmrErrorB = mcounters_variable_itmrErrorB|mcountinhibit_qTmrErrorB|mcycle_counter_itmrErrorB|minstret_counter_itmrErrorB|priv_lvl_qTmrErrorB|u_dcsr_csrtmrErrorB|u_depc_csrtmrErrorB|u_dscratch0_csrtmrErrorB|u_dscratch1_csrtmrErrorB|u_mcause_csrtmrErrorB|u_mepc_csrtmrErrorB|u_mie_csrtmrErrorB|u_mscratch_csrtmrErrorB|u_mstack_cause_csrtmrErrorB|u_mstack_csrtmrErrorB|u_mstack_epc_csrtmrErrorB|u_mstatus_csrtmrErrorB|u_mtval_csrtmrErrorB|u_mtvec_csrtmrErrorB|u_pmp_addr_csrtmrErrorB|u_pmp_cfg_csrtmrErrorB|u_pmp_mseccfgtmrErrorB|u_tmatch_control_csrtmrErrorB|u_tmatch_value_csrtmrErrorB|u_tselect_csrtmrErrorB;
++assign tmrErrorB = (|mcounters_variable_itmrErrorB)|mcountinhibit_qTmrErrorB|mcycle_counter_itmrErrorB|minstret_counter_itmrErrorB|priv_lvl_qTmrErrorB|u_dcsr_csrtmrErrorB|u_depc_csrtmrErrorB|u_dscratch0_csrtmrErrorB|u_dscratch1_csrtmrErrorB|u_mcause_csrtmrErrorB|u_mepc_csrtmrErrorB|u_mie_csrtmrErrorB|u_mscratch_csrtmrErrorB|u_mstack_cause_csrtmrErrorB|u_mstack_csrtmrErrorB|u_mstack_epc_csrtmrErrorB|u_mstatus_csrtmrErrorB|u_mtval_csrtmrErrorB|u_mtvec_csrtmrErrorB|(|u_pmp_addr_csrtmrErrorB)|(|u_pmp_cfg_csrtmrErrorB)|u_pmp_mseccfgtmrErrorB|(|u_tmatch_control_csrtmrErrorB)|(|u_tmatch_value_csrtmrErrorB)|u_tselect_csrtmrErrorB;
+ 
+ majorityVoter #(.WIDTH( ((((MHPMCounterNum+3-1)>0) ? (MHPMCounterNum+3-1) : - ( MHPMCounterNum+3-1 ) )+1) )) mcountinhibit_qVoterC (
+     .inA(mcountinhibit_qA),
+@@ -2967,6 +2972,6 @@ majorityVoter #(.WIDTH( ($size(priv_lvl_qVotedA)) )) priv_lvl_qVoterC (
+     .out(priv_lvl_qVotedC),
+     .tmrErr(priv_lvl_qTmrErrorC)
+   );
+-assign tmrErrorC = mcounters_variable_itmrErrorC|mcountinhibit_qTmrErrorC|mcycle_counter_itmrErrorC|minstret_counter_itmrErrorC|priv_lvl_qTmrErrorC|u_dcsr_csrtmrErrorC|u_depc_csrtmrErrorC|u_dscratch0_csrtmrErrorC|u_dscratch1_csrtmrErrorC|u_mcause_csrtmrErrorC|u_mepc_csrtmrErrorC|u_mie_csrtmrErrorC|u_mscratch_csrtmrErrorC|u_mstack_cause_csrtmrErrorC|u_mstack_csrtmrErrorC|u_mstack_epc_csrtmrErrorC|u_mstatus_csrtmrErrorC|u_mtval_csrtmrErrorC|u_mtvec_csrtmrErrorC|u_pmp_addr_csrtmrErrorC|u_pmp_cfg_csrtmrErrorC|u_pmp_mseccfgtmrErrorC|u_tmatch_control_csrtmrErrorC|u_tmatch_value_csrtmrErrorC|u_tselect_csrtmrErrorC;
++assign tmrErrorC = (|mcounters_variable_itmrErrorC)|mcountinhibit_qTmrErrorC|mcycle_counter_itmrErrorC|minstret_counter_itmrErrorC|priv_lvl_qTmrErrorC|u_dcsr_csrtmrErrorC|u_depc_csrtmrErrorC|u_dscratch0_csrtmrErrorC|u_dscratch1_csrtmrErrorC|u_mcause_csrtmrErrorC|u_mepc_csrtmrErrorC|u_mie_csrtmrErrorC|u_mscratch_csrtmrErrorC|u_mstack_cause_csrtmrErrorC|u_mstack_csrtmrErrorC|u_mstack_epc_csrtmrErrorC|u_mstatus_csrtmrErrorC|u_mtval_csrtmrErrorC|u_mtvec_csrtmrErrorC|(|u_pmp_addr_csrtmrErrorC)|(|u_pmp_cfg_csrtmrErrorC)|u_pmp_mseccfgtmrErrorC|(|u_tmatch_control_csrtmrErrorC)|(|u_tmatch_value_csrtmrErrorC)|u_tselect_csrtmrErrorC;
+ endmodule
+ 

@@ -1,0 +1,22 @@
+diff --git a/tmrg_files/user_domainTMR.sv b/tmrg_files/user_domainTMR.sv
+index bec6e71..8917ed5 100644
+--- a/tmrg_files/user_domainTMR.sv
++++ b/tmrg_files/user_domainTMR.sv
+@@ -39,7 +39,7 @@
+  *                                                                                                  *
+  ****************************************************************************************************/
+ 
+-module user_domainTMR #(
++module user_domainTMR import user_pkg::*; import croc_pkg::*; #(
+   parameter int unsigned GpioCount = 16
+ ) (
+   input logic clk_iA,
+@@ -110,7 +110,7 @@ logic [cf_math_pkg::idx_width(NumDemuxSbr) - 1:0] user_idxA;
+ logic [cf_math_pkg::idx_width(NumDemuxSbr) - 1:0] user_idxB;
+ logic [cf_math_pkg::idx_width(NumDemuxSbr) - 1:0] user_idxC;
+ 
+-addr_decodeTMR #(.NoIndices(NumDemuxSbr), .NoRules(NumDemuxSbrRules), .rule_t(addr_map_rule_t), .Napot(1'b0)) i_addr_decode_periphs (
++addr_decodeTMR #(.NoIndices(NumDemuxSbr), .NoRules(NumDemuxSbrRules), .addr_t ( logic[SbrObiCfg.DataWidth-1:0] ), .rule_t(addr_map_rule_t), .Napot(1'b0)) i_addr_decode_periphs (
+     .addr_iA(user_sbr_obi_req_iA.a.addr),
+     .addr_iB(user_sbr_obi_req_iB.a.addr),
+     .addr_iC(user_sbr_obi_req_iC.a.addr),

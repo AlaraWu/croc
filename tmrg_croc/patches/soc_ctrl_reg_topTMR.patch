@@ -1,0 +1,13 @@
+diff --git a/tmrg_files/soc_ctrl_reg_topTMR.sv b/tmrg_files/soc_ctrl_reg_topTMR.sv
+index 033b013..2fcb861 100644
+--- a/tmrg_files/soc_ctrl_reg_topTMR.sv
++++ b/tmrg_files/soc_ctrl_reg_topTMR.sv
+@@ -40,6 +40,8 @@
+  ****************************************************************************************************/
+ 
+ module soc_ctrl_reg_topTMR #(
++  parameter type reg_req_t = logic,
++  parameter type reg_rsp_t = logic,
+   parameter int AW = 5,
+   parameter int unsigned BootAddrDefault = 32'h0
+ ) (

@@ -1,0 +1,15 @@
+diff --git a/tmrg_files/obi_sram_shimTMR.sv b/tmrg_files/obi_sram_shimTMR.sv
+index 0b456df..b7617b1 100644
+--- a/tmrg_files/obi_sram_shimTMR.sv
++++ b/tmrg_files/obi_sram_shimTMR.sv
+@@ -40,7 +40,9 @@
+  ****************************************************************************************************/
+ 
+ module obi_sram_shimTMR #(
+-  parameter obi_pkg::obi_cfg_t ObiCfg = obi_pkg::ObiDefaultConfig
++  parameter obi_pkg::obi_cfg_t ObiCfg = obi_pkg::ObiDefaultConfig,
++  parameter type               obi_req_t = logic,
++  parameter type               obi_rsp_t = logic
+ ) (
+   input logic clk_iA,
+   input logic clk_iB,

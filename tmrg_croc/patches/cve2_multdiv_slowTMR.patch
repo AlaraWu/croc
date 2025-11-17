@@ -1,0 +1,40 @@
+diff --git a/tmrg_files/cve2_multdiv_slowTMR.sv b/tmrg_files/cve2_multdiv_slowTMR.sv
+index 28ab459..9c8427e 100644
+--- a/tmrg_files/cve2_multdiv_slowTMR.sv
++++ b/tmrg_files/cve2_multdiv_slowTMR.sv
+@@ -108,13 +108,9 @@ module cve2_multdiv_slowTMR (
+   output tmrErrorC
+ );
+ import cve2_pkg::*;
+-parameter MD_IDLE = 3'b000;
+-parameter MD_ABS_A = 3'b001;
+-parameter MD_ABS_B = 3'b010;
+-parameter MD_COMP = 3'b011;
+-parameter MD_LAST = 3'b100;
+-parameter MD_CHANGE_SIGN = 3'b101;
+-parameter MD_FINISH = 3'b110;
++typedef enum logic [2:0] {
++  MD_IDLE, MD_ABS_A, MD_ABS_B, MD_COMP, MD_LAST, MD_CHANGE_SIGN, MD_FINISH
++} md_fsm_e;
+ wor op_b_shift_qTmrErrorC;
+ wor op_a_shift_qTmrErrorC;
+ wor multdiv_count_qTmrErrorC;
+@@ -130,15 +126,9 @@ wor op_a_shift_qTmrErrorA;
+ wor multdiv_count_qTmrErrorA;
+ wor md_state_qTmrErrorA;
+ wor div_by_zero_qTmrErrorA;
+-reg [2:0] md_state_qA;
+-reg [2:0] md_state_qB;
+-reg [2:0] md_state_qC;
+-reg [2:0] md_state_dA;
+-reg [2:0] md_state_dB;
+-reg [2:0] md_state_dC;
+-reg [2:0] md_state_qVotedA;
+-reg [2:0] md_state_qVotedB;
+-reg [2:0] md_state_qVotedC;
++md_fsm_e md_state_qA, md_state_dA, md_state_qVotedA;
++md_fsm_e md_state_qB, md_state_dB, md_state_qVotedB;
++md_fsm_e md_state_qC, md_state_dC, md_state_qVotedC;
+ logic [32:0] accum_window_qA;
+ logic [32:0] accum_window_qB;
+ logic [32:0] accum_window_qC;

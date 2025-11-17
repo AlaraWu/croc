@@ -1,0 +1,19 @@
+diff --git a/tmrg_files/rr_arb_treeTMR.sv b/tmrg_files/rr_arb_treeTMR.sv
+index 94efc99..45cafb7 100644
+--- a/tmrg_files/rr_arb_treeTMR.sv
++++ b/tmrg_files/rr_arb_treeTMR.sv
+@@ -42,11 +42,13 @@
+ module rr_arb_treeTMR #(
+   parameter int unsigned NumIn = 64,
+   parameter int unsigned DataWidth = 32,
++  parameter type         DataType   = logic [DataWidth-1:0],
+   parameter bit ExtPrio = 1'b0,
+   parameter bit AxiVldRdy = 1'b0,
+   parameter bit LockIn = 1'b0,
+   parameter bit FairArb = 1'b1,
+-  parameter int unsigned IdxWidth = (NumIn>32'd1) ? unsigned ' ( $clog2(NumIn) )  : 32'd1
++  parameter int unsigned IdxWidth = (NumIn>32'd1) ? unsigned ' ( $clog2(NumIn) )  : 32'd1,
++  parameter type         idx_t      = logic [IdxWidth-1:0]
+ ) (
+   input logic clk_iA,
+   input logic clk_iB,

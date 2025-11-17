@@ -1,0 +1,14 @@
+diff --git a/tmrg_files/cve2_ex_blockTMR.sv b/tmrg_files/cve2_ex_blockTMR.sv
+index 55c18fe..f1949e3 100644
+--- a/tmrg_files/cve2_ex_blockTMR.sv
++++ b/tmrg_files/cve2_ex_blockTMR.sv
+@@ -399,6 +399,9 @@ else
+       assign multdiv_validA = '0;
+       assign multdiv_validB = '0;
+       assign multdiv_validC = '0;
++      assign multdiv_itmrErrorA = 1'b0;
++      assign multdiv_itmrErrorB = 1'b0;
++      assign multdiv_itmrErrorC = 1'b0;
+     end
+ assign ex_valid_oA = multdiv_selA ? multdiv_validA : ~ ( | alu_imd_val_weA  ) ;
+ assign ex_valid_oB = multdiv_selB ? multdiv_validB : ~ ( | alu_imd_val_weB  ) ;

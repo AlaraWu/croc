@@ -110,7 +110,9 @@ module croc_domainTMR import croc_pkg::*; #(
   output logic core_busy_oC,
   output tmrErrorA,
   output tmrErrorB,
-  output tmrErrorC
+  output tmrErrorC,
+
+  input logic faults_i
 );
 // -----------------
 // Fault signals
@@ -1213,6 +1215,7 @@ assign fm_hwif_in.obi_fault.fault_count.incr = |obi_faults;
 assign fm_hwif_in.gpio_fault.fault_count.incr = |gpio_faults;
 assign fm_hwif_in.uart_fault.fault_count.incr = |uart_faults;
 assign fm_hwif_in.core_fault.fault_count.incr = |core_faults;
+assign fm_hwif_in.soc_fault.fault_count.incr = faults_i;
 assign fm_hwif_in.timer_fault.fault_count.incr = |timer_faults;
 
 periph_to_fm i_periph_to_fm (
@@ -1244,7 +1247,7 @@ assign rst_ni = (rst_niA & rst_niB) | (rst_niA & rst_niC) | (rst_niB & rst_niC);
     .obi_be     ( fm_obi_req.a.be ),
     .obi_wdata  ( fm_obi_req.a.wdata ),
     .obi_aid    ( fm_obi_req.a.aid ),
-    .obi_rvalid ( fm_obi_rvalid ),
+    .obi_rvalid ( fm_obi_rsp.rvalid ),
     .obi_rready ( '1 ),
     .obi_rdata  ( fm_obi_rsp.r.rdata ),
     .obi_err    ( fm_obi_rsp.r.err ),

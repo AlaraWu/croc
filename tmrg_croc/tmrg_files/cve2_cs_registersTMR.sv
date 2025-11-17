@@ -2375,6 +2375,15 @@ else
     assign pmp_mseccfgA = '0;
     assign pmp_mseccfgB = '0;
     assign pmp_mseccfgC = '0;
+    assign u_pmp_addr_csrtmrErrorA = '0;
+    assign u_pmp_addr_csrtmrErrorB = '0;
+    assign u_pmp_addr_csrtmrErrorC = '0;
+    assign u_pmp_cfg_csrtmrErrorA = '0;
+    assign u_pmp_cfg_csrtmrErrorB = '0;
+    assign u_pmp_cfg_csrtmrErrorC = '0;
+    assign u_pmp_mseccfgtmrErrorA = '0;
+    assign u_pmp_mseccfgtmrErrorB = '0;
+    assign u_pmp_mseccfgtmrErrorC = '0;
   end
 assign csr_pmp_mseccfg_oA = pmp_mseccfgA;
 assign csr_pmp_mseccfg_oB = pmp_mseccfgB;
@@ -2662,6 +2671,9 @@ logic [63:0] unused_mhpmcounter_nextC;
         assign mhpmcounterA[Cnt] = '0;
         assign mhpmcounterB[Cnt] = '0;
         assign mhpmcounterC[Cnt] = '0;
+        assign mcounters_variable_itmrErrorA = '0;
+        assign mcounters_variable_itmrErrorB = '0;
+        assign mcounters_variable_itmrErrorC = '0;
       end
   end
 if (MHPMCounterNum<29)

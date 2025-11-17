@@ -1,0 +1,15 @@
+diff --git a/tmrg_files/obi_uart_registerTMR.sv b/tmrg_files/obi_uart_registerTMR.sv
+index a34e79e..a76cddf 100644
+--- a/tmrg_files/obi_uart_registerTMR.sv
++++ b/tmrg_files/obi_uart_registerTMR.sv
+@@ -41,7 +41,9 @@
+ 
+ `include "common_cells/registers.svh"
+ module obi_uart_registerTMR import obi_uart_pkg::*; #(
+-  parameter obi_pkg::obi_cfg_t ObiCfg = obi_pkg::ObiDefaultConfig
++  parameter obi_pkg::obi_cfg_t ObiCfg = obi_pkg::ObiDefaultConfig,
++  parameter type               obi_req_t = logic,
++  parameter type               obi_rsp_t = logic
+ ) (
+   input logic clk_iA,
+   input logic clk_iB,

@@ -127,6 +127,7 @@ module fault_monitor_reg_top #(
         logic uart_fault;
         logic gpio_fault;
         logic timer_fault;
+        logic soc_fault;
         logic sram_fault[2];
     } decoded_reg_strb_t;
     decoded_reg_strb_t decoded_reg_strb;
@@ -146,8 +147,9 @@ module fault_monitor_reg_top #(
         decoded_reg_strb.uart_fault = cpuif_req_masked & (cpuif_addr == 5'h8);
         decoded_reg_strb.gpio_fault = cpuif_req_masked & (cpuif_addr == 5'hc);
         decoded_reg_strb.timer_fault = cpuif_req_masked & (cpuif_addr == 5'h10);
+        decoded_reg_strb.soc_fault = cpuif_req_masked & (cpuif_addr == 5'h14);
         for(int i0=0; i0<2; i0++) begin
-            decoded_reg_strb.sram_fault[i0] = cpuif_req_masked & (cpuif_addr == 5'h14 + (5)'(i0) * 5'h4);
+            decoded_reg_strb.sram_fault[i0] = cpuif_req_masked & (cpuif_addr == 5'h18 + (5)'(i0) * 5'h4);
         end
         decoded_err = (~is_valid_addr | is_invalid_rw) & decoded_req;
     end
@@ -209,6 +211,14 @@ module fault_monitor_reg_top #(
                 logic incrthreshold;
                 logic overflow;
             } fault_count;
+        } soc_fault;
+        struct {
+            struct {
+                logic [31:0] next;
+                logic load_next;
+                logic incrthreshold;
+                logic overflow;
+            } fault_count;
         } sram_fault[2];
     } field_combo_t;
     field_combo_t field_combo;
@@ -239,6 +249,11 @@ module fault_monitor_reg_top #(
                 logic [31:0] value;
             } fault_count;
         } timer_fault;
+        struct {
+            struct {
+                logic [31:0] value;
+            } fault_count;
+        } soc_fault;
         struct {
             struct {
                 logic [31:0] value;
@@ -397,6 +412,36 @@ module fault_monitor_reg_top #(
             end
         end
     end
+    // Field: fault_monitor.soc_fault.fault_count
+    always_comb begin
+        automatic logic [31:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.soc_fault.fault_count.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.soc_fault && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.soc_fault.fault_count.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
+            load_next_c = '1;
+        end
+        if(hwif_in.soc_fault.fault_count.incr) begin // increment
+            field_combo.soc_fault.fault_count.overflow = (((33)'(next_c) + 32'h1) > 32'hffffffff);
+            next_c = next_c + 32'h1;
+            load_next_c = '1;
+        end else begin
+            field_combo.soc_fault.fault_count.overflow = '0;
+        end
+        field_combo.soc_fault.fault_count.incrthreshold = (field_storage.soc_fault.fault_count.value >= 32'hffffffff);
+        field_combo.soc_fault.fault_count.next = next_c;
+        field_combo.soc_fault.fault_count.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.soc_fault.fault_count.value <= 32'h0;
+        end else begin
+            if(field_combo.soc_fault.fault_count.load_next) begin
+                field_storage.soc_fault.fault_count.value <= field_combo.soc_fault.fault_count.next;
+            end
+        end
+    end
     for(genvar i0=0; i0<2; i0++) begin
         // Field: fault_monitor.sram_fault[].fault_count
         always_comb begin
@@ -446,14 +491,15 @@ module fault_monitor_reg_top #(
     logic [31:0] readback_data;
 
     // Assign readback values to a flattened array
-    logic [31:0] readback_array[7];
+    logic [31:0] readback_array[8];
     assign readback_array[0][31:0] = (decoded_reg_strb.obi_fault && !decoded_req_is_wr) ? field_storage.obi_fault.fault_count.value : '0;
     assign readback_array[1][31:0] = (decoded_reg_strb.core_fault && !decoded_req_is_wr) ? field_storage.core_fault.fault_count.value : '0;
     assign readback_array[2][31:0] = (decoded_reg_strb.uart_fault && !decoded_req_is_wr) ? field_storage.uart_fault.fault_count.value : '0;
     assign readback_array[3][31:0] = (decoded_reg_strb.gpio_fault && !decoded_req_is_wr) ? field_storage.gpio_fault.fault_count.value : '0;
     assign readback_array[4][31:0] = (decoded_reg_strb.timer_fault && !decoded_req_is_wr) ? field_storage.timer_fault.fault_count.value : '0;
+    assign readback_array[5][31:0] = (decoded_reg_strb.soc_fault && !decoded_req_is_wr) ? field_storage.soc_fault.fault_count.value : '0;
     for(genvar i0=0; i0<2; i0++) begin
-        assign readback_array[i0 * 1 + 5][31:0] = (decoded_reg_strb.sram_fault[i0] && !decoded_req_is_wr) ? field_storage.sram_fault[i0].fault_count.value : '0;
+        assign readback_array[i0 * 1 + 6][31:0] = (decoded_reg_strb.sram_fault[i0] && !decoded_req_is_wr) ? field_storage.sram_fault[i0].fault_count.value : '0;
     end
 
     // Reduce the array
@@ -462,7 +508,7 @@ module fault_monitor_reg_top #(
         readback_done = decoded_req & ~decoded_req_is_wr;
         readback_err = '0;
         readback_data_var = '0;
-        for(int i=0; i<7; i++) readback_data_var |= readback_array[i];
+        for(int i=0; i<8; i++) readback_data_var |= readback_array[i];
         readback_data = readback_data_var;
     end
 

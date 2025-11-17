@@ -1,0 +1,31 @@
+diff --git a/tmrg_files/obi_xbarTMR.sv b/tmrg_files/obi_xbarTMR.sv
+index 62502b4..3bc692b 100644
+--- a/tmrg_files/obi_xbarTMR.sv
++++ b/tmrg_files/obi_xbarTMR.sv
+@@ -42,10 +42,17 @@
+ module obi_xbarTMR #(
+   parameter obi_pkg::obi_cfg_t SbrPortObiCfg = obi_pkg::ObiDefaultConfig,
+   parameter obi_pkg::obi_cfg_t MgrPortObiCfg = SbrPortObiCfg,
++  parameter type               sbr_port_obi_req_t = logic,
++  parameter type               sbr_port_a_chan_t  = logic,
++  parameter type               sbr_port_obi_rsp_t = logic,
++  parameter type               sbr_port_r_chan_t  = logic,
++  parameter type               mgr_port_obi_req_t = sbr_port_obi_req_t,
++  parameter type               mgr_port_obi_rsp_t = sbr_port_obi_rsp_t,
+   parameter int unsigned NumSbrPorts = 32'd0,
+   parameter int unsigned NumMgrPorts = 32'd0,
+   parameter int unsigned NumMaxTrans = 32'd0,
+   parameter int unsigned NumAddrRules = 32'd0,
++  parameter type               addr_map_rule_t    = logic,
+   parameter bit UseIdForRouting = 1'b0,
+   parameter bit [NumSbrPorts - 1:0] [NumMgrPorts - 1:0] Connectivity = '1
+ ) (
+@@ -110,7 +117,7 @@ sbr_port_obi_rsp_t [NumMgrPorts - 1:0] [NumSbrPorts - 1:0] mgr_rspsC;
+ for(genvar i = 0; i<NumSbrPorts; i++)
+   begin : gen_demux
+ 
+-    addr_decodeTMR #(.NoIndices(NumMgrPorts), .NoRules(NumAddrRules), .rule_t(addr_map_rule_t)) i_addr_decode (
++    addr_decodeTMR #(.NoIndices(NumMgrPorts), .NoRules(NumAddrRules), .addr_t    ( logic [MgrPortObiCfg.AddrWidth-1:0] ), .rule_t(addr_map_rule_t)) i_addr_decode (
+         .addr_iA(sbr_ports_req_iA[i].a.addr),
+         .addr_iB(sbr_ports_req_iB[i].a.addr),
+         .addr_iC(sbr_ports_req_iC[i].a.addr),

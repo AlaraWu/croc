@@ -90,15 +90,15 @@ module obi_xbarTMR #(
   output tmrErrorB,
   output tmrErrorC
 );
-wor i_muxtmrErrorC;
-wor i_err_sbrtmrErrorC;
-wor i_demuxtmrErrorC;
-wor i_muxtmrErrorB;
-wor i_err_sbrtmrErrorB;
-wor i_demuxtmrErrorB;
-wor i_muxtmrErrorA;
-wor i_err_sbrtmrErrorA;
-wor i_demuxtmrErrorA;
+wor [NumMgrPorts-1:0] i_muxtmrErrorC;
+wor [NumSbrPorts-1:0] i_err_sbrtmrErrorC;
+wor [NumSbrPorts-1:0] i_demuxtmrErrorC;
+wor [NumMgrPorts-1:0] i_muxtmrErrorB;
+wor [NumSbrPorts-1:0] i_err_sbrtmrErrorB;
+wor [NumSbrPorts-1:0] i_demuxtmrErrorB;
+wor [NumMgrPorts-1:0] i_muxtmrErrorA;
+wor [NumSbrPorts-1:0] i_err_sbrtmrErrorA;
+wor [NumSbrPorts-1:0] i_demuxtmrErrorA;
 logic [NumSbrPorts - 1:0] [cf_math_pkg::idx_width(NumMgrPorts) - 1:0] sbr_port_selectA;
 logic [NumSbrPorts - 1:0] [cf_math_pkg::idx_width(NumMgrPorts) - 1:0] sbr_port_selectB;
 logic [NumSbrPorts - 1:0] [cf_math_pkg::idx_width(NumMgrPorts) - 1:0] sbr_port_selectC;
@@ -163,9 +163,9 @@ for(genvar i = 0; i<NumSbrPorts; i++)
         .mgr_ports_rsp_iA(sbr_rspsA[i]),
         .mgr_ports_rsp_iB(sbr_rspsB[i]),
         .mgr_ports_rsp_iC(sbr_rspsC[i]),
-        .tmrErrorA(i_demuxtmrErrorA),
-        .tmrErrorB(i_demuxtmrErrorB),
-        .tmrErrorC(i_demuxtmrErrorC)
+        .tmrErrorA(i_demuxtmrErrorA[i]),
+        .tmrErrorB(i_demuxtmrErrorB[i]),
+        .tmrErrorC(i_demuxtmrErrorC[i])
       );
   end
 for(genvar i = 0; i<NumSbrPorts; i++)
@@ -180,6 +180,9 @@ for(genvar i = 0; i<NumSbrPorts; i++)
             assign sbr_rspsA[i][j] = mgr_rspsA[j][i];
             assign sbr_rspsB[i][j] = mgr_rspsB[j][i];
             assign sbr_rspsC[i][j] = mgr_rspsC[j][i];
+            assign i_err_sbrtmrErrorA[i] = '0;
+            assign i_err_sbrtmrErrorB[i] = '0;
+            assign i_err_sbrtmrErrorC[i] = '0;
           end
 
         else
@@ -225,9 +228,9 @@ for(genvar i = 0; i<NumSbrPorts; i++)
                 .obi_rsp_oA(sbr_rspsA[i][j]),
                 .obi_rsp_oB(sbr_rspsB[i][j]),
                 .obi_rsp_oC(sbr_rspsC[i][j]),
-                .tmrErrorA(i_err_sbrtmrErrorA),
-                .tmrErrorB(i_err_sbrtmrErrorB),
-                .tmrErrorC(i_err_sbrtmrErrorC)
+                .tmrErrorA(i_err_sbrtmrErrorA[i]),
+                .tmrErrorB(i_err_sbrtmrErrorB[i]),
+                .tmrErrorC(i_err_sbrtmrErrorC[i])
               );
           end
       end
@@ -257,13 +260,13 @@ for(genvar i = 0; i<NumMgrPorts; i++)
         .mgr_port_rsp_iA(mgr_ports_rsp_iA[i]),
         .mgr_port_rsp_iB(mgr_ports_rsp_iB[i]),
         .mgr_port_rsp_iC(mgr_ports_rsp_iC[i]),
-        .tmrErrorA(i_muxtmrErrorA),
-        .tmrErrorB(i_muxtmrErrorB),
-        .tmrErrorC(i_muxtmrErrorC)
+        .tmrErrorA(i_muxtmrErrorA[i]),
+        .tmrErrorB(i_muxtmrErrorB[i]),
+        .tmrErrorC(i_muxtmrErrorC[i])
       );
   end
-assign tmrErrorA = i_demuxtmrErrorA|i_err_sbrtmrErrorA|i_muxtmrErrorA;
-assign tmrErrorB = i_demuxtmrErrorB|i_err_sbrtmrErrorB|i_muxtmrErrorB;
-assign tmrErrorC = i_demuxtmrErrorC|i_err_sbrtmrErrorC|i_muxtmrErrorC;
+assign tmrErrorA = (|i_demuxtmrErrorA)|( |i_err_sbrtmrErrorA )|( |i_muxtmrErrorA );
+assign tmrErrorB = (|i_demuxtmrErrorB)|( |i_err_sbrtmrErrorB )|( |i_muxtmrErrorB );
+assign tmrErrorC = (|i_demuxtmrErrorC)|( |i_err_sbrtmrErrorC )|( |i_muxtmrErrorC );
 endmodule
 

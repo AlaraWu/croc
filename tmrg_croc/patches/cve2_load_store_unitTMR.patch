@@ -1,0 +1,39 @@
+diff --git a/tmrg_files/cve2_load_store_unitTMR.sv b/tmrg_files/cve2_load_store_unitTMR.sv
+index 1aba8eb..0f47dca 100644
+--- a/tmrg_files/cve2_load_store_unitTMR.sv
++++ b/tmrg_files/cve2_load_store_unitTMR.sv
+@@ -128,11 +128,10 @@ module cve2_load_store_unitTMR (
+   output tmrErrorB,
+   output tmrErrorC
+ );
+-parameter IDLE = 3'b000;
+-parameter WAIT_GNT_MIS = 3'b001;
+-parameter WAIT_RVALID_MIS = 3'b010;
+-parameter WAIT_GNT = 3'b011;
+-parameter WAIT_RVALID_MIS_GNTS_DONE = 3'b100;
++typedef enum logic [2:0]  {
++  IDLE, WAIT_GNT_MIS, WAIT_RVALID_MIS, WAIT_GNT,
++  WAIT_RVALID_MIS_GNTS_DONE
++} ls_fsm_e;
+ wor rdata_qTmrErrorC;
+ wor rdata_offset_qTmrErrorC;
+ wor pmp_err_qTmrErrorC;
+@@ -271,15 +270,9 @@ logic lsu_err_qVotedC;
+ logic data_or_pmp_errA;
+ logic data_or_pmp_errB;
+ logic data_or_pmp_errC;
+-reg [2:0] ls_fsm_csA;
+-reg [2:0] ls_fsm_csB;
+-reg [2:0] ls_fsm_csC;
+-reg [2:0] ls_fsm_nsA;
+-reg [2:0] ls_fsm_nsB;
+-reg [2:0] ls_fsm_nsC;
+-reg [2:0] ls_fsm_csVotedA;
+-reg [2:0] ls_fsm_csVotedB;
+-reg [2:0] ls_fsm_csVotedC;
++ls_fsm_e ls_fsm_csA, ls_fsm_nsA, ls_fsm_csVotedA;
++ls_fsm_e ls_fsm_csB, ls_fsm_nsB, ls_fsm_csVotedB;
++ls_fsm_e ls_fsm_csC, ls_fsm_nsC, ls_fsm_csVotedC;
+ assign data_addrA = adder_result_ex_iA;
+ assign data_addrB = adder_result_ex_iB;
+ assign data_addrC = adder_result_ex_iC;

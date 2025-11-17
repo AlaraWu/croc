@@ -1,0 +1,65 @@
+diff --git a/tmrg_files/croc_domainTMR.sv b/tmrg_files/croc_domainTMR.sv
+index 58306a6..2fa2a19 100644
+--- a/tmrg_files/croc_domainTMR.sv
++++ b/tmrg_files/croc_domainTMR.sv
+@@ -116,7 +116,7 @@ localparam dm::hartinfo_t HARTINFO = '{zero1: '0, nscratch: 2, zero0: '0, dataac
+ wor i_xbar_errtmrErrorC;
+ wor i_uarttmrErrorC;
+ wor i_timertmrErrorC;
+-wor i_sram_shimtmrErrorC;
++wor [NumSramBanks-1:0] i_sram_shimtmrErrorC;
+ wor i_soc_ctrltmrErrorC;
+ wor i_soc_ctrl_translatetmrErrorC;
+ wor i_periph_errtmrErrorC;
+@@ -127,7 +127,7 @@ wor i_core_wraptmrErrorC;
+ wor i_xbar_errtmrErrorB;
+ wor i_uarttmrErrorB;
+ wor i_timertmrErrorB;
+-wor i_sram_shimtmrErrorB;
++wor [NumSramBanks-1:0] i_sram_shimtmrErrorB;
+ wor i_soc_ctrltmrErrorB;
+ wor i_soc_ctrl_translatetmrErrorB;
+ wor i_periph_errtmrErrorB;
+@@ -138,7 +138,7 @@ wor i_core_wraptmrErrorB;
+ wor i_xbar_errtmrErrorA;
+ wor i_uarttmrErrorA;
+ wor i_timertmrErrorA;
+-wor i_sram_shimtmrErrorA;
++wor [NumSramBanks-1:0] i_sram_shimtmrErrorA;
+ wor i_soc_ctrltmrErrorA;
+ wor i_soc_ctrl_translatetmrErrorA;
+ wor i_periph_errtmrErrorA;
+@@ -756,9 +756,9 @@ logic [SbrObiCfg.DataWidth / 8 - 1:0] bank_beC;
+         .rdata_iA(bank_rdataA),
+         .rdata_iB(bank_rdataB),
+         .rdata_iC(bank_rdataC),
+-        .tmrErrorA(i_sram_shimtmrErrorA),
+-        .tmrErrorB(i_sram_shimtmrErrorB),
+-        .tmrErrorC(i_sram_shimtmrErrorC)
++        .tmrErrorA(i_sram_shimtmrErrorA[i]),
++        .tmrErrorB(i_sram_shimtmrErrorB[i]),
++        .tmrErrorC(i_sram_shimtmrErrorC[i])
+       );
+     assign bank_word_addrA = bank_byte_addrA[SbrObiCfg.AddrWidth - 1:2];
+     assign bank_word_addrB = bank_byte_addrB[SbrObiCfg.AddrWidth - 1:2];
+@@ -831,7 +831,7 @@ logic [cf_math_pkg::idx_width(NumPeriphs) - 1:0] periph_idxA;
+ logic [cf_math_pkg::idx_width(NumPeriphs) - 1:0] periph_idxB;
+ logic [cf_math_pkg::idx_width(NumPeriphs) - 1:0] periph_idxC;
+ 
+-addr_decodeTMR #(.NoIndices(NumPeriphs), .NoRules(NumPeriphRules), .rule_t(addr_map_rule_t), .Napot(1'b0)) i_addr_decode_periphs (
++addr_decodeTMR #(.NoIndices(NumPeriphs), .NoRules(NumPeriphRules), .addr_t ( logic[SbrObiCfg.DataWidth-1:0] ), .rule_t(addr_map_rule_t), .Napot(1'b0)) i_addr_decode_periphs (
+     .addr_iA(xbar_periph_obi_reqA.a.addr),
+     .addr_iB(xbar_periph_obi_reqB.a.addr),
+     .addr_iC(xbar_periph_obi_reqC.a.addr),
+@@ -1163,8 +1163,8 @@ assign timer_obi_rspC.r.err = 1'b0;
+ assign timer_obi_rspA.r.r_optional = 1'b0;
+ assign timer_obi_rspB.r.r_optional = 1'b0;
+ assign timer_obi_rspC.r.r_optional = 1'b0;
+-assign tmrErrorA = i_core_wraptmrErrorA|i_gpiotmrErrorA|i_main_xbartmrErrorA|i_obi_demuxtmrErrorA|i_periph_errtmrErrorA|i_soc_ctrl_translatetmrErrorA|i_soc_ctrltmrErrorA|i_sram_shimtmrErrorA|i_timertmrErrorA|i_uarttmrErrorA|i_xbar_errtmrErrorA;
+-assign tmrErrorB = i_core_wraptmrErrorB|i_gpiotmrErrorB|i_main_xbartmrErrorB|i_obi_demuxtmrErrorB|i_periph_errtmrErrorB|i_soc_ctrl_translatetmrErrorB|i_soc_ctrltmrErrorB|i_sram_shimtmrErrorB|i_timertmrErrorB|i_uarttmrErrorB|i_xbar_errtmrErrorB;
+-assign tmrErrorC = i_core_wraptmrErrorC|i_gpiotmrErrorC|i_main_xbartmrErrorC|i_obi_demuxtmrErrorC|i_periph_errtmrErrorC|i_soc_ctrl_translatetmrErrorC|i_soc_ctrltmrErrorC|i_sram_shimtmrErrorC|i_timertmrErrorC|i_uarttmrErrorC|i_xbar_errtmrErrorC;
++assign tmrErrorA = i_core_wraptmrErrorA|i_gpiotmrErrorA|i_main_xbartmrErrorA|i_obi_demuxtmrErrorA|i_periph_errtmrErrorA|i_soc_ctrl_translatetmrErrorA|i_soc_ctrltmrErrorA|(|i_sram_shimtmrErrorA)|i_timertmrErrorA|i_uarttmrErrorA|i_xbar_errtmrErrorA;
++assign tmrErrorB = i_core_wraptmrErrorB|i_gpiotmrErrorB|i_main_xbartmrErrorB|i_obi_demuxtmrErrorB|i_periph_errtmrErrorB|i_soc_ctrl_translatetmrErrorB|i_soc_ctrltmrErrorB|(|i_sram_shimtmrErrorB)|i_timertmrErrorB|i_uarttmrErrorB|i_xbar_errtmrErrorB;
++assign tmrErrorC = i_core_wraptmrErrorC|i_gpiotmrErrorC|i_main_xbartmrErrorC|i_obi_demuxtmrErrorC|i_periph_errtmrErrorC|i_soc_ctrl_translatetmrErrorC|i_soc_ctrltmrErrorC|(|i_sram_shimtmrErrorC)|i_timertmrErrorC|i_uarttmrErrorC|i_xbar_errtmrErrorC;
+ endmodule
+ 

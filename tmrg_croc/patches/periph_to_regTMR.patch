@@ -1,0 +1,15 @@
+diff --git a/tmrg_files/periph_to_regTMR.sv b/tmrg_files/periph_to_regTMR.sv
+index 093222a..1f5bae9 100644
+--- a/tmrg_files/periph_to_regTMR.sv
++++ b/tmrg_files/periph_to_regTMR.sv
+@@ -43,7 +43,9 @@ module periph_to_regTMR #(
+   parameter int unsigned AW = 32,
+   parameter int unsigned DW = 32,
+   parameter int unsigned BW = 8,
+-  parameter int unsigned IW = 0
++  parameter int unsigned IW = 0,
++  parameter type         req_t = logic,
++  parameter type         rsp_t = logic
+ ) (
+   input logic clk_iA,
+   input logic clk_iB,

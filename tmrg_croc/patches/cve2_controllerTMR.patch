@@ -1,0 +1,44 @@
+diff --git a/tmrg_files/cve2_controllerTMR.sv b/tmrg_files/cve2_controllerTMR.sv
+index 5f033ed..b7d917f 100644
+--- a/tmrg_files/cve2_controllerTMR.sv
++++ b/tmrg_files/cve2_controllerTMR.sv
+@@ -213,16 +213,10 @@ module cve2_controllerTMR (
+   output tmrErrorC
+ );
+ import cve2_pkg::*;
+-parameter RESET = 4'h0;
+-parameter BOOT_SET = 4'h1;
+-parameter WAIT_SLEEP = 4'h2;
+-parameter SLEEP = 4'h3;
+-parameter FIRST_FETCH = 4'h4;
+-parameter DECODE = 4'h5;
+-parameter FLUSH = 4'h6;
+-parameter IRQ_TAKEN = 4'h7;
+-parameter DBG_TAKEN_IF = 4'h8;
+-parameter DBG_TAKEN_ID = 4'h9;
++typedef enum logic [3:0] {
++  RESET, BOOT_SET, WAIT_SLEEP, SLEEP, FIRST_FETCH, DECODE, FLUSH,
++  IRQ_TAKEN, DBG_TAKEN_IF, DBG_TAKEN_ID
++} ctrl_fsm_e;
+ wor store_err_qTmrErrorC;
+ wor nmi_mode_qTmrErrorC;
+ wor load_err_qTmrErrorC;
+@@ -250,15 +244,9 @@ wor enter_debug_mode_prio_qTmrErrorA;
+ wor do_single_step_qTmrErrorA;
+ wor debug_mode_qTmrErrorA;
+ wor ctrl_fsm_csTmrErrorA;
+-reg [3:0] ctrl_fsm_csA;
+-reg [3:0] ctrl_fsm_csB;
+-reg [3:0] ctrl_fsm_csC;
+-reg [3:0] ctrl_fsm_nsA;
+-reg [3:0] ctrl_fsm_nsB;
+-reg [3:0] ctrl_fsm_nsC;
+-reg [3:0] ctrl_fsm_csVotedA;
+-reg [3:0] ctrl_fsm_csVotedB;
+-reg [3:0] ctrl_fsm_csVotedC;
++ctrl_fsm_e ctrl_fsm_csA, ctrl_fsm_nsA, ctrl_fsm_csVotedA;
++ctrl_fsm_e ctrl_fsm_csB, ctrl_fsm_nsB, ctrl_fsm_csVotedB;
++ctrl_fsm_e ctrl_fsm_csC, ctrl_fsm_nsC, ctrl_fsm_csVotedC;
+ logic nmi_mode_qA;
+ logic nmi_mode_qB;
+ logic nmi_mode_qC;

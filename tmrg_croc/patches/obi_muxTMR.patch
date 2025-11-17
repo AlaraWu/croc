@@ -1,0 +1,17 @@
+diff --git a/tmrg_files/obi_muxTMR.sv b/tmrg_files/obi_muxTMR.sv
+index e2e31d6..4c4bc9a 100644
+--- a/tmrg_files/obi_muxTMR.sv
++++ b/tmrg_files/obi_muxTMR.sv
+@@ -42,6 +42,12 @@
+ module obi_muxTMR #(
+   parameter obi_pkg::obi_cfg_t SbrPortObiCfg = obi_pkg::ObiDefaultConfig,
+   parameter obi_pkg::obi_cfg_t MgrPortObiCfg = SbrPortObiCfg,
++  parameter type               sbr_port_obi_req_t = logic,
++  parameter type               sbr_port_a_chan_t  = logic,
++  parameter type               sbr_port_obi_rsp_t = logic,
++  parameter type               sbr_port_r_chan_t  = logic,
++  parameter type               mgr_port_obi_req_t = sbr_port_obi_req_t,
++  parameter type               mgr_port_obi_rsp_t = sbr_port_obi_rsp_t,
+   parameter int unsigned NumSbrPorts = 32'd0,
+   parameter int unsigned NumMaxTrans = 32'd0,
+   parameter bit UseIdForRouting = 1'b0
