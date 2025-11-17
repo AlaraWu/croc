@@ -1981,7 +1981,7 @@ majorityVoter #(.WIDTH( ($size(state_qVotedA)) )) state_qVoterA (
     .inA(state_qA),
     .inB(state_qB),
     .inC(state_qC),
-    .out(state_qVotedA),
+    .out({state_qVotedA}),
     .tmrErr(state_qTmrErrorA)
   );
 
@@ -2078,7 +2078,7 @@ majorityVoter #(.WIDTH( ($size(state_qVotedA)) )) state_qVoterB (
     .inA(state_qA),
     .inB(state_qB),
     .inC(state_qC),
-    .out(state_qVotedB),
+    .out({state_qVotedB}),
     .tmrErr(state_qTmrErrorB)
   );
 
@@ -2175,7 +2175,7 @@ majorityVoter #(.WIDTH( ($size(state_qVotedA)) )) state_qVoterC (
     .inA(state_qA),
     .inB(state_qB),
     .inC(state_qC),
-    .out(state_qVotedC),
+    .out({state_qVotedC}),
     .tmrErr(state_qTmrErrorC)
   );
 

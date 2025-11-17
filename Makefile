@@ -164,14 +164,14 @@ vcs-openroad: vcs/tb_croc_soc_openroad.sim $(SW_HEX)
 # Open Source Flow #
 ####################
 # Bender manages the different IPs and can be used to generate file-lists for synthesis
-TOP_DESIGN     ?= croc_chip
+TOP_DESIGN     ?= croc_chipTMR
 DUT_DESIGN	   ?= croc_soc
 BENDER_TARGETS ?= asic ihp13 rtl synthesis
 SV_DEFINES     ?= VERILATOR SYNTHESIS COMMON_CELLS_ASSERTS_OFF
 
 ## Generate croc.flist used to read design in yosys
 yosys-flist: Bender.lock Bender.yml rtl/*/Bender.yml
-	$(BENDER) script flist-plus $(foreach t,$(BENDER_TARGETS),-t $(t)) $(foreach d,$(SV_DEFINES),-D $(d)=1) > $(PROJ_DIR)/croc.flist
+	$(BENDER) script flist-plus -t tmrg $(foreach t,$(BENDER_TARGETS),-t $(t)) $(foreach d,$(SV_DEFINES),-D $(d)=1) > $(PROJ_DIR)/croc.flist
 
 include yosys/yosys.mk
 include openroad/openroad.mk

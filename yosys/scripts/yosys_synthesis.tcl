@@ -48,6 +48,8 @@ yosys setattr -set keep_hierarchy 1 "t:tc_clk*$*"
 yosys setattr -set keep_hierarchy 1 "t:tc_sram_impl$*"
 yosys setattr -set keep_hierarchy 1 "t:cdc_*$*"
 yosys setattr -set keep_hierarchy 1 "t:sync$*"
+yosys setattr -set keep_hierarchy 1 "t:majorityVoter$*"
+yosys setattr -set keep_hierarchy 1 "t:fanout$*"
 
 
 # blackbox modules (applies the *blackbox* attribute)
@@ -106,6 +108,8 @@ yosys tee -q -o "${rep_dir}/${top_design}_generic.json" stat -json -tech cmos
 
 # flatten all hierarchy except marked modules
 yosys flatten
+
+yosys tee -q -o "${rep_dir}/${top_design}_loops.rpt" scc
 
 yosys clean -purge
 

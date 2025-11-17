@@ -40,7 +40,7 @@ sources:
     files:
       - rtl/soc_ctrl/fault_monitor_reg_pkg.sv
       - rtl/soc_ctrl/fault_monitor_reg_top.sv
-      - tmrg_croc/tmrg_files/*
+      - tmrg_croc/tmrg_files/*.sv
 
     # RTL
   - target: not(any(netlist_yosys, netlist_openroad))
@@ -61,6 +61,11 @@ sources:
     files:
       # Level 0
       - rtl/croc_chip.sv
+
+  - target: all(not(any(fpga, netlist_yosys, netlist_openroad)), tmrg)
+    files:
+      # Level 0
+      - tmrg_croc/croc_chipTMR.sv
   
   # yosys netlist for simulation
   - target: netlist_yosys

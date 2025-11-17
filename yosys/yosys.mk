@@ -16,7 +16,7 @@ YOSYS_TMP		:= $(YOSYS_DIR)/tmp
 YOSYS_REPORTS	:= $(YOSYS_DIR)/reports
 
 # top level to be synthesized
-TOP_DESIGN		?= croc_chip
+TOP_DESIGN		?= croc_chipTMR
 
 # file containing include dirs, defines and paths to all source files
 SV_FLIST    	:= $(realpath $(YOSYS_DIR)/..)/croc.flist

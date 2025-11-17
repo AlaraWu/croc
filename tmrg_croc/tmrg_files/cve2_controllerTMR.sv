@@ -1647,7 +1647,7 @@ majorityVoter #(.WIDTH(4)) ctrl_fsm_csVoterA (
     .inA(ctrl_fsm_csA),
     .inB(ctrl_fsm_csB),
     .inC(ctrl_fsm_csC),
-    .out(ctrl_fsm_csVotedA),
+    .out({ctrl_fsm_csVotedA}),
     .tmrErr(ctrl_fsm_csTmrErrorA)
   );
 
@@ -1720,7 +1720,7 @@ majorityVoter #(.WIDTH(4)) ctrl_fsm_csVoterB (
     .inA(ctrl_fsm_csA),
     .inB(ctrl_fsm_csB),
     .inC(ctrl_fsm_csC),
-    .out(ctrl_fsm_csVotedB),
+    .out({ctrl_fsm_csVotedB}),
     .tmrErr(ctrl_fsm_csTmrErrorB)
   );
 
@@ -1793,7 +1793,7 @@ majorityVoter #(.WIDTH(4)) ctrl_fsm_csVoterC (
     .inA(ctrl_fsm_csA),
     .inB(ctrl_fsm_csB),
     .inC(ctrl_fsm_csC),
-    .out(ctrl_fsm_csVotedC),
+    .out({ctrl_fsm_csVotedC}),
     .tmrErr(ctrl_fsm_csTmrErrorC)
   );
 

@@ -1648,7 +1648,7 @@ majorityVoter id_fsm_qVoterA (
     .inA(id_fsm_qA),
     .inB(id_fsm_qB),
     .inC(id_fsm_qC),
-    .out(id_fsm_qVotedA),
+    .out({id_fsm_qVotedA}),
     .tmrErr(id_fsm_qTmrErrorA)
   );
 assign tmrErrorA = branch_jump_set_done_qTmrErrorA|branch_set_raw_qTmrErrorA|controller_itmrErrorA|decoder_itmrErrorA|id_fsm_qTmrErrorA;
@@ -1673,7 +1673,7 @@ majorityVoter id_fsm_qVoterB (
     .inA(id_fsm_qA),
     .inB(id_fsm_qB),
     .inC(id_fsm_qC),
-    .out(id_fsm_qVotedB),
+    .out({id_fsm_qVotedB}),
     .tmrErr(id_fsm_qTmrErrorB)
   );
 assign tmrErrorB = branch_jump_set_done_qTmrErrorB|branch_set_raw_qTmrErrorB|controller_itmrErrorB|decoder_itmrErrorB|id_fsm_qTmrErrorB;
@@ -1698,7 +1698,7 @@ majorityVoter id_fsm_qVoterC (
     .inA(id_fsm_qA),
     .inB(id_fsm_qB),
     .inC(id_fsm_qC),
-    .out(id_fsm_qVotedC),
+    .out({id_fsm_qVotedC}),
     .tmrErr(id_fsm_qTmrErrorC)
   );
 assign tmrErrorC = branch_jump_set_done_qTmrErrorC|branch_set_raw_qTmrErrorC|controller_itmrErrorC|decoder_itmrErrorC|id_fsm_qTmrErrorC;

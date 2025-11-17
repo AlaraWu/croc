@@ -1495,7 +1495,7 @@ majorityVoter #(.WIDTH(2)) CSVoterA (
     .inA(CSA),
     .inB(CSB),
     .inC(CSC),
-    .out(CSVotedA),
+    .out({CSVotedA}),
     .tmrErr(CSTmrErrorA)
   );
 
@@ -1600,7 +1600,7 @@ majorityVoter #(.WIDTH(2)) CSVoterB (
     .inA(CSA),
     .inB(CSB),
     .inC(CSC),
-    .out(CSVotedB),
+    .out({CSVotedB}),
     .tmrErr(CSTmrErrorB)
   );
 
@@ -1705,7 +1705,7 @@ majorityVoter #(.WIDTH(2)) CSVoterC (
     .inA(CSA),
     .inB(CSB),
     .inC(CSC),
-    .out(CSVotedC),
+    .out({CSVotedC}),
     .tmrErr(CSTmrErrorC)
   );
 

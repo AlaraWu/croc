@@ -39,8 +39,28 @@ _start:
   addi   t0, t0, 4
   j      1b
 2:
-  # clear fault registers from setup
+  # clear fault registers from setup (15 regs)
   li     t0, 0x0300D000
+  sw     zero, 0(t0)
+  addi   t0, t0, 4
+  sw     zero, 0(t0)
+  addi   t0, t0, 4
+  sw     zero, 0(t0)
+  addi   t0, t0, 4
+  sw     zero, 0(t0)
+  addi   t0, t0, 4
+  sw     zero, 0(t0)
+  addi   t0, t0, 4
+  sw     zero, 0(t0)
+  addi   t0, t0, 4
+  sw     zero, 0(t0)
+  addi   t0, t0, 4
+  sw     zero, 0(t0)
+  addi   t0, t0, 4
+  sw     zero, 0(t0)
+  addi   t0, t0, 4
+  sw     zero, 0(t0)
+  addi   t0, t0, 4
   sw     zero, 0(t0)
   addi   t0, t0, 4
   sw     zero, 0(t0)
@@ -56,5 +76,7 @@ _start:
   call main
 _eoc:
   la      t0, status
+  li      t1, 0x80000000 # Use bit 31 to indicate end of simulation
+  or      a0, a0, t1     # Use bit 31 to indicate end of simulation
   sw      a0, 0(t0)
   wfi

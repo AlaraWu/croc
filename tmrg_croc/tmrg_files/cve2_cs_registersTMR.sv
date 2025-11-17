@@ -2935,7 +2935,7 @@ majorityVoter #(.WIDTH( ($size(priv_lvl_qVotedA)) )) priv_lvl_qVoterA (
     .inA(priv_lvl_qA),
     .inB(priv_lvl_qB),
     .inC(priv_lvl_qC),
-    .out(priv_lvl_qVotedA),
+    .out({priv_lvl_qVotedA}),
     .tmrErr(priv_lvl_qTmrErrorA)
   );
 assign tmrErrorA = (|mcounters_variable_itmrErrorA)|mcountinhibit_qTmrErrorA|mcycle_counter_itmrErrorA|minstret_counter_itmrErrorA|priv_lvl_qTmrErrorA|u_dcsr_csrtmrErrorA|u_depc_csrtmrErrorA|u_dscratch0_csrtmrErrorA|u_dscratch1_csrtmrErrorA|u_mcause_csrtmrErrorA|u_mepc_csrtmrErrorA|u_mie_csrtmrErrorA|u_mscratch_csrtmrErrorA|u_mstack_cause_csrtmrErrorA|u_mstack_csrtmrErrorA|u_mstack_epc_csrtmrErrorA|u_mstatus_csrtmrErrorA|u_mtval_csrtmrErrorA|u_mtvec_csrtmrErrorA|(|u_pmp_addr_csrtmrErrorA)|(|u_pmp_cfg_csrtmrErrorA)|u_pmp_mseccfgtmrErrorA|(|u_tmatch_control_csrtmrErrorA)|(|u_tmatch_value_csrtmrErrorA)|u_tselect_csrtmrErrorA;
@@ -2952,7 +2952,7 @@ majorityVoter #(.WIDTH( ($size(priv_lvl_qVotedA)) )) priv_lvl_qVoterB (
     .inA(priv_lvl_qA),
     .inB(priv_lvl_qB),
     .inC(priv_lvl_qC),
-    .out(priv_lvl_qVotedB),
+    .out({priv_lvl_qVotedB}),
     .tmrErr(priv_lvl_qTmrErrorB)
   );
 assign tmrErrorB = (|mcounters_variable_itmrErrorB)|mcountinhibit_qTmrErrorB|mcycle_counter_itmrErrorB|minstret_counter_itmrErrorB|priv_lvl_qTmrErrorB|u_dcsr_csrtmrErrorB|u_depc_csrtmrErrorB|u_dscratch0_csrtmrErrorB|u_dscratch1_csrtmrErrorB|u_mcause_csrtmrErrorB|u_mepc_csrtmrErrorB|u_mie_csrtmrErrorB|u_mscratch_csrtmrErrorB|u_mstack_cause_csrtmrErrorB|u_mstack_csrtmrErrorB|u_mstack_epc_csrtmrErrorB|u_mstatus_csrtmrErrorB|u_mtval_csrtmrErrorB|u_mtvec_csrtmrErrorB|(|u_pmp_addr_csrtmrErrorB)|(|u_pmp_cfg_csrtmrErrorB)|u_pmp_mseccfgtmrErrorB|(|u_tmatch_control_csrtmrErrorB)|(|u_tmatch_value_csrtmrErrorB)|u_tselect_csrtmrErrorB;
@@ -2969,7 +2969,7 @@ majorityVoter #(.WIDTH( ($size(priv_lvl_qVotedA)) )) priv_lvl_qVoterC (
     .inA(priv_lvl_qA),
     .inB(priv_lvl_qB),
     .inC(priv_lvl_qC),
-    .out(priv_lvl_qVotedC),
+    .out({priv_lvl_qVotedC}),
     .tmrErr(priv_lvl_qTmrErrorC)
   );
 assign tmrErrorC = (|mcounters_variable_itmrErrorC)|mcountinhibit_qTmrErrorC|mcycle_counter_itmrErrorC|minstret_counter_itmrErrorC|priv_lvl_qTmrErrorC|u_dcsr_csrtmrErrorC|u_depc_csrtmrErrorC|u_dscratch0_csrtmrErrorC|u_dscratch1_csrtmrErrorC|u_mcause_csrtmrErrorC|u_mepc_csrtmrErrorC|u_mie_csrtmrErrorC|u_mscratch_csrtmrErrorC|u_mstack_cause_csrtmrErrorC|u_mstack_csrtmrErrorC|u_mstack_epc_csrtmrErrorC|u_mstatus_csrtmrErrorC|u_mtval_csrtmrErrorC|u_mtvec_csrtmrErrorC|(|u_pmp_addr_csrtmrErrorC)|(|u_pmp_cfg_csrtmrErrorC)|u_pmp_mseccfgtmrErrorC|(|u_tmatch_control_csrtmrErrorC)|(|u_tmatch_value_csrtmrErrorC)|u_tselect_csrtmrErrorC;
