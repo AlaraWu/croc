@@ -6,7 +6,7 @@
  *                                                                                                  *
  * user    : chenwu                                                                                 *
  * host    : badwater.ee.ethz.ch                                                                    *
- * date    : 12/11/2025 14:57:19                                                                    *
+ * date    : 18/11/2025 09:21:59                                                                    *
  *                                                                                                  *
  * workdir : /scratch/chenwu/tmrg_croc                                                              *
  * cmd     : /scratch/chenwu/tmrg/venv/bin/tmrg tmrg_src/addr_decode.sv tmrg_src/addr_decode_dync.sv *
@@ -18,7 +18,7 @@
  *           tmrg_src/spill_register.sv tmrg_src/spill_register_flushable.sv tmrg_src/obi_uart.sv   *
  *           tmrg_src/obi_uart_baudgen.sv tmrg_src/counter.sv tmrg_src/obi_uart_interrupts.sv       *
  *           tmrg_src/obi_uart_modem.sv tmrg_src/obi_uart_register.sv tmrg_src/obi_uart_rx.sv       *
- *           tmrg_src/obi_uart_tx.sv tmrg_src/obi_sram_shim.sv tmrg_src/gpio.sv                     *
+ *           tmrg_src/obi_uart_tx.sv tmrg_src/obi_cut.sv tmrg_src/obi_sram_shim.sv tmrg_src/gpio.sv *
  *           tmrg_src/gpio_reg_top.sv tmrg_src/sync.sv tmrg_src/dmi_jtag.sv tmrg_src/dm_obi_top.sv  *
  *           tmrg_src/core_wrap.sv tmrg_src/cve2_core.sv tmrg_src/cve2_cs_registers.sv              *
  *           tmrg_src/cve2_counter.sv tmrg_src/cve2_csr.sv tmrg_src/cve2_ex_block.sv                *
@@ -32,10 +32,10 @@
  * tmrg rev: b94addac7490a9efad5a56e12a3ab232d01f4c92                                               *
  *                                                                                                  *
  * src file: tmrg_src/croc_domain.sv                                                                *
- *           Git SHA           : 513877024c58ce622d9f33836c5b6fe0e7ba47dc                           *
- *           Modification time : 2025-11-12 14:35:26.013269                                         *
- *           File Size         : 18479                                                              *
- *           MD5 hash          : 5c9168e148bd174ec2079a94948ef9be                                   *
+ *           Git SHA           : acdf608049d37209b9ed0e5000b76bba5c53f58c ( M tmrg_src/croc_domain.sv) *
+ *           Modification time : 2025-11-18 09:21:08.739221                                         *
+ *           File Size         : 19177                                                              *
+ *           MD5 hash          : 3f3a8b3aea489e1bf3c5f7dd5a8b92bc                                   *
  *                                                                                                  *
  ****************************************************************************************************/
 `include "common_cells/registers.svh"
@@ -123,12 +123,14 @@ logic [2:0] uart_faults;
 logic [2:0] timer_faults;
 logic [1:0][2:0] core_faults;
 logic [3:0][2:0] obi_faults;
-logic clk_i;
-logic rst_ni;
 sbr_obi_req_t fm_obi_req;
 sbr_obi_rsp_t fm_obi_rsp;
 
 localparam dm::hartinfo_t HARTINFO = '{zero1: '0, nscratch: 2, zero0: '0, dataaccess: 1'b1, datasize: dm::DataCount, dataaddr: dm::DataAddr};
+wire jtag_tdo_o;
+wire debug_req;
+wire mgr_obi_req_t dbg_req_obi_req;
+wire sbr_obi_rsp_t dbg_mem_obi_rsp;
 wor i_xbar_errtmrErrorC;
 wor i_uarttmrErrorC;
 wor i_timertmrErrorC;
@@ -136,6 +138,7 @@ wor [NumSramBanks-1:0] i_sram_shimtmrErrorC;
 wor i_soc_ctrltmrErrorC;
 wor i_soc_ctrl_translatetmrErrorC;
 wor i_periph_errtmrErrorC;
+wor  i_periph_cuttmrErrorC;
 wor i_obi_demuxtmrErrorC;
 wor i_main_xbartmrErrorC;
 wor i_gpiotmrErrorC;
@@ -147,6 +150,7 @@ wor [NumSramBanks-1:0] i_sram_shimtmrErrorB;
 wor i_soc_ctrltmrErrorB;
 wor i_soc_ctrl_translatetmrErrorB;
 wor i_periph_errtmrErrorB;
+wor i_periph_cuttmrErrorB;
 wor i_obi_demuxtmrErrorB;
 wor i_main_xbartmrErrorB;
 wor i_gpiotmrErrorB;
@@ -158,10 +162,45 @@ wor [NumSramBanks-1:0] i_sram_shimtmrErrorA;
 wor i_soc_ctrltmrErrorA;
 wor i_soc_ctrl_translatetmrErrorA;
 wor i_periph_errtmrErrorA;
+wor i_periph_cuttmrErrorA;
 wor i_obi_demuxtmrErrorA;
 wor i_main_xbartmrErrorA;
 wor i_gpiotmrErrorA;
 wor i_core_wraptmrErrorA;
+wor testmode_iTmrError;
+wor rst_niTmrError;
+wor jtag_trst_niTmrError;
+wor jtag_tms_iTmrError;
+wor jtag_tdi_iTmrError;
+wor jtag_tck_iTmrError;
+wor hartinfoTmrError;
+wor dmi_rst_nTmrError;
+wor dmi_resp_validTmrError;
+wor dmi_resp_readyTmrError;
+wor dmi_respTmrError;
+wor dmi_req_validTmrError;
+wor dmi_req_readyTmrError;
+wor dmi_reqTmrError;
+wor dbg_req_obi_rspTmrError;
+wor dbg_mem_obi_reqTmrError;
+wor clk_iTmrError;
+wire testmode_i;
+wire rst_ni;
+wire jtag_trst_ni;
+wire jtag_tms_i;
+wire jtag_tdi_i;
+wire jtag_tck_i;
+wire dm::hartinfo_t hartinfo;
+wire dmi_rst_n;
+wire dmi_resp_valid;
+wire dmi_resp_ready;
+wire dm::dmi_resp_t dmi_resp;
+wire dmi_req_valid;
+wire dmi_req_ready;
+wire dm::dmi_req_t dmi_req;
+wire mgr_obi_rsp_t dbg_req_obi_rsp;
+wire sbr_obi_req_t dbg_mem_obi_req;
+wire clk_i;
 logic sram_implA;
 logic sram_implB;
 logic sram_implC;
@@ -255,12 +294,8 @@ mgr_obi_req_t dbg_req_obi_reqC;
 mgr_obi_rsp_t dbg_req_obi_rspA;
 mgr_obi_rsp_t dbg_req_obi_rspB;
 mgr_obi_rsp_t dbg_req_obi_rspC;
-assign dbg_req_obi_reqA.a.aid = '0;
-assign dbg_req_obi_reqB.a.aid = '0;
-assign dbg_req_obi_reqC.a.aid = '0;
-assign dbg_req_obi_reqA.a.a_optional = '0;
-assign dbg_req_obi_reqB.a.a_optional = '0;
-assign dbg_req_obi_reqC.a.a_optional = '0;
+assign dbg_req_obi_req.a.aid = '0;
+assign dbg_req_obi_req.a.a_optional = '0;
 sbr_obi_req_t [NumXbarSbr - 1:0] all_sbr_obi_reqA;
 sbr_obi_req_t [NumXbarSbr - 1:0] all_sbr_obi_reqB;
 sbr_obi_req_t [NumXbarSbr - 1:0] all_sbr_obi_reqC;
@@ -312,6 +347,12 @@ assign user_sbr_obi_req_oC = all_sbr_obi_reqC[XbarUser];
 assign all_sbr_obi_rspA[XbarUser] = user_sbr_obi_rsp_iA;
 assign all_sbr_obi_rspB[XbarUser] = user_sbr_obi_rsp_iB;
 assign all_sbr_obi_rspC[XbarUser] = user_sbr_obi_rsp_iC;
+sbr_obi_req_t periph_cut_obi_reqA;
+sbr_obi_req_t periph_cut_obi_reqB;
+sbr_obi_req_t periph_cut_obi_reqC;
+sbr_obi_rsp_t periph_cut_obi_rspA;
+sbr_obi_rsp_t periph_cut_obi_rspB;
+sbr_obi_rsp_t periph_cut_obi_rspC;
 sbr_obi_req_t [NumPeriphs - 1:0] all_periph_obi_reqA;
 sbr_obi_req_t [NumPeriphs - 1:0] all_periph_obi_reqB;
 sbr_obi_req_t [NumPeriphs - 1:0] all_periph_obi_reqC;
@@ -477,204 +518,65 @@ core_wrapTMR i_core_wrap (
 dm::hartinfo_t hartinfoA = HARTINFO;
 dm::hartinfo_t hartinfoB = HARTINFO;
 dm::hartinfo_t hartinfoC = HARTINFO;
-logic dmi_rst_nA;
-logic dmi_rst_nB;
-logic dmi_rst_nC;
-logic dmi_req_validA;
-logic dmi_req_validB;
-logic dmi_req_validC;
-logic dmi_req_readyA;
-logic dmi_req_readyB;
-logic dmi_req_readyC;
-logic dmi_resp_validA;
-logic dmi_resp_validB;
-logic dmi_resp_validC;
-logic dmi_resp_readyA;
-logic dmi_resp_readyB;
-logic dmi_resp_readyC;
-dm::dmi_req_t dmi_reqA;
-dm::dmi_req_t dmi_reqB;
-dm::dmi_req_t dmi_reqC;
-dm::dmi_resp_t dmi_respA;
-dm::dmi_resp_t dmi_respB;
-dm::dmi_resp_t dmi_respC;
 
-dmi_jtag #(.IdcodeValue(PulpJtagIdCode)) i_dmi_jtagA (
-    .clk_i(clk_iA),
-    .rst_ni(rst_niA),
-    .testmode_i(testmode_iA),
-    .dmi_rst_no(dmi_rst_nA),
-    .dmi_req_o(dmi_reqA),
-    .dmi_req_valid_o(dmi_req_validA),
-    .dmi_req_ready_i(dmi_req_readyA),
-    .dmi_resp_i(dmi_respA),
-    .dmi_resp_ready_o(dmi_resp_readyA),
-    .dmi_resp_valid_i(dmi_resp_validA),
-    .tck_i(jtag_tck_iA),
-    .tms_i(jtag_tms_iA),
-    .trst_ni(jtag_trst_niA),
-    .td_i(jtag_tdi_iA),
-    .td_o(jtag_tdo_oA),
+dmi_jtag #(.IdcodeValue(PulpJtagIdCode)) i_dmi_jtag (
+    .clk_i(clk_i),
+    .rst_ni(rst_ni),
+    .testmode_i(testmode_i),
+    .dmi_rst_no(dmi_rst_n),
+    .dmi_req_o(dmi_req),
+    .dmi_req_valid_o(dmi_req_valid),
+    .dmi_req_ready_i(dmi_req_ready),
+    .dmi_resp_i(dmi_resp),
+    .dmi_resp_ready_o(dmi_resp_ready),
+    .dmi_resp_valid_i(dmi_resp_valid),
+    .tck_i(jtag_tck_i),
+    .tms_i(jtag_tms_i),
+    .trst_ni(jtag_trst_ni),
+    .td_i(jtag_tdi_i),
+    .td_o(jtag_tdo_o),
     .tdo_oe_o()
   );
 
-dmi_jtag #(.IdcodeValue(PulpJtagIdCode)) i_dmi_jtagB (
-    .clk_i(clk_iB),
-    .rst_ni(rst_niB),
-    .testmode_i(testmode_iB),
-    .dmi_rst_no(dmi_rst_nB),
-    .dmi_req_o(dmi_reqB),
-    .dmi_req_valid_o(dmi_req_validB),
-    .dmi_req_ready_i(dmi_req_readyB),
-    .dmi_resp_i(dmi_respB),
-    .dmi_resp_ready_o(dmi_resp_readyB),
-    .dmi_resp_valid_i(dmi_resp_validB),
-    .tck_i(jtag_tck_iB),
-    .tms_i(jtag_tms_iB),
-    .trst_ni(jtag_trst_niB),
-    .td_i(jtag_tdi_iB),
-    .td_o(jtag_tdo_oB),
-    .tdo_oe_o()
-  );
-
-dmi_jtag #(.IdcodeValue(PulpJtagIdCode)) i_dmi_jtagC (
-    .clk_i(clk_iC),
-    .rst_ni(rst_niC),
-    .testmode_i(testmode_iC),
-    .dmi_rst_no(dmi_rst_nC),
-    .dmi_req_o(dmi_reqC),
-    .dmi_req_valid_o(dmi_req_validC),
-    .dmi_req_ready_i(dmi_req_readyC),
-    .dmi_resp_i(dmi_respC),
-    .dmi_resp_ready_o(dmi_resp_readyC),
-    .dmi_resp_valid_i(dmi_resp_validC),
-    .tck_i(jtag_tck_iC),
-    .tms_i(jtag_tms_iC),
-    .trst_ni(jtag_trst_niC),
-    .td_i(jtag_tdi_iC),
-    .td_o(jtag_tdo_oC),
-    .tdo_oe_o()
-  );
-
-dm_obi_top #(.BusWidth(SbrObiCfg.DataWidth), .IdWidth(SbrObiCfg.IdWidth)) i_dm_topA (
-    .clk_i(clk_iA),
-    .rst_ni(rst_niA),
-    .testmode_i(testmode_iA),
+dm_obi_top #(.BusWidth(SbrObiCfg.DataWidth), .IdWidth(SbrObiCfg.IdWidth)) i_dm_top (
+    .clk_i(clk_i),
+    .rst_ni(rst_ni),
+    .testmode_i(testmode_i),
     .ndmreset_o(),
     .dmactive_o(),
-    .debug_req_o(debug_reqA),
+    .debug_req_o(debug_req),
     .unavailable_i(1'b0),
-    .hartinfo_i(hartinfoA),
-    .slave_req_i(dbg_mem_obi_reqA.req),
-    .slave_we_i(dbg_mem_obi_reqA.a.we),
-    .slave_addr_i(dbg_mem_obi_reqA.a.addr),
-    .slave_be_i(dbg_mem_obi_reqA.a.be),
-    .slave_wdata_i(dbg_mem_obi_reqA.a.wdata),
-    .slave_aid_i(dbg_mem_obi_reqA.a.aid),
-    .slave_gnt_o(dbg_mem_obi_rspA.gnt),
-    .slave_rvalid_o(dbg_mem_obi_rspA.rvalid),
-    .slave_rdata_o(dbg_mem_obi_rspA.r.rdata),
-    .slave_rid_o(dbg_mem_obi_rspA.r.rid),
-    .master_req_o(dbg_req_obi_reqA.req),
-    .master_addr_o(dbg_req_obi_reqA.a.addr),
-    .master_we_o(dbg_req_obi_reqA.a.we),
-    .master_wdata_o(dbg_req_obi_reqA.a.wdata),
-    .master_be_o(dbg_req_obi_reqA.a.be),
-    .master_gnt_i(dbg_req_obi_rspA.gnt),
-    .master_rvalid_i(dbg_req_obi_rspA.rvalid),
-    .master_rdata_i(dbg_req_obi_rspA.r.rdata),
-    .master_err_i(dbg_req_obi_rspA.r.err),
+    .hartinfo_i(hartinfo),
+    .slave_req_i(dbg_mem_obi_req.req),
+    .slave_we_i(dbg_mem_obi_req.a.we),
+    .slave_addr_i(dbg_mem_obi_req.a.addr),
+    .slave_be_i(dbg_mem_obi_req.a.be),
+    .slave_wdata_i(dbg_mem_obi_req.a.wdata),
+    .slave_aid_i(dbg_mem_obi_req.a.aid),
+    .slave_gnt_o(dbg_mem_obi_rsp.gnt),
+    .slave_rvalid_o(dbg_mem_obi_rsp.rvalid),
+    .slave_rdata_o(dbg_mem_obi_rsp.r.rdata),
+    .slave_rid_o(dbg_mem_obi_rsp.r.rid),
+    .master_req_o(dbg_req_obi_req.req),
+    .master_addr_o(dbg_req_obi_req.a.addr),
+    .master_we_o(dbg_req_obi_req.a.we),
+    .master_wdata_o(dbg_req_obi_req.a.wdata),
+    .master_be_o(dbg_req_obi_req.a.be),
+    .master_gnt_i(dbg_req_obi_rsp.gnt),
+    .master_rvalid_i(dbg_req_obi_rsp.rvalid),
+    .master_rdata_i(dbg_req_obi_rsp.r.rdata),
+    .master_err_i(dbg_req_obi_rsp.r.err),
     .master_other_err_i(1'b0),
-    .dmi_rst_ni(dmi_rst_nA),
-    .dmi_req_valid_i(dmi_req_validA),
-    .dmi_req_ready_o(dmi_req_readyA),
-    .dmi_req_i(dmi_reqA),
-    .dmi_resp_valid_o(dmi_resp_validA),
-    .dmi_resp_ready_i(dmi_resp_readyA),
-    .dmi_resp_o(dmi_respA)
+    .dmi_rst_ni(dmi_rst_n),
+    .dmi_req_valid_i(dmi_req_valid),
+    .dmi_req_ready_o(dmi_req_ready),
+    .dmi_req_i(dmi_req),
+    .dmi_resp_valid_o(dmi_resp_valid),
+    .dmi_resp_ready_i(dmi_resp_ready),
+    .dmi_resp_o(dmi_resp)
   );
-
-dm_obi_top #(.BusWidth(SbrObiCfg.DataWidth), .IdWidth(SbrObiCfg.IdWidth)) i_dm_topB (
-    .clk_i(clk_iB),
-    .rst_ni(rst_niB),
-    .testmode_i(testmode_iB),
-    .ndmreset_o(),
-    .dmactive_o(),
-    .debug_req_o(debug_reqB),
-    .unavailable_i(1'b0),
-    .hartinfo_i(hartinfoB),
-    .slave_req_i(dbg_mem_obi_reqB.req),
-    .slave_we_i(dbg_mem_obi_reqB.a.we),
-    .slave_addr_i(dbg_mem_obi_reqB.a.addr),
-    .slave_be_i(dbg_mem_obi_reqB.a.be),
-    .slave_wdata_i(dbg_mem_obi_reqB.a.wdata),
-    .slave_aid_i(dbg_mem_obi_reqB.a.aid),
-    .slave_gnt_o(dbg_mem_obi_rspB.gnt),
-    .slave_rvalid_o(dbg_mem_obi_rspB.rvalid),
-    .slave_rdata_o(dbg_mem_obi_rspB.r.rdata),
-    .slave_rid_o(dbg_mem_obi_rspB.r.rid),
-    .master_req_o(dbg_req_obi_reqB.req),
-    .master_addr_o(dbg_req_obi_reqB.a.addr),
-    .master_we_o(dbg_req_obi_reqB.a.we),
-    .master_wdata_o(dbg_req_obi_reqB.a.wdata),
-    .master_be_o(dbg_req_obi_reqB.a.be),
-    .master_gnt_i(dbg_req_obi_rspB.gnt),
-    .master_rvalid_i(dbg_req_obi_rspB.rvalid),
-    .master_rdata_i(dbg_req_obi_rspB.r.rdata),
-    .master_err_i(dbg_req_obi_rspB.r.err),
-    .master_other_err_i(1'b0),
-    .dmi_rst_ni(dmi_rst_nB),
-    .dmi_req_valid_i(dmi_req_validB),
-    .dmi_req_ready_o(dmi_req_readyB),
-    .dmi_req_i(dmi_reqB),
-    .dmi_resp_valid_o(dmi_resp_validB),
-    .dmi_resp_ready_i(dmi_resp_readyB),
-    .dmi_resp_o(dmi_respB)
-  );
-
-dm_obi_top #(.BusWidth(SbrObiCfg.DataWidth), .IdWidth(SbrObiCfg.IdWidth)) i_dm_topC (
-    .clk_i(clk_iC),
-    .rst_ni(rst_niC),
-    .testmode_i(testmode_iC),
-    .ndmreset_o(),
-    .dmactive_o(),
-    .debug_req_o(debug_reqC),
-    .unavailable_i(1'b0),
-    .hartinfo_i(hartinfoC),
-    .slave_req_i(dbg_mem_obi_reqC.req),
-    .slave_we_i(dbg_mem_obi_reqC.a.we),
-    .slave_addr_i(dbg_mem_obi_reqC.a.addr),
-    .slave_be_i(dbg_mem_obi_reqC.a.be),
-    .slave_wdata_i(dbg_mem_obi_reqC.a.wdata),
-    .slave_aid_i(dbg_mem_obi_reqC.a.aid),
-    .slave_gnt_o(dbg_mem_obi_rspC.gnt),
-    .slave_rvalid_o(dbg_mem_obi_rspC.rvalid),
-    .slave_rdata_o(dbg_mem_obi_rspC.r.rdata),
-    .slave_rid_o(dbg_mem_obi_rspC.r.rid),
-    .master_req_o(dbg_req_obi_reqC.req),
-    .master_addr_o(dbg_req_obi_reqC.a.addr),
-    .master_we_o(dbg_req_obi_reqC.a.we),
-    .master_wdata_o(dbg_req_obi_reqC.a.wdata),
-    .master_be_o(dbg_req_obi_reqC.a.be),
-    .master_gnt_i(dbg_req_obi_rspC.gnt),
-    .master_rvalid_i(dbg_req_obi_rspC.rvalid),
-    .master_rdata_i(dbg_req_obi_rspC.r.rdata),
-    .master_err_i(dbg_req_obi_rspC.r.err),
-    .master_other_err_i(1'b0),
-    .dmi_rst_ni(dmi_rst_nC),
-    .dmi_req_valid_i(dmi_req_validC),
-    .dmi_req_ready_o(dmi_req_readyC),
-    .dmi_req_i(dmi_reqC),
-    .dmi_resp_valid_o(dmi_resp_validC),
-    .dmi_resp_ready_i(dmi_resp_readyC),
-    .dmi_resp_o(dmi_respC)
-  );
-assign dbg_mem_obi_rspA.r.r_optional = 1'b0;
-assign dbg_mem_obi_rspB.r.r_optional = 1'b0;
-assign dbg_mem_obi_rspC.r.r_optional = 1'b0;
-assign dbg_mem_obi_rspA.r.err = 1'b0;
-assign dbg_mem_obi_rspB.r.err = 1'b0;
-assign dbg_mem_obi_rspC.r.err = 1'b0;
+assign dbg_mem_obi_rsp.r.r_optional = 1'b0;
+assign dbg_mem_obi_rsp.r.err = 1'b0;
 
 obi_xbarTMR #(.SbrPortObiCfg(MgrObiCfg), .MgrPortObiCfg(SbrObiCfg), .sbr_port_obi_req_t(mgr_obi_req_t), .sbr_port_a_chan_t(mgr_obi_a_chan_t), .sbr_port_obi_rsp_t(mgr_obi_rsp_t), .sbr_port_r_chan_t(mgr_obi_r_chan_t), .mgr_port_obi_req_t(sbr_obi_req_t), .mgr_port_obi_rsp_t(sbr_obi_rsp_t), .NumSbrPorts(NumXbarManagers), .NumMgrPorts(NumXbarSbr), .NumMaxTrans(2), .NumAddrRules(NumXbarSbrRules), .addr_map_rule_t(addr_map_rule_t), .UseIdForRouting(1'b0), .Connectivity('1)) i_main_xbar (
     .clk_iA(clk_iA),
@@ -861,10 +763,34 @@ logic [cf_math_pkg::idx_width(NumPeriphs) - 1:0] periph_idxA;
 logic [cf_math_pkg::idx_width(NumPeriphs) - 1:0] periph_idxB;
 logic [cf_math_pkg::idx_width(NumPeriphs) - 1:0] periph_idxC;
 
+obi_cutTMR #(.ObiCfg(SbrObiCfg), .obi_a_chan_t(sbr_obi_a_chan_t), .obi_r_chan_t(sbr_obi_r_chan_t), .obi_req_t(sbr_obi_req_t), .obi_rsp_t(sbr_obi_rsp_t)) i_periph_cut (
+    .clk_iA(clk_iA),
+    .clk_iB(clk_iB),
+    .clk_iC(clk_iC),
+    .rst_niA(rst_niA),
+    .rst_niB(rst_niB),
+    .rst_niC(rst_niC),
+    .sbr_port_req_iA(xbar_periph_obi_reqA),
+    .sbr_port_req_iB(xbar_periph_obi_reqB),
+    .sbr_port_req_iC(xbar_periph_obi_reqC),
+    .sbr_port_rsp_oA(xbar_periph_obi_rspA),
+    .sbr_port_rsp_oB(xbar_periph_obi_rspB),
+    .sbr_port_rsp_oC(xbar_periph_obi_rspC),
+    .mgr_port_req_oA(periph_cut_obi_reqA),
+    .mgr_port_req_oB(periph_cut_obi_reqB),
+    .mgr_port_req_oC(periph_cut_obi_reqC),
+    .mgr_port_rsp_iA(periph_cut_obi_rspA),
+    .mgr_port_rsp_iB(periph_cut_obi_rspB),
+    .mgr_port_rsp_iC(periph_cut_obi_rspC),
+    .tmrErrorA(i_periph_cuttmrErrorA),
+    .tmrErrorB(i_periph_cuttmrErrorB),
+    .tmrErrorC(i_periph_cuttmrErrorC)
+  );
+
 addr_decodeTMR #(.NoIndices(NumPeriphs), .NoRules(NumPeriphRules), .addr_t ( logic[SbrObiCfg.DataWidth-1:0] ), .rule_t(addr_map_rule_t), .Napot(1'b0)) i_addr_decode_periphs (
-    .addr_iA(xbar_periph_obi_reqA.a.addr),
-    .addr_iB(xbar_periph_obi_reqB.a.addr),
-    .addr_iC(xbar_periph_obi_reqC.a.addr),
+    .addr_iA(periph_cut_obi_reqA.a.addr),
+    .addr_iB(periph_cut_obi_reqB.a.addr),
+    .addr_iC(periph_cut_obi_reqC.a.addr),
     .addr_map_iA(periph_addr_map),
     .addr_map_iB(periph_addr_map),
     .addr_map_iC(periph_addr_map),
@@ -895,12 +821,12 @@ obi_demuxTMR #(.ObiCfg(SbrObiCfg), .obi_req_t(sbr_obi_req_t), .obi_rsp_t(sbr_obi
     .sbr_port_select_iA(periph_idxA),
     .sbr_port_select_iB(periph_idxB),
     .sbr_port_select_iC(periph_idxC),
-    .sbr_port_req_iA(xbar_periph_obi_reqA),
-    .sbr_port_req_iB(xbar_periph_obi_reqB),
-    .sbr_port_req_iC(xbar_periph_obi_reqC),
-    .sbr_port_rsp_oA(xbar_periph_obi_rspA),
-    .sbr_port_rsp_oB(xbar_periph_obi_rspB),
-    .sbr_port_rsp_oC(xbar_periph_obi_rspC),
+    .sbr_port_req_iA(periph_cut_obi_reqA),
+    .sbr_port_req_iB(periph_cut_obi_reqB),
+    .sbr_port_req_iC(periph_cut_obi_reqC),
+    .sbr_port_rsp_oA(periph_cut_obi_rspA),
+    .sbr_port_rsp_oB(periph_cut_obi_rspB),
+    .sbr_port_rsp_oC(periph_cut_obi_rspC),
     .mgr_ports_req_oA(all_periph_obi_reqA),
     .mgr_ports_req_oB(all_periph_obi_reqB),
     .mgr_ports_req_oC(all_periph_obi_reqC),
@@ -1230,8 +1156,6 @@ periph_to_fm i_periph_to_fm (
   .periph_rsp_oC(all_periph_obi_rspC[PeriphFaultMonitor])
 );
 
-assign clk_i = (clk_iA & clk_iB) | (clk_iA & clk_iC) | (clk_iB & clk_iC);
-assign rst_ni = (rst_niA & rst_niB) | (rst_niA & rst_niC) | (rst_niB & rst_niC);
 `FF(fm_hwif_in_reg, fm_hwif_in, '{default: '0})
 
   fault_monitor_reg_top #(
@@ -1263,8 +1187,116 @@ assign timer_obi_rspC.r.err = 1'b0;
 assign timer_obi_rspA.r.r_optional = 1'b0;
 assign timer_obi_rspB.r.r_optional = 1'b0;
 assign timer_obi_rspC.r.r_optional = 1'b0;
-assign tmrErrorA = i_core_wraptmrErrorA|i_gpiotmrErrorA|i_main_xbartmrErrorA|i_obi_demuxtmrErrorA|i_periph_errtmrErrorA|i_soc_ctrl_translatetmrErrorA|i_soc_ctrltmrErrorA|(|i_sram_shimtmrErrorA)|i_timertmrErrorA|i_uarttmrErrorA|i_xbar_errtmrErrorA;
-assign tmrErrorB = i_core_wraptmrErrorB|i_gpiotmrErrorB|i_main_xbartmrErrorB|i_obi_demuxtmrErrorB|i_periph_errtmrErrorB|i_soc_ctrl_translatetmrErrorB|i_soc_ctrltmrErrorB|(|i_sram_shimtmrErrorB)|i_timertmrErrorB|i_uarttmrErrorB|i_xbar_errtmrErrorB;
-assign tmrErrorC = i_core_wraptmrErrorC|i_gpiotmrErrorC|i_main_xbartmrErrorC|i_obi_demuxtmrErrorC|i_periph_errtmrErrorC|i_soc_ctrl_translatetmrErrorC|i_soc_ctrltmrErrorC|(|i_sram_shimtmrErrorC)|i_timertmrErrorC|i_uarttmrErrorC|i_xbar_errtmrErrorC;
+
+majorityVoter clk_iVoter (
+    .inA(clk_iA),
+    .inB(clk_iB),
+    .inC(clk_iC),
+    .out(clk_i),
+    .tmrErr(clk_iTmrError)
+  );
+
+majorityVoter #(.WIDTH( ($size(dbg_mem_obi_req)) )) dbg_mem_obi_reqVoter (
+    .inA(dbg_mem_obi_reqA),
+    .inB(dbg_mem_obi_reqB),
+    .inC(dbg_mem_obi_reqC),
+    .out(dbg_mem_obi_req),
+    .tmrErr(dbg_mem_obi_reqTmrError)
+  );
+
+majorityVoter #(.WIDTH( ($size(dbg_req_obi_rsp)) )) dbg_req_obi_rspVoter (
+    .inA(dbg_req_obi_rspA),
+    .inB(dbg_req_obi_rspB),
+    .inC(dbg_req_obi_rspC),
+    .out(dbg_req_obi_rsp),
+    .tmrErr(dbg_req_obi_rspTmrError)
+  );
+
+majorityVoter #(.WIDTH( ($size(hartinfo)) )) hartinfoVoter (
+    .inA(hartinfoA),
+    .inB(hartinfoB),
+    .inC(hartinfoC),
+    .out(hartinfo),
+    .tmrErr(hartinfoTmrError)
+  );
+
+majorityVoter jtag_tck_iVoter (
+    .inA(jtag_tck_iA),
+    .inB(jtag_tck_iB),
+    .inC(jtag_tck_iC),
+    .out(jtag_tck_i),
+    .tmrErr(jtag_tck_iTmrError)
+  );
+
+majorityVoter jtag_tdi_iVoter (
+    .inA(jtag_tdi_iA),
+    .inB(jtag_tdi_iB),
+    .inC(jtag_tdi_iC),
+    .out(jtag_tdi_i),
+    .tmrErr(jtag_tdi_iTmrError)
+  );
+
+majorityVoter jtag_tms_iVoter (
+    .inA(jtag_tms_iA),
+    .inB(jtag_tms_iB),
+    .inC(jtag_tms_iC),
+    .out(jtag_tms_i),
+    .tmrErr(jtag_tms_iTmrError)
+  );
+
+majorityVoter jtag_trst_niVoter (
+    .inA(jtag_trst_niA),
+    .inB(jtag_trst_niB),
+    .inC(jtag_trst_niC),
+    .out(jtag_trst_ni),
+    .tmrErr(jtag_trst_niTmrError)
+  );
+
+majorityVoter rst_niVoter (
+    .inA(rst_niA),
+    .inB(rst_niB),
+    .inC(rst_niC),
+    .out(rst_ni),
+    .tmrErr(rst_niTmrError)
+  );
+
+majorityVoter testmode_iVoter (
+    .inA(testmode_iA),
+    .inB(testmode_iB),
+    .inC(testmode_iC),
+    .out(testmode_i),
+    .tmrErr(testmode_iTmrError)
+  );
+assign tmrErrorA = i_core_wraptmrErrorA|i_gpiotmrErrorA|i_main_xbartmrErrorA|i_obi_demuxtmrErrorA|i_periph_cuttmrErrorA|i_periph_errtmrErrorA|i_soc_ctrl_translatetmrErrorA|i_soc_ctrltmrErrorA|(|i_sram_shimtmrErrorA)|i_timertmrErrorA|i_uarttmrErrorA|i_xbar_errtmrErrorA;
+assign tmrErrorB = i_core_wraptmrErrorB|i_gpiotmrErrorB|i_main_xbartmrErrorB|i_obi_demuxtmrErrorB|i_periph_cuttmrErrorB|i_periph_errtmrErrorB|i_soc_ctrl_translatetmrErrorB|i_soc_ctrltmrErrorB|(|i_sram_shimtmrErrorB)|i_timertmrErrorB|i_uarttmrErrorB|i_xbar_errtmrErrorB;
+assign tmrErrorC = i_core_wraptmrErrorC|i_gpiotmrErrorC|i_main_xbartmrErrorC|i_obi_demuxtmrErrorC|i_periph_cuttmrErrorC|i_periph_errtmrErrorC|i_soc_ctrl_translatetmrErrorC|i_soc_ctrltmrErrorC|(|i_sram_shimtmrErrorC)|i_timertmrErrorC|i_uarttmrErrorC|i_xbar_errtmrErrorC;
+
+fanout #(.WIDTH( ($size(dbg_mem_obi_rsp)) )) dbg_mem_obi_rspFanout (
+    .in(dbg_mem_obi_rsp),
+    .outA(dbg_mem_obi_rspA),
+    .outB(dbg_mem_obi_rspB),
+    .outC(dbg_mem_obi_rspC)
+  );
+
+fanout #(.WIDTH( ($size(dbg_req_obi_req)) )) dbg_req_obi_reqFanout (
+    .in(dbg_req_obi_req),
+    .outA(dbg_req_obi_reqA),
+    .outB(dbg_req_obi_reqB),
+    .outC(dbg_req_obi_reqC)
+  );
+
+fanout debug_reqFanout (
+    .in(debug_req),
+    .outA(debug_reqA),
+    .outB(debug_reqB),
+    .outC(debug_reqC)
+  );
+
+fanout jtag_tdo_oFanout (
+    .in(jtag_tdo_o),
+    .outA(jtag_tdo_oA),
+    .outB(jtag_tdo_oB),
+    .outC(jtag_tdo_oC)
+  );
 endmodule
 
