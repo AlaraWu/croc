@@ -130,6 +130,8 @@ module croc_domain import croc_pkg::*; #(
   // Peripheral buses
   // -----------------
   // array of subordinate buses from peripheral demultiplexer
+  sbr_obi_req_t periph_cut_obi_req;
+  sbr_obi_rsp_t periph_cut_obi_rsp;
   sbr_obi_req_t [NumPeriphs-1:0] all_periph_obi_req;
   sbr_obi_rsp_t [NumPeriphs-1:0] all_periph_obi_rsp;
 
@@ -417,6 +419,23 @@ module croc_domain import croc_pkg::*; #(
   // demultiplex to peripherals according to address map
   logic [cf_math_pkg::idx_width(NumPeriphs)-1:0] periph_idx;
 
+  obi_cut #(
+    .ObiCfg      ( SbrObiCfg     ),
+    .obi_a_chan_t( sbr_obi_a_chan_t ),
+    .obi_r_chan_t( sbr_obi_r_chan_t ),
+    .obi_req_t   ( sbr_obi_req_t ),
+    .obi_rsp_t   ( sbr_obi_rsp_t )
+  ) i_periph_cut (
+    .clk_i,
+    .rst_ni,
+
+    .sbr_port_req_i ( xbar_periph_obi_req ),
+    .sbr_port_rsp_o ( xbar_periph_obi_rsp ),
+
+    .mgr_port_req_o ( periph_cut_obi_req ),
+    .mgr_port_rsp_i ( periph_cut_obi_rsp )
+  );
+
   addr_decode #(
     .NoIndices ( NumPeriphs                     ),
     .NoRules   ( NumPeriphRules                 ),
@@ -424,7 +443,7 @@ module croc_domain import croc_pkg::*; #(
     .rule_t    ( addr_map_rule_t                ),
     .Napot     ( 1'b0                           )
   ) i_addr_decode_periphs (
-    .addr_i           ( xbar_periph_obi_req.a.addr  ),
+    .addr_i           ( periph_cut_obi_req.a.addr  ),
     .addr_map_i       ( periph_addr_map             ),
     .idx_o            ( periph_idx                  ),
     .dec_valid_o      (),
@@ -444,8 +463,8 @@ module croc_domain import croc_pkg::*; #(
     .rst_ni,
 
     .sbr_port_select_i ( periph_idx           ),
-    .sbr_port_req_i    ( xbar_periph_obi_req  ),
-    .sbr_port_rsp_o    ( xbar_periph_obi_rsp  ),
+    .sbr_port_req_i    ( periph_cut_obi_req  ),
+    .sbr_port_rsp_o    ( periph_cut_obi_rsp  ),
 
     .mgr_ports_req_o   ( all_periph_obi_req ),
     .mgr_ports_rsp_i   ( all_periph_obi_rsp )
