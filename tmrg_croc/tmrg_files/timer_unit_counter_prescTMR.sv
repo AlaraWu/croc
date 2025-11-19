@@ -71,12 +71,12 @@ module timer_unit_counter_prescTMR (
   output tmrErrorB,
   output tmrErrorC
 );
-wor target_reached_qTmrErrorC;
-wor s_count_regTmrErrorC;
-wor target_reached_qTmrErrorB;
-wor s_count_regTmrErrorB;
-wor target_reached_qTmrErrorA;
-wor s_count_regTmrErrorA;
+wire target_reached_qTmrErrorC;
+wire s_count_regTmrErrorC;
+wire target_reached_qTmrErrorB;
+wire s_count_regTmrErrorB;
+wire target_reached_qTmrErrorA;
+wire s_count_regTmrErrorA;
 logic [31:0] s_countA;
 logic [31:0] s_countB;
 logic [31:0] s_countC;

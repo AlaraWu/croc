@@ -96,20 +96,20 @@ wire fetch_en_iA;
 wire clk_iC;
 wire clk_iB;
 wire clk_iA;
-wor i_usertmrErrorC;
-wor i_ext_intr_synctmrErrorC;
-wor i_croctmrErrorC;
-wor i_usertmrErrorB;
-wor i_ext_intr_synctmrErrorB;
-wor i_croctmrErrorB;
-wor i_usertmrErrorA;
-wor i_ext_intr_synctmrErrorA;
-wor i_croctmrErrorA;
-wor uart_tx_oTmrError;
-wor status_oTmrError;
-wor jtag_tdo_oTmrError;
-wor gpio_out_en_oTmrError;
-wor gpio_oTmrError;
+wire i_usertmrErrorC;
+wire i_ext_intr_synctmrErrorC;
+wire i_croctmrErrorC;
+wire i_usertmrErrorB;
+wire i_ext_intr_synctmrErrorB;
+wire i_croctmrErrorB;
+wire i_usertmrErrorA;
+wire i_ext_intr_synctmrErrorA;
+wire i_croctmrErrorA;
+wire uart_tx_oTmrError;
+wire status_oTmrError;
+wire jtag_tdo_oTmrError;
+wire gpio_out_en_oTmrError;
+wire gpio_oTmrError;
 wire uart_tx_oC;
 wire uart_tx_oB;
 wire uart_tx_oA;
@@ -132,7 +132,7 @@ logic synced_fetch_enA;
 logic synced_fetch_enB;
 logic synced_fetch_enC;
 
-logic soc_faults;
+wire soc_faults;
 
 rstgen i_rstgenA (
     .clk_i(clk_iA),

@@ -75,12 +75,12 @@ module prim_subregTMR #(
   output tmrErrorB,
   output tmrErrorC
 );
-wor qe_qTmrErrorC;
-wor qTmrErrorC;
-wor qe_qTmrErrorB;
-wor qTmrErrorB;
-wor qe_qTmrErrorA;
-wor qTmrErrorA;
+wire qe_qTmrErrorC;
+wire qTmrErrorC;
+wire qe_qTmrErrorB;
+wire qTmrErrorB;
+wire qe_qTmrErrorA;
+wire qTmrErrorA;
 logic [DW - 1:0] qVotedA;
 logic [DW - 1:0] qVotedB;
 logic [DW - 1:0] qVotedC;

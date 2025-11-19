@@ -88,15 +88,15 @@ module rr_arb_treeTMR #(
   output tmrErrorC
 );
 localparam int unsigned NumLevels = unsigned' ($clog2(NumIn)) ;
-wor rr_qTmrErrorC;
-wor req_qTmrErrorC;
-wor lock_qTmrErrorC;
-wor rr_qTmrErrorB;
-wor req_qTmrErrorB;
-wor lock_qTmrErrorB;
-wor rr_qTmrErrorA;
-wor req_qTmrErrorA;
-wor lock_qTmrErrorA;
+wire rr_qTmrErrorC;
+wire req_qTmrErrorC;
+wire lock_qTmrErrorC;
+wire rr_qTmrErrorB;
+wire req_qTmrErrorB;
+wire lock_qTmrErrorB;
+wire rr_qTmrErrorA;
+wire req_qTmrErrorA;
+wire lock_qTmrErrorA;
 idx_t [2**NumLevels - 2:0] index_nodesA;
 idx_t [2**NumLevels - 2:0] index_nodesB;
 idx_t [2**NumLevels - 2:0] index_nodesC;

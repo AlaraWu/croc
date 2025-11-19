@@ -66,12 +66,12 @@ module cve2_csrTMR #(
   output tmrErrorB,
   output tmrErrorC
 );
-wor shadow_qTmrErrorC;
-wor rdata_qTmrErrorC;
-wor shadow_qTmrErrorB;
-wor rdata_qTmrErrorB;
-wor shadow_qTmrErrorA;
-wor rdata_qTmrErrorA;
+wire shadow_qTmrErrorC;
+wire rdata_qTmrErrorC;
+wire shadow_qTmrErrorB;
+wire rdata_qTmrErrorB;
+wire shadow_qTmrErrorA;
+wire rdata_qTmrErrorA;
 logic [Width - 1:0] rdata_qA;
 logic [Width - 1:0] rdata_qB;
 logic [Width - 1:0] rdata_qC;

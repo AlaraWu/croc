@@ -119,9 +119,9 @@ module core_wrapTMR import croc_pkg::*; (
   output tmrErrorB,
   output tmrErrorC
 );
-wor i_ibextmrErrorC;
-wor i_ibextmrErrorB;
-wor i_ibextmrErrorA;
+wire i_ibextmrErrorC;
+wire i_ibextmrErrorB;
+wire i_ibextmrErrorA;
 logic [31:0] ibex_boot_addrA;
 logic [31:0] ibex_boot_addrB;
 logic [31:0] ibex_boot_addrC;

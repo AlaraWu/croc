@@ -71,9 +71,9 @@ module spill_registerTMR #(
   output tmrErrorB,
   output tmrErrorC
 );
-wor spill_register_flushable_itmrErrorC;
-wor spill_register_flushable_itmrErrorB;
-wor spill_register_flushable_itmrErrorA;
+wire spill_register_flushable_itmrErrorC;
+wire spill_register_flushable_itmrErrorB;
+wire spill_register_flushable_itmrErrorA;
 
 spill_register_flushableTMR #(.T(T), .Bypass(Bypass)) spill_register_flushable_i (
     .clk_iA(clk_iA),

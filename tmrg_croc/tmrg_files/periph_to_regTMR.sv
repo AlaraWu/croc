@@ -96,18 +96,18 @@ module periph_to_regTMR #(
   output tmrErrorB,
   output tmrErrorC
 );
-wor r_valid_qTmrErrorC;
-wor r_rdata_qTmrErrorC;
-wor r_opc_qTmrErrorC;
-wor r_id_qTmrErrorC;
-wor r_valid_qTmrErrorB;
-wor r_rdata_qTmrErrorB;
-wor r_opc_qTmrErrorB;
-wor r_id_qTmrErrorB;
-wor r_valid_qTmrErrorA;
-wor r_rdata_qTmrErrorA;
-wor r_opc_qTmrErrorA;
-wor r_id_qTmrErrorA;
+wire r_valid_qTmrErrorC;
+wire r_rdata_qTmrErrorC;
+wire r_opc_qTmrErrorC;
+wire r_id_qTmrErrorC;
+wire r_valid_qTmrErrorB;
+wire r_rdata_qTmrErrorB;
+wire r_opc_qTmrErrorB;
+wire r_id_qTmrErrorB;
+wire r_valid_qTmrErrorA;
+wire r_rdata_qTmrErrorA;
+wire r_opc_qTmrErrorA;
+wire r_id_qTmrErrorA;
 logic [IW - 1:0] r_id_dA;
 logic [IW - 1:0] r_id_dB;
 logic [IW - 1:0] r_id_dC;

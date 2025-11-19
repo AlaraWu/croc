@@ -81,12 +81,12 @@ module obi_sram_shimTMR #(
   output tmrErrorB,
   output tmrErrorC
 );
-wor rvalid_qTmrErrorC;
-wor id_qTmrErrorC;
-wor rvalid_qTmrErrorB;
-wor id_qTmrErrorB;
-wor rvalid_qTmrErrorA;
-wor id_qTmrErrorA;
+wire rvalid_qTmrErrorC;
+wire id_qTmrErrorC;
+wire rvalid_qTmrErrorB;
+wire id_qTmrErrorB;
+wire rvalid_qTmrErrorA;
+wire id_qTmrErrorA;
 logic rvalid_dA;
 logic rvalid_dB;
 logic rvalid_dC;

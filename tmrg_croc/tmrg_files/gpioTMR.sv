@@ -79,15 +79,15 @@ module gpioTMR #(
   output tmrErrorC
 );
 import gpio_reg_pkg::*;
-wor [GpioCount-1:0] serial_qTmrErrorC;
-wor [GpioCount-1:0] i_synctmrErrorC;
-wor i_reg_filetmrErrorC;
-wor [GpioCount-1:0] serial_qTmrErrorB;
-wor [GpioCount-1:0] i_synctmrErrorB;
-wor i_reg_filetmrErrorB;
-wor [GpioCount-1:0] serial_qTmrErrorA;
-wor [GpioCount-1:0] i_synctmrErrorA;
-wor i_reg_filetmrErrorA;
+wire [GpioCount-1:0] serial_qTmrErrorC;
+wire [GpioCount-1:0] i_synctmrErrorC;
+wire i_reg_filetmrErrorC;
+wire [GpioCount-1:0] serial_qTmrErrorB;
+wire [GpioCount-1:0] i_synctmrErrorB;
+wire i_reg_filetmrErrorB;
+wire [GpioCount-1:0] serial_qTmrErrorA;
+wire [GpioCount-1:0] i_synctmrErrorA;
+wire i_reg_filetmrErrorA;
 gpio_reg2hw_t [GpioCount - 1:0] reg2hwA;
 gpio_reg2hw_t [GpioCount - 1:0] reg2hwB;
 gpio_reg2hw_t [GpioCount - 1:0] reg2hwC;

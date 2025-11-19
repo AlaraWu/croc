@@ -90,15 +90,15 @@ module obi_xbarTMR #(
   output tmrErrorB,
   output tmrErrorC
 );
-wor [NumMgrPorts-1:0] i_muxtmrErrorC;
-wor [NumSbrPorts-1:0] i_err_sbrtmrErrorC;
-wor [NumSbrPorts-1:0] i_demuxtmrErrorC;
-wor [NumMgrPorts-1:0] i_muxtmrErrorB;
-wor [NumSbrPorts-1:0] i_err_sbrtmrErrorB;
-wor [NumSbrPorts-1:0] i_demuxtmrErrorB;
-wor [NumMgrPorts-1:0] i_muxtmrErrorA;
-wor [NumSbrPorts-1:0] i_err_sbrtmrErrorA;
-wor [NumSbrPorts-1:0] i_demuxtmrErrorA;
+wire [NumMgrPorts-1:0] i_muxtmrErrorC;
+wire [NumSbrPorts-1:0] i_err_sbrtmrErrorC;
+wire [NumSbrPorts-1:0] i_demuxtmrErrorC;
+wire [NumMgrPorts-1:0] i_muxtmrErrorB;
+wire [NumSbrPorts-1:0] i_err_sbrtmrErrorB;
+wire [NumSbrPorts-1:0] i_demuxtmrErrorB;
+wire [NumMgrPorts-1:0] i_muxtmrErrorA;
+wire [NumSbrPorts-1:0] i_err_sbrtmrErrorA;
+wire [NumSbrPorts-1:0] i_demuxtmrErrorA;
 logic [NumSbrPorts - 1:0] [cf_math_pkg::idx_width(NumMgrPorts) - 1:0] sbr_port_selectA;
 logic [NumSbrPorts - 1:0] [cf_math_pkg::idx_width(NumMgrPorts) - 1:0] sbr_port_selectB;
 logic [NumSbrPorts - 1:0] [cf_math_pkg::idx_width(NumMgrPorts) - 1:0] sbr_port_selectC;

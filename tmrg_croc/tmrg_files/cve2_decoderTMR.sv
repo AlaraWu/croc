@@ -187,9 +187,9 @@ module cve2_decoderTMR #(
   output tmrErrorC
 );
 import cve2_pkg::*;
-wor use_rs3_qTmrErrorC;
-wor use_rs3_qTmrErrorB;
-wor use_rs3_qTmrErrorA;
+wire use_rs3_qTmrErrorC;
+wire use_rs3_qTmrErrorB;
+wire use_rs3_qTmrErrorA;
 logic illegal_insnA;
 logic illegal_insnB;
 logic illegal_insnC;

@@ -77,12 +77,12 @@ module delta_counterTMR #(
   output tmrErrorB,
   output tmrErrorC
 );
-wor overflow_qTmrErrorC;
-wor counter_qTmrErrorC;
-wor overflow_qTmrErrorB;
-wor counter_qTmrErrorB;
-wor overflow_qTmrErrorA;
-wor counter_qTmrErrorA;
+wire overflow_qTmrErrorC;
+wire counter_qTmrErrorC;
+wire overflow_qTmrErrorB;
+wire counter_qTmrErrorB;
+wire overflow_qTmrErrorA;
+wire counter_qTmrErrorA;
 logic [WIDTH:0] counter_qA;
 logic [WIDTH:0] counter_qB;
 logic [WIDTH:0] counter_qC;

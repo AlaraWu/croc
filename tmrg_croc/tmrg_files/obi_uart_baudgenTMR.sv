@@ -63,15 +63,15 @@ module obi_uart_baudgenTMR import obi_uart_pkg::*; (
   output tmrErrorB,
   output tmrErrorC
 );
-wor i_oversample_countertmrErrorC;
-wor i_baudrate_countertmrErrorC;
-wor clear_double_qTmrErrorC;
-wor i_oversample_countertmrErrorB;
-wor i_baudrate_countertmrErrorB;
-wor clear_double_qTmrErrorB;
-wor i_oversample_countertmrErrorA;
-wor i_baudrate_countertmrErrorA;
-wor clear_double_qTmrErrorA;
+wire i_oversample_countertmrErrorC;
+wire i_baudrate_countertmrErrorC;
+wire clear_double_qTmrErrorC;
+wire i_oversample_countertmrErrorB;
+wire i_baudrate_countertmrErrorB;
+wire clear_double_qTmrErrorB;
+wire i_oversample_countertmrErrorA;
+wire i_baudrate_countertmrErrorA;
+wire clear_double_qTmrErrorA;
 logic [15:0] divisorA;
 logic [15:0] divisorB;
 logic [15:0] divisorC;

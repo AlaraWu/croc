@@ -80,9 +80,9 @@ module cve2_register_file_ffTMR #(
 );
 localparam int unsigned ADDR_WIDTH = RV32E ? 4 : 5;
 localparam int unsigned NUM_WORDS = 2**ADDR_WIDTH;
-wor rf_reg_qTmrErrorC;
-wor rf_reg_qTmrErrorB;
-wor rf_reg_qTmrErrorA;
+wire rf_reg_qTmrErrorC;
+wire rf_reg_qTmrErrorB;
+wire rf_reg_qTmrErrorA;
 logic [NUM_WORDS - 1:0] [DataWidth - 1:0] rf_regA;
 logic [NUM_WORDS - 1:0] [DataWidth - 1:0] rf_regB;
 logic [NUM_WORDS - 1:0] [DataWidth - 1:0] rf_regC;

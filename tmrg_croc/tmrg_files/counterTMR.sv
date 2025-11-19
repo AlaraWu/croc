@@ -74,9 +74,9 @@ module counterTMR #(
   output tmrErrorB,
   output tmrErrorC
 );
-wor i_countertmrErrorC;
-wor i_countertmrErrorB;
-wor i_countertmrErrorA;
+wire i_countertmrErrorC;
+wire i_countertmrErrorB;
+wire i_countertmrErrorA;
 
 delta_counterTMR #(.WIDTH(WIDTH), .STICKY_OVERFLOW(STICKY_OVERFLOW)) i_counter (
     .clk_iA(clk_iA),

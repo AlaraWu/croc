@@ -79,9 +79,9 @@ typedef struct packed {
   logic thr_empty;
   logic mstat;
 } reg_intrpt_t;
-wor intrpt_reg_qTmrErrorC;
-wor intrpt_reg_qTmrErrorB;
-wor intrpt_reg_qTmrErrorA;
+wire intrpt_reg_qTmrErrorC;
+wire intrpt_reg_qTmrErrorB;
+wire intrpt_reg_qTmrErrorA;
 reg_intrpt_t intrpt_reg_dA;
 reg_intrpt_t intrpt_reg_dB;
 reg_intrpt_t intrpt_reg_dC;

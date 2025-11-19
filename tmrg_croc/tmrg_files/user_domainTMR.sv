@@ -76,12 +76,12 @@ module user_domainTMR import user_pkg::*; import croc_pkg::*; #(
   output tmrErrorB,
   output tmrErrorC
 );
-wor i_user_errtmrErrorC;
-wor i_obi_demuxtmrErrorC;
-wor i_user_errtmrErrorB;
-wor i_obi_demuxtmrErrorB;
-wor i_user_errtmrErrorA;
-wor i_obi_demuxtmrErrorA;
+wire i_user_errtmrErrorC;
+wire i_obi_demuxtmrErrorC;
+wire i_user_errtmrErrorB;
+wire i_obi_demuxtmrErrorB;
+wire i_user_errtmrErrorA;
+wire i_obi_demuxtmrErrorA;
 assign interrupts_oA = '0;
 assign interrupts_oB = '0;
 assign interrupts_oC = '0;

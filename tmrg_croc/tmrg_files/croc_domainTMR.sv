@@ -122,7 +122,7 @@ logic [2:0] gpio_faults;
 logic [2:0] uart_faults;
 logic [2:0] timer_faults;
 logic [1:0][2:0] core_faults;
-logic [3:0][2:0] obi_faults;
+logic [4:0][2:0] obi_faults;
 sbr_obi_req_t fm_obi_req;
 sbr_obi_rsp_t fm_obi_rsp;
 
@@ -131,66 +131,54 @@ wire jtag_tdo_o;
 wire debug_req;
 wire mgr_obi_req_t dbg_req_obi_req;
 wire sbr_obi_rsp_t dbg_mem_obi_rsp;
-wor i_xbar_errtmrErrorC;
-wor i_uarttmrErrorC;
-wor i_timertmrErrorC;
-wor [NumSramBanks-1:0] i_sram_shimtmrErrorC;
-wor i_soc_ctrltmrErrorC;
-wor i_soc_ctrl_translatetmrErrorC;
-wor i_periph_errtmrErrorC;
-wor  i_periph_cuttmrErrorC;
-wor i_obi_demuxtmrErrorC;
-wor i_main_xbartmrErrorC;
-wor i_gpiotmrErrorC;
-wor i_core_wraptmrErrorC;
-wor i_xbar_errtmrErrorB;
-wor i_uarttmrErrorB;
-wor i_timertmrErrorB;
-wor [NumSramBanks-1:0] i_sram_shimtmrErrorB;
-wor i_soc_ctrltmrErrorB;
-wor i_soc_ctrl_translatetmrErrorB;
-wor i_periph_errtmrErrorB;
-wor i_periph_cuttmrErrorB;
-wor i_obi_demuxtmrErrorB;
-wor i_main_xbartmrErrorB;
-wor i_gpiotmrErrorB;
-wor i_core_wraptmrErrorB;
-wor i_xbar_errtmrErrorA;
-wor i_uarttmrErrorA;
-wor i_timertmrErrorA;
-wor [NumSramBanks-1:0] i_sram_shimtmrErrorA;
-wor i_soc_ctrltmrErrorA;
-wor i_soc_ctrl_translatetmrErrorA;
-wor i_periph_errtmrErrorA;
-wor i_periph_cuttmrErrorA;
-wor i_obi_demuxtmrErrorA;
-wor i_main_xbartmrErrorA;
-wor i_gpiotmrErrorA;
-wor i_core_wraptmrErrorA;
-wor testmode_iTmrError;
-wor rst_niTmrError;
-wor jtag_trst_niTmrError;
-wor jtag_tms_iTmrError;
-wor jtag_tdi_iTmrError;
-wor jtag_tck_iTmrError;
-wor hartinfoTmrError;
-wor dmi_rst_nTmrError;
-wor dmi_resp_validTmrError;
-wor dmi_resp_readyTmrError;
-wor dmi_respTmrError;
-wor dmi_req_validTmrError;
-wor dmi_req_readyTmrError;
-wor dmi_reqTmrError;
-wor dbg_req_obi_rspTmrError;
-wor dbg_mem_obi_reqTmrError;
-wor clk_iTmrError;
-wire testmode_i;
-wire rst_ni;
+wire i_xbar_errtmrErrorC;
+wire i_uarttmrErrorC;
+wire i_timertmrErrorC;
+wire [NumSramBanks-1:0] i_sram_shimtmrErrorC;
+wire i_soc_ctrltmrErrorC;
+wire i_soc_ctrl_translatetmrErrorC;
+wire i_periph_errtmrErrorC;
+wire  i_periph_cuttmrErrorC;
+wire i_obi_demuxtmrErrorC;
+wire i_main_xbartmrErrorC;
+wire i_gpiotmrErrorC;
+wire i_core_wraptmrErrorC;
+wire i_xbar_errtmrErrorB;
+wire i_uarttmrErrorB;
+wire i_timertmrErrorB;
+wire [NumSramBanks-1:0] i_sram_shimtmrErrorB;
+wire i_soc_ctrltmrErrorB;
+wire i_soc_ctrl_translatetmrErrorB;
+wire i_periph_errtmrErrorB;
+wire i_periph_cuttmrErrorB;
+wire i_obi_demuxtmrErrorB;
+wire i_main_xbartmrErrorB;
+wire i_gpiotmrErrorB;
+wire i_core_wraptmrErrorB;
+wire i_xbar_errtmrErrorA;
+wire i_uarttmrErrorA;
+wire i_timertmrErrorA;
+wire [NumSramBanks-1:0] i_sram_shimtmrErrorA;
+wire i_soc_ctrltmrErrorA;
+wire i_soc_ctrl_translatetmrErrorA;
+wire i_periph_errtmrErrorA;
+wire i_periph_cuttmrErrorA;
+wire i_obi_demuxtmrErrorA;
+wire i_main_xbartmrErrorA;
+wire i_gpiotmrErrorA;
+wire i_core_wraptmrErrorA;
+wire jtag_trst_niTmrError;
+wire jtag_tms_iTmrError;
+wire jtag_tdi_iTmrError;
+wire jtag_tck_iTmrError;
+wire dmi_rst_nTmrError;
+wire dbg_req_obi_rspTmrError;
+wire dbg_mem_obi_reqTmrError;
 wire jtag_trst_ni;
 wire jtag_tms_i;
 wire jtag_tdi_i;
 wire jtag_tck_i;
-wire dm::hartinfo_t hartinfo;
+wire dm::hartinfo_t hartinfo = HARTINFO;
 wire dmi_rst_n;
 wire dmi_resp_valid;
 wire dmi_resp_ready;
@@ -200,7 +188,6 @@ wire dmi_req_ready;
 wire dm::dmi_req_t dmi_req;
 wire mgr_obi_rsp_t dbg_req_obi_rsp;
 wire sbr_obi_req_t dbg_mem_obi_req;
-wire clk_i;
 logic sram_implA;
 logic sram_implB;
 logic sram_implC;
@@ -515,14 +502,11 @@ core_wrapTMR i_core_wrap (
   assign core_faults[1][0] = i_core_wraptmrErrorA;
   assign core_faults[1][1] = i_core_wraptmrErrorB;
   assign core_faults[1][2] = i_core_wraptmrErrorC;
-dm::hartinfo_t hartinfoA = HARTINFO;
-dm::hartinfo_t hartinfoB = HARTINFO;
-dm::hartinfo_t hartinfoC = HARTINFO;
 
 dmi_jtag #(.IdcodeValue(PulpJtagIdCode)) i_dmi_jtag (
-    .clk_i(clk_i),
-    .rst_ni(rst_ni),
-    .testmode_i(testmode_i),
+    .clk_i(clk_iA),
+    .rst_ni(rst_niA),
+    .testmode_i(testmode_iA),
     .dmi_rst_no(dmi_rst_n),
     .dmi_req_o(dmi_req),
     .dmi_req_valid_o(dmi_req_valid),
@@ -539,9 +523,9 @@ dmi_jtag #(.IdcodeValue(PulpJtagIdCode)) i_dmi_jtag (
   );
 
 dm_obi_top #(.BusWidth(SbrObiCfg.DataWidth), .IdWidth(SbrObiCfg.IdWidth)) i_dm_top (
-    .clk_i(clk_i),
-    .rst_ni(rst_ni),
-    .testmode_i(testmode_i),
+    .clk_i(clk_iA),
+    .rst_ni(rst_niA),
+    .testmode_i(testmode_iA),
     .ndmreset_o(),
     .dmactive_o(),
     .debug_req_o(debug_req),
@@ -786,6 +770,9 @@ obi_cutTMR #(.ObiCfg(SbrObiCfg), .obi_a_chan_t(sbr_obi_a_chan_t), .obi_r_chan_t(
     .tmrErrorB(i_periph_cuttmrErrorB),
     .tmrErrorC(i_periph_cuttmrErrorC)
   );
+assign obi_faults[4][0] = i_periph_cuttmrErrorA;
+assign obi_faults[4][1] = i_periph_cuttmrErrorB;
+assign obi_faults[4][2] = i_periph_cuttmrErrorC;
 
 addr_decodeTMR #(.NoIndices(NumPeriphs), .NoRules(NumPeriphRules), .addr_t ( logic[SbrObiCfg.DataWidth-1:0] ), .rule_t(addr_map_rule_t), .Napot(1'b0)) i_addr_decode_periphs (
     .addr_iA(periph_cut_obi_reqA.a.addr),
@@ -1137,7 +1124,7 @@ timer_unitTMR #(.ID_WIDTH(SbrObiCfg.IdWidth)) i_timer (
   assign timer_faults[1] = i_timertmrErrorB;
   assign timer_faults[2] = i_timertmrErrorC;
 
-assign fm_hwif_in.obi_fault.fault_count.incr = |obi_faults;
+assign fm_hwif_in.obi_fault.fault_count.incr = (|obi_faults) | jtag_trst_niTmrError | jtag_tms_iTmrError | jtag_tdi_iTmrError | jtag_tck_iTmrError | dbg_req_obi_rspTmrError | dbg_mem_obi_reqTmrError;
 assign fm_hwif_in.gpio_fault.fault_count.incr = |gpio_faults;
 assign fm_hwif_in.uart_fault.fault_count.incr = |uart_faults;
 assign fm_hwif_in.core_fault.fault_count.incr = |core_faults;
@@ -1156,13 +1143,13 @@ periph_to_fm i_periph_to_fm (
   .periph_rsp_oC(all_periph_obi_rspC[PeriphFaultMonitor])
 );
 
-`FF(fm_hwif_in_reg, fm_hwif_in, '{default: '0})
+`FF(fm_hwif_in_reg, fm_hwif_in, '{default: '0}, clk_iA, rst_niA);
 
   fault_monitor_reg_top #(
     .ID_WIDTH ( SbrObiCfg.IdWidth )
   ) i_fault_monitor (
-    .clk ( clk_i ),
-    .arst_n ( rst_ni ),
+    .clk ( clk_iA ),
+    .arst_n ( rst_niA ),
 
     .obi_req    ( fm_obi_req.req ),
     .obi_gnt    ( fm_obi_rsp.gnt ),
@@ -1188,14 +1175,6 @@ assign timer_obi_rspA.r.r_optional = 1'b0;
 assign timer_obi_rspB.r.r_optional = 1'b0;
 assign timer_obi_rspC.r.r_optional = 1'b0;
 
-majorityVoter clk_iVoter (
-    .inA(clk_iA),
-    .inB(clk_iB),
-    .inC(clk_iC),
-    .out(clk_i),
-    .tmrErr(clk_iTmrError)
-  );
-
 majorityVoter #(.WIDTH( ($size(dbg_mem_obi_req)) )) dbg_mem_obi_reqVoter (
     .inA(dbg_mem_obi_reqA),
     .inB(dbg_mem_obi_reqB),
@@ -1210,14 +1189,6 @@ majorityVoter #(.WIDTH( ($size(dbg_req_obi_rsp)) )) dbg_req_obi_rspVoter (
     .inC(dbg_req_obi_rspC),
     .out(dbg_req_obi_rsp),
     .tmrErr(dbg_req_obi_rspTmrError)
-  );
-
-majorityVoter #(.WIDTH( ($size(hartinfo)) )) hartinfoVoter (
-    .inA(hartinfoA),
-    .inB(hartinfoB),
-    .inC(hartinfoC),
-    .out(hartinfo),
-    .tmrErr(hartinfoTmrError)
   );
 
 majorityVoter jtag_tck_iVoter (
@@ -1252,21 +1223,6 @@ majorityVoter jtag_trst_niVoter (
     .tmrErr(jtag_trst_niTmrError)
   );
 
-majorityVoter rst_niVoter (
-    .inA(rst_niA),
-    .inB(rst_niB),
-    .inC(rst_niC),
-    .out(rst_ni),
-    .tmrErr(rst_niTmrError)
-  );
-
-majorityVoter testmode_iVoter (
-    .inA(testmode_iA),
-    .inB(testmode_iB),
-    .inC(testmode_iC),
-    .out(testmode_i),
-    .tmrErr(testmode_iTmrError)
-  );
 assign tmrErrorA = i_core_wraptmrErrorA|i_gpiotmrErrorA|i_main_xbartmrErrorA|i_obi_demuxtmrErrorA|i_periph_cuttmrErrorA|i_periph_errtmrErrorA|i_soc_ctrl_translatetmrErrorA|i_soc_ctrltmrErrorA|(|i_sram_shimtmrErrorA)|i_timertmrErrorA|i_uarttmrErrorA|i_xbar_errtmrErrorA;
 assign tmrErrorB = i_core_wraptmrErrorB|i_gpiotmrErrorB|i_main_xbartmrErrorB|i_obi_demuxtmrErrorB|i_periph_cuttmrErrorB|i_periph_errtmrErrorB|i_soc_ctrl_translatetmrErrorB|i_soc_ctrltmrErrorB|(|i_sram_shimtmrErrorB)|i_timertmrErrorB|i_uarttmrErrorB|i_xbar_errtmrErrorB;
 assign tmrErrorC = i_core_wraptmrErrorC|i_gpiotmrErrorC|i_main_xbartmrErrorC|i_obi_demuxtmrErrorC|i_periph_cuttmrErrorC|i_periph_errtmrErrorC|i_soc_ctrl_translatetmrErrorC|i_soc_ctrltmrErrorC|(|i_sram_shimtmrErrorC)|i_timertmrErrorC|i_uarttmrErrorC|i_xbar_errtmrErrorC;

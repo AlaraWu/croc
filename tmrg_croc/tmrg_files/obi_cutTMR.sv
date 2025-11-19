@@ -71,12 +71,12 @@ module obi_cutTMR #(
   output tmrErrorB,
   output tmrErrorC
 );
-wor i_req_rtmrErrorC;
-wor i_reg_atmrErrorC;
-wor i_req_rtmrErrorB;
-wor i_reg_atmrErrorB;
-wor i_req_rtmrErrorA;
-wor i_reg_atmrErrorA;
+wire i_req_rtmrErrorC;
+wire i_reg_atmrErrorC;
+wire i_req_rtmrErrorB;
+wire i_reg_atmrErrorB;
+wire i_req_rtmrErrorA;
+wire i_reg_atmrErrorA;
 
 spill_registerTMR #(.T(obi_a_chan_t), .Bypass(BypassReq)) i_reg_a (
     .clk_iA(clk_iA),

@@ -114,9 +114,9 @@ module cve2_ex_blockTMR #(
   output tmrErrorC
 );
 import cve2_pkg::*;
-wor multdiv_itmrErrorC;
-wor multdiv_itmrErrorB;
-wor multdiv_itmrErrorA;
+wire multdiv_itmrErrorC;
+wire multdiv_itmrErrorB;
+wire multdiv_itmrErrorA;
 logic [31:0] alu_resultA;
 logic [31:0] alu_resultB;
 logic [31:0] alu_resultC;

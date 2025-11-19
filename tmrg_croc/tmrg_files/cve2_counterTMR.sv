@@ -71,9 +71,9 @@ module cve2_counterTMR #(
   output tmrErrorB,
   output tmrErrorC
 );
-wor counter_qTmrErrorC;
-wor counter_qTmrErrorB;
-wor counter_qTmrErrorA;
+wire counter_qTmrErrorC;
+wire counter_qTmrErrorB;
+wire counter_qTmrErrorA;
 logic [63:0] counterA;
 logic [63:0] counterB;
 logic [63:0] counterC;

@@ -37,11 +37,5 @@ set bank1_sram0 $SRAM${sram}A/$SRAM_2048x32
 set bank1_sram1 $SRAM${sram}B/$SRAM_2048x32
 set bank1_sram2 $SRAM${sram}C/$SRAM_2048x32
 
-set JTAG_ASYNC_REQ [list]
-lappend JTAG_ASYNC_REQ [get_nets ${JTAG}A/i_dmi_cdc.i_cdc_req/*async_*]
-lappend JTAG_ASYNC_REQ [get_nets ${JTAG}B/i_dmi_cdc.i_cdc_req/*async_*]
-lappend JTAG_ASYNC_REQ [get_nets ${JTAG}C/i_dmi_cdc.i_cdc_req/*async_*]
-set JTAG_ASYNC_RSP [list]
-lappend JTAG_ASYNC_RSP [get_nets ${JTAG}A/i_dmi_cdc.i_cdc_resp/*async_*]
-lappend JTAG_ASYNC_RSP [get_nets ${JTAG}B/i_dmi_cdc.i_cdc_resp/*async_*]
-lappend JTAG_ASYNC_RSP [get_nets ${JTAG}C/i_dmi_cdc.i_cdc_resp/*async_*]
+set JTAG_ASYNC_REQ [get_nets ${JTAG}/i_dmi_cdc.i_cdc_req/*async_*]
+set JTAG_ASYNC_RSP [get_nets ${JTAG}/i_dmi_cdc.i_cdc_resp/*async_*]

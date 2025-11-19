@@ -65,9 +65,9 @@ module obi_err_sbrTMR #(
   output tmrErrorB,
   output tmrErrorC
 );
-wor i_id_fifotmrErrorC;
-wor i_id_fifotmrErrorB;
-wor i_id_fifotmrErrorA;
+wire i_id_fifotmrErrorC;
+wire i_id_fifotmrErrorB;
+wire i_id_fifotmrErrorA;
 logic [ObiCfg.IdWidth - 1:0] ridA;
 logic [ObiCfg.IdWidth - 1:0] ridB;
 logic [ObiCfg.IdWidth - 1:0] ridC;
