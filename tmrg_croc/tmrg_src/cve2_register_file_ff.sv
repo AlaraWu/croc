@@ -60,6 +60,8 @@ module cve2_register_file_ff #(
         rf_reg_q[i] <= WordZeroVal;
       end else if (we_a_dec[i]) begin
         rf_reg_q[i] <= wdata_a_i;
+      end else begin
+        rf_reg_q[i] <= rf_reg_qVoted[i];
       end
     end
   end

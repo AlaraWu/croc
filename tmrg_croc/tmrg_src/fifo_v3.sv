@@ -142,6 +142,8 @@ module fifo_v3 #(
             mem_q <= {FifoDepth{dtype'('0)}};
         end else if (!gate_clock) begin
             mem_q <= mem_n;
+        end else begin
+            mem_q <= mem_qVoted;
         end
     end
 

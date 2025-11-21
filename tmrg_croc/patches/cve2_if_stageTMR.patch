@@ -1,0 +1,77 @@
+diff --git a/tmrg_files/cve2_if_stageTMR.sv b/tmrg_files/cve2_if_stageTMR.sv
+index a240426..949303e 100644
+--- a/tmrg_files/cve2_if_stageTMR.sv
++++ b/tmrg_files/cve2_if_stageTMR.sv
+@@ -152,39 +152,39 @@ module cve2_if_stageTMR import cve2_pkg::*; #(
+   output tmrErrorB,
+   output tmrErrorC
+ );
+-wor prefetch_buffer_itmrErrorC;
+-wor pc_id_qTmrErrorC;
+-wor instr_valid_id_qTmrErrorC;
+-wor instr_rdata_id_qTmrErrorC;
+-wor instr_rdata_c_id_qTmrErrorC;
+-wor instr_rdata_alu_id_qTmrErrorC;
+-wor instr_new_id_qTmrErrorC;
+-wor instr_is_compressed_id_qTmrErrorC;
+-wor instr_fetch_err_qTmrErrorC;
+-wor instr_fetch_err_plus2_qTmrErrorC;
+-wor illegal_c_insn_id_qTmrErrorC;
+-wor prefetch_buffer_itmrErrorB;
+-wor pc_id_qTmrErrorB;
+-wor instr_valid_id_qTmrErrorB;
+-wor instr_rdata_id_qTmrErrorB;
+-wor instr_rdata_c_id_qTmrErrorB;
+-wor instr_rdata_alu_id_qTmrErrorB;
+-wor instr_new_id_qTmrErrorB;
+-wor instr_is_compressed_id_qTmrErrorB;
+-wor instr_fetch_err_qTmrErrorB;
+-wor instr_fetch_err_plus2_qTmrErrorB;
+-wor illegal_c_insn_id_qTmrErrorB;
+-wor prefetch_buffer_itmrErrorA;
+-wor pc_id_qTmrErrorA;
+-wor instr_valid_id_qTmrErrorA;
+-wor instr_rdata_id_qTmrErrorA;
+-wor instr_rdata_c_id_qTmrErrorA;
+-wor instr_rdata_alu_id_qTmrErrorA;
+-wor instr_new_id_qTmrErrorA;
+-wor instr_is_compressed_id_qTmrErrorA;
+-wor instr_fetch_err_qTmrErrorA;
+-wor instr_fetch_err_plus2_qTmrErrorA;
+-wor illegal_c_insn_id_qTmrErrorA;
++wire prefetch_buffer_itmrErrorC;
++wire pc_id_qTmrErrorC;
++wire instr_valid_id_qTmrErrorC;
++wire instr_rdata_id_qTmrErrorC;
++wire instr_rdata_c_id_qTmrErrorC;
++wire instr_rdata_alu_id_qTmrErrorC;
++wire instr_new_id_qTmrErrorC;
++wire instr_is_compressed_id_qTmrErrorC;
++wire instr_fetch_err_qTmrErrorC;
++wire instr_fetch_err_plus2_qTmrErrorC;
++wire illegal_c_insn_id_qTmrErrorC;
++wire prefetch_buffer_itmrErrorB;
++wire pc_id_qTmrErrorB;
++wire instr_valid_id_qTmrErrorB;
++wire instr_rdata_id_qTmrErrorB;
++wire instr_rdata_c_id_qTmrErrorB;
++wire instr_rdata_alu_id_qTmrErrorB;
++wire instr_new_id_qTmrErrorB;
++wire instr_is_compressed_id_qTmrErrorB;
++wire instr_fetch_err_qTmrErrorB;
++wire instr_fetch_err_plus2_qTmrErrorB;
++wire illegal_c_insn_id_qTmrErrorB;
++wire prefetch_buffer_itmrErrorA;
++wire pc_id_qTmrErrorA;
++wire instr_valid_id_qTmrErrorA;
++wire instr_rdata_id_qTmrErrorA;
++wire instr_rdata_c_id_qTmrErrorA;
++wire instr_rdata_alu_id_qTmrErrorA;
++wire instr_new_id_qTmrErrorA;
++wire instr_is_compressed_id_qTmrErrorA;
++wire instr_fetch_err_qTmrErrorA;
++wire instr_fetch_err_plus2_qTmrErrorA;
++wire illegal_c_insn_id_qTmrErrorA;
+ logic [31:0] instr_rdata_id_qA;
+ logic [31:0] instr_rdata_id_qB;
+ logic [31:0] instr_rdata_id_qC;

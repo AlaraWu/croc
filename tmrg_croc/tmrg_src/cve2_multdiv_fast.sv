@@ -116,6 +116,12 @@ reg [2:0] md_state_q, md_state_d, md_state_qVoted;
       op_quotient_q    <= op_quotient_d;
       md_state_q       <= md_state_d;
       div_by_zero_q    <= div_by_zero_d;
+    end else begin
+      div_counter_q    <= div_counter_qVoted;
+      op_numerator_q   <= op_numerator_qVoted;
+      op_quotient_q    <= op_quotient_qVoted;
+      md_state_q       <= md_state_qVoted;
+      div_by_zero_q    <= div_by_zero_qVoted;
     end
   end
 
@@ -255,10 +261,10 @@ reg [2:0] md_state_q, md_state_d, md_state_qVoted;
     always_ff @(posedge clk_i or negedge rst_ni) begin
       if (!rst_ni) begin
         mult_state_q <= MULL;
-      end else begin
-        if (mult_en_internal) begin
+      end else if (mult_en_internal) begin
           mult_state_q <= mult_state_d;
-        end
+      end else begin
+        mult_state_q <= mult_state_qVoted;
       end
     end
 
@@ -378,10 +384,10 @@ reg [2:0] md_state_q, md_state_d, md_state_qVoted;
     always_ff @(posedge clk_i or negedge rst_ni) begin
       if (!rst_ni) begin
         mult_state_q <= ALBL;
-      end else begin
-        if (mult_en_internal) begin
+      end else if (mult_en_internal) begin
           mult_state_q <= mult_state_d;
-        end
+      end else begin
+        mult_state_q <= mult_state_qVoted;
       end
     end
 

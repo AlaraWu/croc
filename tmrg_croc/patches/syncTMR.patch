@@ -1,0 +1,17 @@
+diff --git a/tmrg_files/syncTMR.sv b/tmrg_files/syncTMR.sv
+index 8c3f5c2..9897b89 100644
+--- a/tmrg_files/syncTMR.sv
++++ b/tmrg_files/syncTMR.sv
+@@ -59,9 +59,9 @@ module syncTMR #(
+   output tmrErrorB,
+   output tmrErrorC
+ );
+-wor reg_qTmrErrorC;
+-wor reg_qTmrErrorB;
+-wor reg_qTmrErrorA;
++wire reg_qTmrErrorC;
++wire reg_qTmrErrorB;
++wire reg_qTmrErrorA;
+ (* dont_touch = "true" *)(* async_reg = "true" *) logic [STAGES - 1:0] reg_qA;
+ (* dont_touch = "true" *)(* async_reg = "true" *) logic [STAGES - 1:0] reg_qB;
+ (* dont_touch = "true" *)(* async_reg = "true" *) logic [STAGES - 1:0] reg_qC;

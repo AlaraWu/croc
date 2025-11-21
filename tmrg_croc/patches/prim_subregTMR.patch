@@ -1,0 +1,23 @@
+diff --git a/tmrg_files/prim_subregTMR.sv b/tmrg_files/prim_subregTMR.sv
+index c124239..979d407 100644
+--- a/tmrg_files/prim_subregTMR.sv
++++ b/tmrg_files/prim_subregTMR.sv
+@@ -75,12 +75,12 @@ module prim_subregTMR #(
+   output tmrErrorB,
+   output tmrErrorC
+ );
+-wor qe_qTmrErrorC;
+-wor qTmrErrorC;
+-wor qe_qTmrErrorB;
+-wor qTmrErrorB;
+-wor qe_qTmrErrorA;
+-wor qTmrErrorA;
++wire qe_qTmrErrorC;
++wire qTmrErrorC;
++wire qe_qTmrErrorB;
++wire qTmrErrorB;
++wire qe_qTmrErrorA;
++wire qTmrErrorA;
+ logic [DW - 1:0] qVotedA;
+ logic [DW - 1:0] qVotedB;
+ logic [DW - 1:0] qVotedC;

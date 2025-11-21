@@ -1,5 +1,5 @@
 diff --git a/tmrg_files/spill_register_flushableTMR.sv b/tmrg_files/spill_register_flushableTMR.sv
-index e7ee3d8..61aa383 100644
+index 21f5999..0330e26 100644
 --- a/tmrg_files/spill_register_flushableTMR.sv
 +++ b/tmrg_files/spill_register_flushableTMR.sv
 @@ -40,6 +40,7 @@
@@ -10,3 +10,34 @@ index e7ee3d8..61aa383 100644
    parameter bit Bypass = 1'b0
  ) (
    input logic clk_iA,
+@@ -73,18 +74,18 @@ module spill_register_flushableTMR #(
+   output tmrErrorB,
+   output tmrErrorC
+ );
+-wor b_full_qTmrErrorC;
+-wor b_data_qTmrErrorC;
+-wor a_full_qTmrErrorC;
+-wor a_data_qTmrErrorC;
+-wor b_full_qTmrErrorB;
+-wor b_data_qTmrErrorB;
+-wor a_full_qTmrErrorB;
+-wor a_data_qTmrErrorB;
+-wor b_full_qTmrErrorA;
+-wor b_data_qTmrErrorA;
+-wor a_full_qTmrErrorA;
+-wor a_data_qTmrErrorA;
++wire b_full_qTmrErrorC;
++wire b_data_qTmrErrorC;
++wire a_full_qTmrErrorC;
++wire a_data_qTmrErrorC;
++wire b_full_qTmrErrorB;
++wire b_data_qTmrErrorB;
++wire a_full_qTmrErrorB;
++wire a_data_qTmrErrorB;
++wire b_full_qTmrErrorA;
++wire b_data_qTmrErrorA;
++wire a_full_qTmrErrorA;
++wire a_data_qTmrErrorA;
+ T a_data_qA;
+ T a_data_qB;
+ T a_data_qC;

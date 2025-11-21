@@ -1,7 +1,20 @@
 diff --git a/tmrg_files/cve2_ex_blockTMR.sv b/tmrg_files/cve2_ex_blockTMR.sv
-index 55c18fe..f1949e3 100644
+index 52321f9..c406fb9 100644
 --- a/tmrg_files/cve2_ex_blockTMR.sv
 +++ b/tmrg_files/cve2_ex_blockTMR.sv
+@@ -114,9 +114,9 @@ module cve2_ex_blockTMR #(
+   output tmrErrorC
+ );
+ import cve2_pkg::*;
+-wor multdiv_itmrErrorC;
+-wor multdiv_itmrErrorB;
+-wor multdiv_itmrErrorA;
++wire multdiv_itmrErrorC;
++wire multdiv_itmrErrorB;
++wire multdiv_itmrErrorA;
+ logic [31:0] alu_resultA;
+ logic [31:0] alu_resultB;
+ logic [31:0] alu_resultC;
 @@ -399,6 +399,9 @@ else
        assign multdiv_validA = '0;
        assign multdiv_validB = '0;

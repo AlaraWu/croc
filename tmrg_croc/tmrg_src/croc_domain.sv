@@ -43,6 +43,8 @@ module croc_domain import croc_pkg::*; #(
   output logic core_busy_o
 );
 // tmrg default triplicate
+// tmrg do_not_triplicate i_dmi_jtag
+// tmrg do_not_triplicate i_dm_top
 // tmrg tmr_error true
 
   // -----------------
@@ -132,6 +134,8 @@ module croc_domain import croc_pkg::*; #(
   // Peripheral buses
   // -----------------
   // array of subordinate buses from peripheral demultiplexer
+  sbr_obi_req_t periph_cut_obi_req;
+  sbr_obi_rsp_t periph_cut_obi_rsp;
   sbr_obi_req_t [NumPeriphs-1:0] all_periph_obi_req;
   sbr_obi_rsp_t [NumPeriphs-1:0] all_periph_obi_rsp;
 
@@ -392,7 +396,7 @@ module croc_domain import croc_pkg::*; #(
       .rdata_o ( bank_rdata )
     );
 
-    assign bank_gnt = 1'b1;
+    assign bank_gnt = 1'b1; // always ready for request
   end
 
 
@@ -419,6 +423,23 @@ module croc_domain import croc_pkg::*; #(
   // demultiplex to peripherals according to address map
   logic [cf_math_pkg::idx_width(NumPeriphs)-1:0] periph_idx;
 
+  obi_cut #(
+    .ObiCfg      ( SbrObiCfg     ),
+    .obi_a_chan_t( sbr_obi_a_chan_t ),
+    .obi_r_chan_t( sbr_obi_r_chan_t ),
+    .obi_req_t   ( sbr_obi_req_t ),
+    .obi_rsp_t   ( sbr_obi_rsp_t )
+  ) i_periph_cut (
+    .clk_i( clk_i ),
+    .rst_ni( rst_ni ),
+
+    .sbr_port_req_i ( xbar_periph_obi_req ),
+    .sbr_port_rsp_o ( xbar_periph_obi_rsp ),
+
+    .mgr_port_req_o ( periph_cut_obi_req ),
+    .mgr_port_rsp_i ( periph_cut_obi_rsp )
+  );
+
   addr_decode #(
     .NoIndices ( NumPeriphs                     ),
     .NoRules   ( NumPeriphRules                 ),
@@ -426,7 +447,7 @@ module croc_domain import croc_pkg::*; #(
     .rule_t    ( addr_map_rule_t                ),
     .Napot     ( 1'b0                           )
   ) i_addr_decode_periphs (
-    .addr_i           ( xbar_periph_obi_req.a.addr  ),
+    .addr_i           ( periph_cut_obi_req.a.addr  ),
     .addr_map_i       ( periph_addr_map             ),
     .idx_o            ( periph_idx                  ),
     .dec_valid_o      (),
@@ -446,8 +467,8 @@ module croc_domain import croc_pkg::*; #(
     .rst_ni( rst_ni ),
 
     .sbr_port_select_i ( periph_idx           ),
-    .sbr_port_req_i    ( xbar_periph_obi_req  ),
-    .sbr_port_rsp_o    ( xbar_periph_obi_rsp  ),
+    .sbr_port_req_i    ( periph_cut_obi_req  ),
+    .sbr_port_rsp_o    ( periph_cut_obi_rsp  ),
 
     .mgr_ports_req_o   ( all_periph_obi_req ),
     .mgr_ports_rsp_i   ( all_periph_obi_rsp )
@@ -530,7 +551,7 @@ module croc_domain import croc_pkg::*; #(
   ) i_uart (
     .clk_i( clk_i ),
     .rst_ni( rst_ni ),
-
+   
     .obi_req_i ( uart_obi_req ),
     .obi_rsp_o ( uart_obi_rsp ),
     .irq_o     ( uart_irq     ), 
@@ -559,13 +580,13 @@ module croc_domain import croc_pkg::*; #(
   ) i_gpio (
     .clk_i( clk_i ),
     .rst_ni( rst_ni ),
-    .gpio_i( gpio_i ),
-    .gpio_o( gpio_o ),
-    .gpio_out_en_o( gpio_out_en_o ),
-    .gpio_in_sync_o( gpio_in_sync_o ),
-    .interrupt_o( gpio_irq ),
-    .obi_req_i( gpio_obi_req ),
-    .obi_rsp_o( gpio_obi_rsp )
+    .gpio_i( gpio_i ),                     
+    .gpio_o( gpio_o ),                   
+    .gpio_out_en_o( gpio_out_en_o ),          
+    .gpio_in_sync_o( gpio_in_sync_o ),       
+    .interrupt_o    ( gpio_irq     ),
+    .obi_req_i      ( gpio_obi_req ),
+    .obi_rsp_o      ( gpio_obi_rsp )
   );
 
   // Timer
@@ -575,7 +596,7 @@ module croc_domain import croc_pkg::*; #(
     .clk_i( clk_i ),
     .rst_ni( rst_ni ),
     .ref_clk_i( ref_clk_i ),
-
+    
     .req_i      ( timer_obi_req.req     ),
     .addr_i     ( timer_obi_req.a.addr  ),
     .wen_i      ( ~timer_obi_req.a.we   ),

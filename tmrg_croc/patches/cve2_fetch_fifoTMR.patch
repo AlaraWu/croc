@@ -1,0 +1,35 @@
+diff --git a/tmrg_files/cve2_fetch_fifoTMR.sv b/tmrg_files/cve2_fetch_fifoTMR.sv
+index b3ecdc4..3d6ee73 100644
+--- a/tmrg_files/cve2_fetch_fifoTMR.sv
++++ b/tmrg_files/cve2_fetch_fifoTMR.sv
+@@ -89,18 +89,18 @@ module cve2_fetch_fifoTMR #(
+   output tmrErrorC
+ );
+ localparam int unsigned DEPTH = NUM_REQS + 1;
+-wor valid_qTmrErrorC;
+-wor rdata_qTmrErrorC;
+-wor instr_addr_qTmrErrorC;
+-wor err_qTmrErrorC;
+-wor valid_qTmrErrorB;
+-wor rdata_qTmrErrorB;
+-wor instr_addr_qTmrErrorB;
+-wor err_qTmrErrorB;
+-wor valid_qTmrErrorA;
+-wor rdata_qTmrErrorA;
+-wor instr_addr_qTmrErrorA;
+-wor err_qTmrErrorA;
++wire valid_qTmrErrorC;
++wire rdata_qTmrErrorC;
++wire instr_addr_qTmrErrorC;
++wire err_qTmrErrorC;
++wire valid_qTmrErrorB;
++wire rdata_qTmrErrorB;
++wire instr_addr_qTmrErrorB;
++wire err_qTmrErrorB;
++wire valid_qTmrErrorA;
++wire rdata_qTmrErrorA;
++wire instr_addr_qTmrErrorA;
++wire err_qTmrErrorA;
+ logic [DEPTH - 1:0] [31:0] rdata_dA;
+ logic [DEPTH - 1:0] [31:0] rdata_dB;
+ logic [DEPTH - 1:0] [31:0] rdata_dC;

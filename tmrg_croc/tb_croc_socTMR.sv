@@ -293,7 +293,7 @@ module tb_croc_soc #(
             jtag_write(dm::SBAddress0, CoreStatusAddr);
             jtag_dbg.wait_idle(20);
             jtag_dbg.read_dmi_exp_backoff(dm::SBData0, exit_code);
-        end while (exit_code[31] == 0);
+        end while (exit_code == 0);
         $display("@%t | [JTAG] Simulation finished: return code 0x%0h", $time, exit_code);
         $finish();
     endtask

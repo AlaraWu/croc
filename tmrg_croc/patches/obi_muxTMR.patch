@@ -15,3 +15,22 @@ index e2e31d6..4c4bc9a 100644
    parameter int unsigned NumSbrPorts = 32'd0,
    parameter int unsigned NumMaxTrans = 32'd0,
    parameter bit UseIdForRouting = 1'b0
+@@ -72,12 +78,12 @@ module obi_muxTMR #(
+   output tmrErrorC
+ );
+ localparam int unsigned RequiredExtraIdWidth = cf_math_pkg::idx_width(NumSbrPorts);
+-wor i_rr_arbtmrErrorC;
+-wor i_fifotmrErrorC;
+-wor i_rr_arbtmrErrorB;
+-wor i_fifotmrErrorB;
+-wor i_rr_arbtmrErrorA;
+-wor i_fifotmrErrorA;
++wire i_rr_arbtmrErrorC;
++wire i_fifotmrErrorC;
++wire i_rr_arbtmrErrorB;
++wire i_fifotmrErrorB;
++wire i_rr_arbtmrErrorA;
++wire i_fifotmrErrorA;
+ logic [NumSbrPorts - 1:0] sbr_ports_reqA;
+ logic [NumSbrPorts - 1:0] sbr_ports_reqB;
+ logic [NumSbrPorts - 1:0] sbr_ports_reqC;

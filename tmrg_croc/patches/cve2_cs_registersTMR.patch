@@ -1,67 +1,161 @@
 diff --git a/tmrg_files/cve2_cs_registersTMR.sv b/tmrg_files/cve2_cs_registersTMR.sv
-index 1598b75..9852cf3 100644
+index 6355d91..7c7c841 100644
 --- a/tmrg_files/cve2_cs_registersTMR.sv
 +++ b/tmrg_files/cve2_cs_registersTMR.sv
-@@ -260,11 +260,11 @@ localparam status_t MSTATUS_RST_VAL = '{mie: 1'b0, mpie: 1'b0, mpp: PRIV_LVL_M,
+@@ -259,81 +259,81 @@ typedef struct packed {
+ localparam status_t MSTATUS_RST_VAL = '{mie: 1'b0, mpie: 1'b0, mpp: PRIV_LVL_M, mprv: 1'b0, tw: 1'b0};
  localparam dcsr_t DCSR_RESET_VAL = '{xdebugver: XDEBUGVER_STD, cause: DBG_CAUSE_NONE, prv: PRIV_LVL_M, default: '0};
  localparam status_stk_t MSTACK_RESET_VAL = '{mpie: 1'b1, mpp: PRIV_LVL_U};
- wor u_tselect_csrtmrErrorC;
+-wor u_tselect_csrtmrErrorC;
 -wor u_tmatch_value_csrtmrErrorC;
 -wor u_tmatch_control_csrtmrErrorC;
-+wor [DbgHwBreakNum-1:0] u_tmatch_value_csrtmrErrorC;
-+wor [DbgHwBreakNum-1:0] u_tmatch_control_csrtmrErrorC;
- wor u_pmp_mseccfgtmrErrorC;
+-wor u_pmp_mseccfgtmrErrorC;
 -wor u_pmp_cfg_csrtmrErrorC;
 -wor u_pmp_addr_csrtmrErrorC;
-+wor [PMPNumRegions-1:0] u_pmp_cfg_csrtmrErrorC;
-+wor [PMPNumRegions-1:0] u_pmp_addr_csrtmrErrorC;
- wor u_mtvec_csrtmrErrorC;
- wor u_mtval_csrtmrErrorC;
- wor u_mstatus_csrtmrErrorC;
-@@ -283,13 +283,13 @@ wor priv_lvl_qTmrErrorC;
- wor minstret_counter_itmrErrorC;
- wor mcycle_counter_itmrErrorC;
- wor mcountinhibit_qTmrErrorC;
+-wor u_mtvec_csrtmrErrorC;
+-wor u_mtval_csrtmrErrorC;
+-wor u_mstatus_csrtmrErrorC;
+-wor u_mstack_epc_csrtmrErrorC;
+-wor u_mstack_csrtmrErrorC;
+-wor u_mstack_cause_csrtmrErrorC;
+-wor u_mscratch_csrtmrErrorC;
+-wor u_mie_csrtmrErrorC;
+-wor u_mepc_csrtmrErrorC;
+-wor u_mcause_csrtmrErrorC;
+-wor u_dscratch1_csrtmrErrorC;
+-wor u_dscratch0_csrtmrErrorC;
+-wor u_depc_csrtmrErrorC;
+-wor u_dcsr_csrtmrErrorC;
+-wor priv_lvl_qTmrErrorC;
+-wor minstret_counter_itmrErrorC;
+-wor mcycle_counter_itmrErrorC;
+-wor mcountinhibit_qTmrErrorC;
 -wor mcounters_variable_itmrErrorC;
-+wor [29-1:0] mcounters_variable_itmrErrorC;
- wor u_tselect_csrtmrErrorB;
+-wor u_tselect_csrtmrErrorB;
 -wor u_tmatch_value_csrtmrErrorB;
 -wor u_tmatch_control_csrtmrErrorB;
-+wor [DbgHwBreakNum-1:0] u_tmatch_value_csrtmrErrorB;
-+wor [DbgHwBreakNum-1:0] u_tmatch_control_csrtmrErrorB;
- wor u_pmp_mseccfgtmrErrorB;
+-wor u_pmp_mseccfgtmrErrorB;
 -wor u_pmp_cfg_csrtmrErrorB;
 -wor u_pmp_addr_csrtmrErrorB;
-+wor [PMPNumRegions-1:0] u_pmp_cfg_csrtmrErrorB;
-+wor [PMPNumRegions-1:0] u_pmp_addr_csrtmrErrorB;
- wor u_mtvec_csrtmrErrorB;
- wor u_mtval_csrtmrErrorB;
- wor u_mstatus_csrtmrErrorB;
-@@ -308,13 +308,13 @@ wor priv_lvl_qTmrErrorB;
- wor minstret_counter_itmrErrorB;
- wor mcycle_counter_itmrErrorB;
- wor mcountinhibit_qTmrErrorB;
+-wor u_mtvec_csrtmrErrorB;
+-wor u_mtval_csrtmrErrorB;
+-wor u_mstatus_csrtmrErrorB;
+-wor u_mstack_epc_csrtmrErrorB;
+-wor u_mstack_csrtmrErrorB;
+-wor u_mstack_cause_csrtmrErrorB;
+-wor u_mscratch_csrtmrErrorB;
+-wor u_mie_csrtmrErrorB;
+-wor u_mepc_csrtmrErrorB;
+-wor u_mcause_csrtmrErrorB;
+-wor u_dscratch1_csrtmrErrorB;
+-wor u_dscratch0_csrtmrErrorB;
+-wor u_depc_csrtmrErrorB;
+-wor u_dcsr_csrtmrErrorB;
+-wor priv_lvl_qTmrErrorB;
+-wor minstret_counter_itmrErrorB;
+-wor mcycle_counter_itmrErrorB;
+-wor mcountinhibit_qTmrErrorB;
 -wor mcounters_variable_itmrErrorB;
-+wor [29-1:0] mcounters_variable_itmrErrorB;
- wor u_tselect_csrtmrErrorA;
+-wor u_tselect_csrtmrErrorA;
 -wor u_tmatch_value_csrtmrErrorA;
 -wor u_tmatch_control_csrtmrErrorA;
-+wor [DbgHwBreakNum-1:0] u_tmatch_value_csrtmrErrorA;
-+wor [DbgHwBreakNum-1:0] u_tmatch_control_csrtmrErrorA;
- wor u_pmp_mseccfgtmrErrorA;
+-wor u_pmp_mseccfgtmrErrorA;
 -wor u_pmp_cfg_csrtmrErrorA;
 -wor u_pmp_addr_csrtmrErrorA;
-+wor [PMPNumRegions-1:0] u_pmp_cfg_csrtmrErrorA;
-+wor [PMPNumRegions-1:0] u_pmp_addr_csrtmrErrorA;
- wor u_mtvec_csrtmrErrorA;
- wor u_mtval_csrtmrErrorA;
- wor u_mstatus_csrtmrErrorA;
-@@ -333,7 +333,7 @@ wor priv_lvl_qTmrErrorA;
- wor minstret_counter_itmrErrorA;
- wor mcycle_counter_itmrErrorA;
- wor mcountinhibit_qTmrErrorA;
+-wor u_mtvec_csrtmrErrorA;
+-wor u_mtval_csrtmrErrorA;
+-wor u_mstatus_csrtmrErrorA;
+-wor u_mstack_epc_csrtmrErrorA;
+-wor u_mstack_csrtmrErrorA;
+-wor u_mstack_cause_csrtmrErrorA;
+-wor u_mscratch_csrtmrErrorA;
+-wor u_mie_csrtmrErrorA;
+-wor u_mepc_csrtmrErrorA;
+-wor u_mcause_csrtmrErrorA;
+-wor u_dscratch1_csrtmrErrorA;
+-wor u_dscratch0_csrtmrErrorA;
+-wor u_depc_csrtmrErrorA;
+-wor u_dcsr_csrtmrErrorA;
+-wor priv_lvl_qTmrErrorA;
+-wor minstret_counter_itmrErrorA;
+-wor mcycle_counter_itmrErrorA;
+-wor mcountinhibit_qTmrErrorA;
 -wor mcounters_variable_itmrErrorA;
-+wor [29-1:0] mcounters_variable_itmrErrorA;
++wire u_tselect_csrtmrErrorC;
++wire [DbgHwBreakNum-1:0] u_tmatch_value_csrtmrErrorC;
++wire [DbgHwBreakNum-1:0] u_tmatch_control_csrtmrErrorC;
++wire u_pmp_mseccfgtmrErrorC;
++wire [PMPNumRegions-1:0] u_pmp_cfg_csrtmrErrorC;
++wire [PMPNumRegions-1:0] u_pmp_addr_csrtmrErrorC;
++wire u_mtvec_csrtmrErrorC;
++wire u_mtval_csrtmrErrorC;
++wire u_mstatus_csrtmrErrorC;
++wire u_mstack_epc_csrtmrErrorC;
++wire u_mstack_csrtmrErrorC;
++wire u_mstack_cause_csrtmrErrorC;
++wire u_mscratch_csrtmrErrorC;
++wire u_mie_csrtmrErrorC;
++wire u_mepc_csrtmrErrorC;
++wire u_mcause_csrtmrErrorC;
++wire u_dscratch1_csrtmrErrorC;
++wire u_dscratch0_csrtmrErrorC;
++wire u_depc_csrtmrErrorC;
++wire u_dcsr_csrtmrErrorC;
++wire priv_lvl_qTmrErrorC;
++wire minstret_counter_itmrErrorC;
++wire mcycle_counter_itmrErrorC;
++wire mcountinhibit_qTmrErrorC;
++wire [29-1:0] mcounters_variable_itmrErrorC;
++wire u_tselect_csrtmrErrorB;
++wire [DbgHwBreakNum-1:0] u_tmatch_value_csrtmrErrorB;
++wire [DbgHwBreakNum-1:0] u_tmatch_control_csrtmrErrorB;
++wire u_pmp_mseccfgtmrErrorB;
++wire [PMPNumRegions-1:0] u_pmp_cfg_csrtmrErrorB;
++wire [PMPNumRegions-1:0] u_pmp_addr_csrtmrErrorB;
++wire u_mtvec_csrtmrErrorB;
++wire u_mtval_csrtmrErrorB;
++wire u_mstatus_csrtmrErrorB;
++wire u_mstack_epc_csrtmrErrorB;
++wire u_mstack_csrtmrErrorB;
++wire u_mstack_cause_csrtmrErrorB;
++wire u_mscratch_csrtmrErrorB;
++wire u_mie_csrtmrErrorB;
++wire u_mepc_csrtmrErrorB;
++wire u_mcause_csrtmrErrorB;
++wire u_dscratch1_csrtmrErrorB;
++wire u_dscratch0_csrtmrErrorB;
++wire u_depc_csrtmrErrorB;
++wire u_dcsr_csrtmrErrorB;
++wire priv_lvl_qTmrErrorB;
++wire minstret_counter_itmrErrorB;
++wire mcycle_counter_itmrErrorB;
++wire mcountinhibit_qTmrErrorB;
++wire [29-1:0] mcounters_variable_itmrErrorB;
++wire u_tselect_csrtmrErrorA;
++wire [DbgHwBreakNum-1:0] u_tmatch_value_csrtmrErrorA;
++wire [DbgHwBreakNum-1:0] u_tmatch_control_csrtmrErrorA;
++wire u_pmp_mseccfgtmrErrorA;
++wire [PMPNumRegions-1:0] u_pmp_cfg_csrtmrErrorA;
++wire [PMPNumRegions-1:0] u_pmp_addr_csrtmrErrorA;
++wire u_mtvec_csrtmrErrorA;
++wire u_mtval_csrtmrErrorA;
++wire u_mstatus_csrtmrErrorA;
++wire u_mstack_epc_csrtmrErrorA;
++wire u_mstack_csrtmrErrorA;
++wire u_mstack_cause_csrtmrErrorA;
++wire u_mscratch_csrtmrErrorA;
++wire u_mie_csrtmrErrorA;
++wire u_mepc_csrtmrErrorA;
++wire u_mcause_csrtmrErrorA;
++wire u_dscratch1_csrtmrErrorA;
++wire u_dscratch0_csrtmrErrorA;
++wire u_depc_csrtmrErrorA;
++wire u_dcsr_csrtmrErrorA;
++wire priv_lvl_qTmrErrorA;
++wire minstret_counter_itmrErrorA;
++wire mcycle_counter_itmrErrorA;
++wire mcountinhibit_qTmrErrorA;
++wire [29-1:0] mcounters_variable_itmrErrorA;
  logic [31:0] exception_pcA;
  logic [31:0] exception_pcB;
  logic [31:0] exception_pcC;
@@ -116,7 +210,23 @@ index 1598b75..9852cf3 100644
            );
          assign csr_pmp_cfg_oA[i] = pmp_cfgA[i];
          assign csr_pmp_cfg_oB[i] = pmp_cfgB[i];
-@@ -2627,9 +2632,9 @@ logic [63:0] mhpmcounter_nextC;
+@@ -2370,6 +2375,15 @@ else
+     assign pmp_mseccfgA = '0;
+     assign pmp_mseccfgB = '0;
+     assign pmp_mseccfgC = '0;
++    assign u_pmp_addr_csrtmrErrorA = '0;
++    assign u_pmp_addr_csrtmrErrorB = '0;
++    assign u_pmp_addr_csrtmrErrorC = '0;
++    assign u_pmp_cfg_csrtmrErrorA = '0;
++    assign u_pmp_cfg_csrtmrErrorB = '0;
++    assign u_pmp_cfg_csrtmrErrorC = '0;
++    assign u_pmp_mseccfgtmrErrorA = '0;
++    assign u_pmp_mseccfgtmrErrorB = '0;
++    assign u_pmp_mseccfgtmrErrorC = '0;
+   end
+ assign csr_pmp_mseccfg_oA = pmp_mseccfgA;
+ assign csr_pmp_mseccfg_oB = pmp_mseccfgB;
+@@ -2627,9 +2641,9 @@ logic [63:0] mhpmcounter_nextC;
              .counter_val_upd_oA(mhpmcounter_nextA),
              .counter_val_upd_oB(mhpmcounter_nextB),
              .counter_val_upd_oC(mhpmcounter_nextC),
@@ -129,7 +239,17 @@ index 1598b75..9852cf3 100644
            );
          if (Cnt==10)
                    begin : gen_compressed_instr_cnt
-@@ -2833,9 +2838,9 @@ logic [DbgHwBreakNum - 1:0] trigger_matchC;
+@@ -2657,6 +2671,9 @@ logic [63:0] unused_mhpmcounter_nextC;
+         assign mhpmcounterA[Cnt] = '0;
+         assign mhpmcounterB[Cnt] = '0;
+         assign mhpmcounterC[Cnt] = '0;
++        assign mcounters_variable_itmrErrorA = '0;
++        assign mcounters_variable_itmrErrorB = '0;
++        assign mcounters_variable_itmrErrorC = '0;
+       end
+   end
+ if (MHPMCounterNum<29)
+@@ -2833,9 +2850,9 @@ logic [DbgHwBreakNum - 1:0] trigger_matchC;
              .rd_error_oA(),
              .rd_error_oB(),
              .rd_error_oC(),
@@ -142,7 +262,7 @@ index 1598b75..9852cf3 100644
            );
  
          cve2_csrTMR #(.Width(32), .ShadowCopy(1'b0), .ResetValue('0)) u_tmatch_value_csr (
-@@ -2857,9 +2862,9 @@ logic [DbgHwBreakNum - 1:0] trigger_matchC;
+@@ -2857,9 +2874,9 @@ logic [DbgHwBreakNum - 1:0] trigger_matchC;
              .rd_error_oA(),
              .rd_error_oB(),
              .rd_error_oC(),
@@ -155,8 +275,28 @@ index 1598b75..9852cf3 100644
            );
        end
  localparam int unsigned TSelectRdataPadlen = DbgHwNumLen>=32 ? 0 : (32-DbgHwNumLen);
-@@ -2933,7 +2938,7 @@ majorityVoter #(.WIDTH( ($size(priv_lvl_qVotedA)) )) priv_lvl_qVoterA (
-     .out(priv_lvl_qVotedA),
+@@ -2916,6 +2933,15 @@ else
+     assign trigger_match_oA = 'b0;
+     assign trigger_match_oB = 'b0;
+     assign trigger_match_oC = 'b0;
++    assign u_tselect_csrtmrErrorA = 1'b0;
++    assign u_tselect_csrtmrErrorB = 1'b0;
++    assign u_tselect_csrtmrErrorC = 1'b0;
++    assign u_tmatch_control_csrtmrErrorA = '0;
++    assign u_tmatch_control_csrtmrErrorB = '0;
++    assign u_tmatch_control_csrtmrErrorC = '0;
++    assign u_tmatch_value_csrtmrErrorA = '0;
++    assign u_tmatch_value_csrtmrErrorB = '0;
++    assign u_tmatch_value_csrtmrErrorC = '0;
+   end
+ 
+ majorityVoter #(.WIDTH( ((((MHPMCounterNum+3-1)>0) ? (MHPMCounterNum+3-1) : - ( MHPMCounterNum+3-1 ) )+1) )) mcountinhibit_qVoterA (
+@@ -2930,10 +2956,10 @@ majorityVoter #(.WIDTH( ($size(priv_lvl_qVotedA)) )) priv_lvl_qVoterA (
+     .inA(priv_lvl_qA),
+     .inB(priv_lvl_qB),
+     .inC(priv_lvl_qC),
+-    .out(priv_lvl_qVotedA),
++    .out({priv_lvl_qVotedA}),
      .tmrErr(priv_lvl_qTmrErrorA)
    );
 -assign tmrErrorA = mcounters_variable_itmrErrorA|mcountinhibit_qTmrErrorA|mcycle_counter_itmrErrorA|minstret_counter_itmrErrorA|priv_lvl_qTmrErrorA|u_dcsr_csrtmrErrorA|u_depc_csrtmrErrorA|u_dscratch0_csrtmrErrorA|u_dscratch1_csrtmrErrorA|u_mcause_csrtmrErrorA|u_mepc_csrtmrErrorA|u_mie_csrtmrErrorA|u_mscratch_csrtmrErrorA|u_mstack_cause_csrtmrErrorA|u_mstack_csrtmrErrorA|u_mstack_epc_csrtmrErrorA|u_mstatus_csrtmrErrorA|u_mtval_csrtmrErrorA|u_mtvec_csrtmrErrorA|u_pmp_addr_csrtmrErrorA|u_pmp_cfg_csrtmrErrorA|u_pmp_mseccfgtmrErrorA|u_tmatch_control_csrtmrErrorA|u_tmatch_value_csrtmrErrorA|u_tselect_csrtmrErrorA;
@@ -164,8 +304,12 @@ index 1598b75..9852cf3 100644
  
  majorityVoter #(.WIDTH( ((((MHPMCounterNum+3-1)>0) ? (MHPMCounterNum+3-1) : - ( MHPMCounterNum+3-1 ) )+1) )) mcountinhibit_qVoterB (
      .inA(mcountinhibit_qA),
-@@ -2950,7 +2955,7 @@ majorityVoter #(.WIDTH( ($size(priv_lvl_qVotedA)) )) priv_lvl_qVoterB (
-     .out(priv_lvl_qVotedB),
+@@ -2947,10 +2973,10 @@ majorityVoter #(.WIDTH( ($size(priv_lvl_qVotedA)) )) priv_lvl_qVoterB (
+     .inA(priv_lvl_qA),
+     .inB(priv_lvl_qB),
+     .inC(priv_lvl_qC),
+-    .out(priv_lvl_qVotedB),
++    .out({priv_lvl_qVotedB}),
      .tmrErr(priv_lvl_qTmrErrorB)
    );
 -assign tmrErrorB = mcounters_variable_itmrErrorB|mcountinhibit_qTmrErrorB|mcycle_counter_itmrErrorB|minstret_counter_itmrErrorB|priv_lvl_qTmrErrorB|u_dcsr_csrtmrErrorB|u_depc_csrtmrErrorB|u_dscratch0_csrtmrErrorB|u_dscratch1_csrtmrErrorB|u_mcause_csrtmrErrorB|u_mepc_csrtmrErrorB|u_mie_csrtmrErrorB|u_mscratch_csrtmrErrorB|u_mstack_cause_csrtmrErrorB|u_mstack_csrtmrErrorB|u_mstack_epc_csrtmrErrorB|u_mstatus_csrtmrErrorB|u_mtval_csrtmrErrorB|u_mtvec_csrtmrErrorB|u_pmp_addr_csrtmrErrorB|u_pmp_cfg_csrtmrErrorB|u_pmp_mseccfgtmrErrorB|u_tmatch_control_csrtmrErrorB|u_tmatch_value_csrtmrErrorB|u_tselect_csrtmrErrorB;
@@ -173,8 +317,12 @@ index 1598b75..9852cf3 100644
  
  majorityVoter #(.WIDTH( ((((MHPMCounterNum+3-1)>0) ? (MHPMCounterNum+3-1) : - ( MHPMCounterNum+3-1 ) )+1) )) mcountinhibit_qVoterC (
      .inA(mcountinhibit_qA),
-@@ -2967,6 +2972,6 @@ majorityVoter #(.WIDTH( ($size(priv_lvl_qVotedA)) )) priv_lvl_qVoterC (
-     .out(priv_lvl_qVotedC),
+@@ -2964,9 +2990,9 @@ majorityVoter #(.WIDTH( ($size(priv_lvl_qVotedA)) )) priv_lvl_qVoterC (
+     .inA(priv_lvl_qA),
+     .inB(priv_lvl_qB),
+     .inC(priv_lvl_qC),
+-    .out(priv_lvl_qVotedC),
++    .out({priv_lvl_qVotedC}),
      .tmrErr(priv_lvl_qTmrErrorC)
    );
 -assign tmrErrorC = mcounters_variable_itmrErrorC|mcountinhibit_qTmrErrorC|mcycle_counter_itmrErrorC|minstret_counter_itmrErrorC|priv_lvl_qTmrErrorC|u_dcsr_csrtmrErrorC|u_depc_csrtmrErrorC|u_dscratch0_csrtmrErrorC|u_dscratch1_csrtmrErrorC|u_mcause_csrtmrErrorC|u_mepc_csrtmrErrorC|u_mie_csrtmrErrorC|u_mscratch_csrtmrErrorC|u_mstack_cause_csrtmrErrorC|u_mstack_csrtmrErrorC|u_mstack_epc_csrtmrErrorC|u_mstatus_csrtmrErrorC|u_mtval_csrtmrErrorC|u_mtvec_csrtmrErrorC|u_pmp_addr_csrtmrErrorC|u_pmp_cfg_csrtmrErrorC|u_pmp_mseccfgtmrErrorC|u_tmatch_control_csrtmrErrorC|u_tmatch_value_csrtmrErrorC|u_tselect_csrtmrErrorC;

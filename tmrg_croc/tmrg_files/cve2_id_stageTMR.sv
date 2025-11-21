@@ -6,7 +6,7 @@
  *                                                                                                  *
  * user    : chenwu                                                                                 *
  * host    : badwater.ee.ethz.ch                                                                    *
- * date    : 12/11/2025 14:57:13                                                                    *
+ * date    : 21/11/2025 17:11:20                                                                    *
  *                                                                                                  *
  * workdir : /scratch/chenwu/tmrg_croc                                                              *
  * cmd     : /scratch/chenwu/tmrg/venv/bin/tmrg tmrg_src/addr_decode.sv tmrg_src/addr_decode_dync.sv *
@@ -18,7 +18,7 @@
  *           tmrg_src/spill_register.sv tmrg_src/spill_register_flushable.sv tmrg_src/obi_uart.sv   *
  *           tmrg_src/obi_uart_baudgen.sv tmrg_src/counter.sv tmrg_src/obi_uart_interrupts.sv       *
  *           tmrg_src/obi_uart_modem.sv tmrg_src/obi_uart_register.sv tmrg_src/obi_uart_rx.sv       *
- *           tmrg_src/obi_uart_tx.sv tmrg_src/obi_sram_shim.sv tmrg_src/gpio.sv                     *
+ *           tmrg_src/obi_uart_tx.sv tmrg_src/obi_cut.sv tmrg_src/obi_sram_shim.sv tmrg_src/gpio.sv *
  *           tmrg_src/gpio_reg_top.sv tmrg_src/sync.sv tmrg_src/dmi_jtag.sv tmrg_src/dm_obi_top.sv  *
  *           tmrg_src/core_wrap.sv tmrg_src/cve2_core.sv tmrg_src/cve2_cs_registers.sv              *
  *           tmrg_src/cve2_counter.sv tmrg_src/cve2_csr.sv tmrg_src/cve2_ex_block.sv                *
@@ -32,10 +32,10 @@
  * tmrg rev: b94addac7490a9efad5a56e12a3ab232d01f4c92                                               *
  *                                                                                                  *
  * src file: tmrg_src/cve2_id_stage.sv                                                              *
- *           Git SHA           : 513877024c58ce622d9f33836c5b6fe0e7ba47dc ( M tmrg_src/cve2_id_stage.sv) *
- *           Modification time : 2025-11-12 14:35:26.192271                                         *
- *           File Size         : 29920                                                              *
- *           MD5 hash          : fe6edb974b6736a3cbff00af7ab9b971                                   *
+ *           Git SHA           : 447415eb81dc2b4b7207859bd13a526ebb52ed0b                           *
+ *           Modification time : 2025-11-21 16:40:40.494519                                         *
+ *           File Size         : 30036                                                              *
+ *           MD5 hash          : 890ecc7565eea392586b3d28d99eddf0                                   *
  *                                                                                                  *
  ****************************************************************************************************/
 
@@ -694,7 +694,10 @@ for(genvar i = 0; i<2; i++)
             begin
               imd_val_qA[i] <= imd_val_d_ex_iA[i];
             end
-
+          else
+            begin
+              imd_val_qA[i] <= imd_val_qVotedA[i];
+            end
       end
 
     always_ff @( posedge clk_iB or negedge rst_niB )
@@ -708,7 +711,10 @@ for(genvar i = 0; i<2; i++)
             begin
               imd_val_qB[i] <= imd_val_d_ex_iB[i];
             end
-
+          else
+            begin
+              imd_val_qB[i] <= imd_val_qVotedB[i];
+            end
       end
 
     always_ff @( posedge clk_iC or negedge rst_niC )
@@ -722,7 +728,10 @@ for(genvar i = 0; i<2; i++)
             begin
               imd_val_qC[i] <= imd_val_d_ex_iC[i];
             end
-
+          else
+            begin
+              imd_val_qC[i] <= imd_val_qVotedC[i];
+            end
       end
   end
 assign imd_val_q_ex_oA = imd_val_qVotedA;
@@ -1310,7 +1319,10 @@ always_ff @( posedge clk_iA or negedge rst_niA )
         begin
           id_fsm_qA <= id_fsm_dA;
         end
-
+      else
+        begin
+          id_fsm_qA <= id_fsm_qVotedA;
+        end
   end
 
 always_ff @( posedge clk_iB or negedge rst_niB )
@@ -1324,7 +1336,10 @@ always_ff @( posedge clk_iB or negedge rst_niB )
         begin
           id_fsm_qB <= id_fsm_dB;
         end
-
+      else
+        begin
+          id_fsm_qB <= id_fsm_qVotedB;
+        end
   end
 
 always_ff @( posedge clk_iC or negedge rst_niC )
@@ -1338,7 +1353,10 @@ always_ff @( posedge clk_iC or negedge rst_niC )
         begin
           id_fsm_qC <= id_fsm_dC;
         end
-
+      else
+        begin
+          id_fsm_qC <= id_fsm_qVotedC;
+        end
   end
 
 always_comb

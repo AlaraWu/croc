@@ -158,6 +158,8 @@ module cve2_fetch_fifo #(
       instr_addr_q <= '0;
     end else if (instr_addr_en) begin
       instr_addr_q <= instr_addr_d;
+    end else begin
+      instr_addr_q <= instr_addr_qVoted;
     end
   end
 
@@ -237,6 +239,9 @@ module cve2_fetch_fifo #(
         end else if (entry_en[i]) begin
           rdata_q[i] <= rdata_d[i];
           err_q[i]   <= err_d[i];
+        end else begin
+          rdata_q[i] <= rdata_qVoted[i];
+          err_q[i]   <= err_qVoted[i];
         end
       end
   end

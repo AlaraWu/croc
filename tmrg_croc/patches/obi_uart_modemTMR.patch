@@ -1,0 +1,59 @@
+diff --git a/tmrg_files/obi_uart_modemTMR.sv b/tmrg_files/obi_uart_modemTMR.sv
+index 947afb1..0e25e6f 100644
+--- a/tmrg_files/obi_uart_modemTMR.sv
++++ b/tmrg_files/obi_uart_modemTMR.sv
+@@ -81,30 +81,30 @@ module obi_uart_modemTMR import obi_uart_pkg::*; (
+   output tmrErrorB,
+   output tmrErrorC
+ );
+-wor sync_ri_n_qTmrErrorC;
+-wor sync_dsr_n_qTmrErrorC;
+-wor sync_cts_n_qTmrErrorC;
+-wor sync_cd_n_qTmrErrorC;
+-wor i_sync_ritmrErrorC;
+-wor i_sync_dsrtmrErrorC;
+-wor i_sync_ctstmrErrorC;
+-wor i_sync_cdtmrErrorC;
+-wor sync_ri_n_qTmrErrorB;
+-wor sync_dsr_n_qTmrErrorB;
+-wor sync_cts_n_qTmrErrorB;
+-wor sync_cd_n_qTmrErrorB;
+-wor i_sync_ritmrErrorB;
+-wor i_sync_dsrtmrErrorB;
+-wor i_sync_ctstmrErrorB;
+-wor i_sync_cdtmrErrorB;
+-wor sync_ri_n_qTmrErrorA;
+-wor sync_dsr_n_qTmrErrorA;
+-wor sync_cts_n_qTmrErrorA;
+-wor sync_cd_n_qTmrErrorA;
+-wor i_sync_ritmrErrorA;
+-wor i_sync_dsrtmrErrorA;
+-wor i_sync_ctstmrErrorA;
+-wor i_sync_cdtmrErrorA;
++wire sync_ri_n_qTmrErrorC;
++wire sync_dsr_n_qTmrErrorC;
++wire sync_cts_n_qTmrErrorC;
++wire sync_cd_n_qTmrErrorC;
++wire i_sync_ritmrErrorC;
++wire i_sync_dsrtmrErrorC;
++wire i_sync_ctstmrErrorC;
++wire i_sync_cdtmrErrorC;
++wire sync_ri_n_qTmrErrorB;
++wire sync_dsr_n_qTmrErrorB;
++wire sync_cts_n_qTmrErrorB;
++wire sync_cd_n_qTmrErrorB;
++wire i_sync_ritmrErrorB;
++wire i_sync_dsrtmrErrorB;
++wire i_sync_ctstmrErrorB;
++wire i_sync_cdtmrErrorB;
++wire sync_ri_n_qTmrErrorA;
++wire sync_dsr_n_qTmrErrorA;
++wire sync_cts_n_qTmrErrorA;
++wire sync_cd_n_qTmrErrorA;
++wire i_sync_ritmrErrorA;
++wire i_sync_dsrtmrErrorA;
++wire i_sync_ctstmrErrorA;
++wire i_sync_cdtmrErrorA;
+ logic sync_cts_nA;
+ logic sync_cts_nB;
+ logic sync_cts_nC;

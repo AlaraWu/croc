@@ -6,7 +6,7 @@
  *                                                                                                  *
  * user    : chenwu                                                                                 *
  * host    : badwater.ee.ethz.ch                                                                    *
- * date    : 12/11/2025 14:57:13                                                                    *
+ * date    : 21/11/2025 17:11:19                                                                    *
  *                                                                                                  *
  * workdir : /scratch/chenwu/tmrg_croc                                                              *
  * cmd     : /scratch/chenwu/tmrg/venv/bin/tmrg tmrg_src/addr_decode.sv tmrg_src/addr_decode_dync.sv *
@@ -18,7 +18,7 @@
  *           tmrg_src/spill_register.sv tmrg_src/spill_register_flushable.sv tmrg_src/obi_uart.sv   *
  *           tmrg_src/obi_uart_baudgen.sv tmrg_src/counter.sv tmrg_src/obi_uart_interrupts.sv       *
  *           tmrg_src/obi_uart_modem.sv tmrg_src/obi_uart_register.sv tmrg_src/obi_uart_rx.sv       *
- *           tmrg_src/obi_uart_tx.sv tmrg_src/obi_sram_shim.sv tmrg_src/gpio.sv                     *
+ *           tmrg_src/obi_uart_tx.sv tmrg_src/obi_cut.sv tmrg_src/obi_sram_shim.sv tmrg_src/gpio.sv *
  *           tmrg_src/gpio_reg_top.sv tmrg_src/sync.sv tmrg_src/dmi_jtag.sv tmrg_src/dm_obi_top.sv  *
  *           tmrg_src/core_wrap.sv tmrg_src/cve2_core.sv tmrg_src/cve2_cs_registers.sv              *
  *           tmrg_src/cve2_counter.sv tmrg_src/cve2_csr.sv tmrg_src/cve2_ex_block.sv                *
@@ -32,10 +32,10 @@
  * tmrg rev: b94addac7490a9efad5a56e12a3ab232d01f4c92                                               *
  *                                                                                                  *
  * src file: tmrg_src/cve2_multdiv_slow.sv                                                          *
- *           Git SHA           : 513877024c58ce622d9f33836c5b6fe0e7ba47dc ( M tmrg_src/cve2_multdiv_slow.sv) *
- *           Modification time : 2025-11-12 14:35:26.258271                                         *
- *           File Size         : 13813                                                              *
- *           MD5 hash          : 83adcc77d02e204d94e756c172b03770                                   *
+ *           Git SHA           : 447415eb81dc2b4b7207859bd13a526ebb52ed0b                           *
+ *           Modification time : 2025-11-21 16:44:04.567506                                         *
+ *           File Size         : 14059                                                              *
+ *           MD5 hash          : e00cd456732298b9a4c33a6eb78748e1                                   *
  *                                                                                                  *
  ****************************************************************************************************/
 
@@ -884,7 +884,14 @@ always_ff @( posedge clk_iA or negedge rst_niA )
           md_state_qA <= md_state_dA;
           div_by_zero_qA <= div_by_zero_dA;
         end
-
+      else
+        begin
+          multdiv_count_qA <= multdiv_count_qVotedA;
+          op_b_shift_qA <= op_b_shift_qVotedA;
+          op_a_shift_qA <= op_a_shift_qVotedA;
+          md_state_qA <= md_state_qVotedA;
+          div_by_zero_qA <= div_by_zero_qVotedA;
+        end
   end
 
 always_ff @( posedge clk_iB or negedge rst_niB )
@@ -906,7 +913,14 @@ always_ff @( posedge clk_iB or negedge rst_niB )
           md_state_qB <= md_state_dB;
           div_by_zero_qB <= div_by_zero_dB;
         end
-
+      else
+        begin
+          multdiv_count_qB <= multdiv_count_qVotedB;
+          op_b_shift_qB <= op_b_shift_qVotedB;
+          op_a_shift_qB <= op_a_shift_qVotedB;
+          md_state_qB <= md_state_qVotedB;
+          div_by_zero_qB <= div_by_zero_qVotedB;
+        end
   end
 
 always_ff @( posedge clk_iC or negedge rst_niC )
@@ -928,7 +942,14 @@ always_ff @( posedge clk_iC or negedge rst_niC )
           md_state_qC <= md_state_dC;
           div_by_zero_qC <= div_by_zero_dC;
         end
-
+      else
+        begin
+          multdiv_count_qC <= multdiv_count_qVotedC;
+          op_b_shift_qC <= op_b_shift_qVotedC;
+          op_a_shift_qC <= op_a_shift_qVotedC;
+          md_state_qC <= md_state_qVotedC;
+          div_by_zero_qC <= div_by_zero_qVotedC;
+        end
   end
 assign valid_oA =  (md_state_qVotedA==MD_FINISH) | (md_state_qVotedA==MD_LAST&(operator_iA==MD_OP_MULL|operator_iA==MD_OP_MULH)) ;
 assign valid_oB =  (md_state_qVotedB==MD_FINISH) | (md_state_qVotedB==MD_LAST&(operator_iB==MD_OP_MULL|operator_iB==MD_OP_MULH)) ;

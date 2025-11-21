@@ -11,3 +11,16 @@ index 1ddcd2b..9df18fb 100644
    parameter int unsigned NumMaxTrans = 1,
    parameter logic [ObiCfg.DataWidth - 1:0] RspData = 32'hBADCAB1E
  ) (
+@@ -63,9 +65,9 @@ module obi_err_sbrTMR #(
+   output tmrErrorB,
+   output tmrErrorC
+ );
+-wor i_id_fifotmrErrorC;
+-wor i_id_fifotmrErrorB;
+-wor i_id_fifotmrErrorA;
++wire i_id_fifotmrErrorC;
++wire i_id_fifotmrErrorB;
++wire i_id_fifotmrErrorA;
+ logic [ObiCfg.IdWidth - 1:0] ridA;
+ logic [ObiCfg.IdWidth - 1:0] ridB;
+ logic [ObiCfg.IdWidth - 1:0] ridC;

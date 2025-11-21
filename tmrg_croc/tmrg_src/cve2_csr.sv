@@ -31,6 +31,8 @@ module cve2_csr #(
       rdata_q <= ResetValue;
     end else if (wr_en_i) begin
       rdata_q <= wr_data_i;
+    end else begin
+      rdata_q <= rdata_qVoted;
     end
   end
 
@@ -46,6 +48,8 @@ module cve2_csr #(
         shadow_q <= ~ResetValue;
       end else if (wr_en_i) begin
         shadow_q <= ~wr_data_i;
+      end else begin
+        shadow_q <= shadow_qVoted;
       end
     end
 

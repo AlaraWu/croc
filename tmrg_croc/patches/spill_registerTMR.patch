@@ -10,3 +10,16 @@ index 6dd5063..2cf8e9c 100644
    parameter bit Bypass = 1'b0
  ) (
    input logic clk_iA,
+@@ -70,9 +71,9 @@ module spill_registerTMR #(
+   output tmrErrorB,
+   output tmrErrorC
+ );
+-wor spill_register_flushable_itmrErrorC;
+-wor spill_register_flushable_itmrErrorB;
+-wor spill_register_flushable_itmrErrorA;
++wire spill_register_flushable_itmrErrorC;
++wire spill_register_flushable_itmrErrorB;
++wire spill_register_flushable_itmrErrorA;
+ 
+ spill_register_flushableTMR #(.T(T), .Bypass(Bypass)) spill_register_flushable_i (
+     .clk_iA(clk_iA),

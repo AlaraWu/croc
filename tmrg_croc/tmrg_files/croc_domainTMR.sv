@@ -6,7 +6,7 @@
  *                                                                                                  *
  * user    : chenwu                                                                                 *
  * host    : badwater.ee.ethz.ch                                                                    *
- * date    : 18/11/2025 09:21:59                                                                    *
+ * date    : 21/11/2025 17:11:25                                                                    *
  *                                                                                                  *
  * workdir : /scratch/chenwu/tmrg_croc                                                              *
  * cmd     : /scratch/chenwu/tmrg/venv/bin/tmrg tmrg_src/addr_decode.sv tmrg_src/addr_decode_dync.sv *
@@ -32,7 +32,7 @@
  * tmrg rev: b94addac7490a9efad5a56e12a3ab232d01f4c92                                               *
  *                                                                                                  *
  * src file: tmrg_src/croc_domain.sv                                                                *
- *           Git SHA           : acdf608049d37209b9ed0e5000b76bba5c53f58c ( M tmrg_src/croc_domain.sv) *
+ *           Git SHA           : 447415eb81dc2b4b7207859bd13a526ebb52ed0b                           *
  *           Modification time : 2025-11-18 09:21:08.739221                                         *
  *           File Size         : 19177                                                              *
  *           MD5 hash          : 3f3a8b3aea489e1bf3c5f7dd5a8b92bc                                   *
@@ -171,7 +171,6 @@ wire jtag_trst_niTmrError;
 wire jtag_tms_iTmrError;
 wire jtag_tdi_iTmrError;
 wire jtag_tck_iTmrError;
-wire dmi_rst_nTmrError;
 wire dbg_req_obi_rspTmrError;
 wire dbg_mem_obi_reqTmrError;
 wire jtag_trst_ni;

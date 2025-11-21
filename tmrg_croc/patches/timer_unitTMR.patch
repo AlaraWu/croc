@@ -1,5 +1,5 @@
 diff --git a/tmrg_files/timer_unitTMR.sv b/tmrg_files/timer_unitTMR.sv
-index ada9659..e1eaafd 100644
+index b2eaeb4..6dcedff 100644
 --- a/tmrg_files/timer_unitTMR.sv
 +++ b/tmrg_files/timer_unitTMR.sv
 @@ -39,6 +39,30 @@
@@ -33,16 +33,118 @@ index ada9659..e1eaafd 100644
  module timer_unitTMR #(
    parameter ID_WIDTH = 5
  ) (
-@@ -103,8 +127,7 @@ module timer_unitTMR #(
+@@ -103,59 +127,58 @@ module timer_unitTMR #(
    output tmrErrorB,
    output tmrErrorC
  );
 -parameter TRANS_IDLE = 2'b00;
 -parameter TRANS_RUN = 2'b01;
+-wor s_wenTmrErrorC;
+-wor s_timer_cmp_lo_regTmrErrorC;
+-wor s_timer_cmp_hi_regTmrErrorC;
+-wor s_reqTmrErrorC;
+-wor s_ref_clk3TmrErrorC;
+-wor s_ref_clk2TmrErrorC;
+-wor s_ref_clk1TmrErrorC;
+-wor s_ref_clk0TmrErrorC;
+-wor s_cfg_lo_regTmrErrorC;
+-wor s_cfg_hi_regTmrErrorC;
+-wor s_addrTmrErrorC;
+-wor r_id_qTmrErrorC;
+-wor prescaler_lo_itmrErrorC;
+-wor prescaler_hi_itmrErrorC;
+-wor counter_lo_itmrErrorC;
+-wor counter_hi_itmrErrorC;
+-wor CSTmrErrorC;
+-wor s_wenTmrErrorB;
+-wor s_timer_cmp_lo_regTmrErrorB;
+-wor s_timer_cmp_hi_regTmrErrorB;
+-wor s_reqTmrErrorB;
+-wor s_ref_clk3TmrErrorB;
+-wor s_ref_clk2TmrErrorB;
+-wor s_ref_clk1TmrErrorB;
+-wor s_ref_clk0TmrErrorB;
+-wor s_cfg_lo_regTmrErrorB;
+-wor s_cfg_hi_regTmrErrorB;
+-wor s_addrTmrErrorB;
+-wor r_id_qTmrErrorB;
+-wor prescaler_lo_itmrErrorB;
+-wor prescaler_hi_itmrErrorB;
+-wor counter_lo_itmrErrorB;
+-wor counter_hi_itmrErrorB;
+-wor CSTmrErrorB;
+-wor s_wenTmrErrorA;
+-wor s_timer_cmp_lo_regTmrErrorA;
+-wor s_timer_cmp_hi_regTmrErrorA;
+-wor s_reqTmrErrorA;
+-wor s_ref_clk3TmrErrorA;
+-wor s_ref_clk2TmrErrorA;
+-wor s_ref_clk1TmrErrorA;
+-wor s_ref_clk0TmrErrorA;
+-wor s_cfg_lo_regTmrErrorA;
+-wor s_cfg_hi_regTmrErrorA;
+-wor s_addrTmrErrorA;
+-wor r_id_qTmrErrorA;
+-wor prescaler_lo_itmrErrorA;
+-wor prescaler_hi_itmrErrorA;
+-wor counter_lo_itmrErrorA;
+-wor counter_hi_itmrErrorA;
+-wor CSTmrErrorA;
 +enum logic [1:0] { TRANS_IDLE, TRANS_RUN } CSA, NSA, CSVotedA, CSB, NSB, CSVotedB, CSC, NSC, CSVotedC;
- wor s_wenTmrErrorC;
- wor s_timer_cmp_lo_regTmrErrorC;
- wor s_timer_cmp_hi_regTmrErrorC;
++wire s_wenTmrErrorC;
++wire s_timer_cmp_lo_regTmrErrorC;
++wire s_timer_cmp_hi_regTmrErrorC;
++wire s_reqTmrErrorC;
++wire s_ref_clk3TmrErrorC;
++wire s_ref_clk2TmrErrorC;
++wire s_ref_clk1TmrErrorC;
++wire s_ref_clk0TmrErrorC;
++wire s_cfg_lo_regTmrErrorC;
++wire s_cfg_hi_regTmrErrorC;
++wire s_addrTmrErrorC;
++wire r_id_qTmrErrorC;
++wire prescaler_lo_itmrErrorC;
++wire prescaler_hi_itmrErrorC;
++wire counter_lo_itmrErrorC;
++wire counter_hi_itmrErrorC;
++wire CSTmrErrorC;
++wire s_wenTmrErrorB;
++wire s_timer_cmp_lo_regTmrErrorB;
++wire s_timer_cmp_hi_regTmrErrorB;
++wire s_reqTmrErrorB;
++wire s_ref_clk3TmrErrorB;
++wire s_ref_clk2TmrErrorB;
++wire s_ref_clk1TmrErrorB;
++wire s_ref_clk0TmrErrorB;
++wire s_cfg_lo_regTmrErrorB;
++wire s_cfg_hi_regTmrErrorB;
++wire s_addrTmrErrorB;
++wire r_id_qTmrErrorB;
++wire prescaler_lo_itmrErrorB;
++wire prescaler_hi_itmrErrorB;
++wire counter_lo_itmrErrorB;
++wire counter_hi_itmrErrorB;
++wire CSTmrErrorB;
++wire s_wenTmrErrorA;
++wire s_timer_cmp_lo_regTmrErrorA;
++wire s_timer_cmp_hi_regTmrErrorA;
++wire s_reqTmrErrorA;
++wire s_ref_clk3TmrErrorA;
++wire s_ref_clk2TmrErrorA;
++wire s_ref_clk1TmrErrorA;
++wire s_ref_clk0TmrErrorA;
++wire s_cfg_lo_regTmrErrorA;
++wire s_cfg_hi_regTmrErrorA;
++wire s_addrTmrErrorA;
++wire r_id_qTmrErrorA;
++wire prescaler_lo_itmrErrorA;
++wire prescaler_hi_itmrErrorA;
++wire counter_lo_itmrErrorA;
++wire counter_hi_itmrErrorA;
++wire CSTmrErrorA;
+ logic s_reqA;
+ logic s_reqB;
+ logic s_reqC;
 @@ -318,15 +341,6 @@ logic s_clear_reset_loC;
  logic s_clear_reset_hiA;
  logic s_clear_reset_hiB;
@@ -59,3 +161,30 @@ index ada9659..e1eaafd 100644
  assign r_id_oA = r_id_qA;
  assign r_id_oB = r_id_qB;
  assign r_id_oC = r_id_qC;
+@@ -1481,7 +1495,7 @@ majorityVoter #(.WIDTH(2)) CSVoterA (
+     .inA(CSA),
+     .inB(CSB),
+     .inC(CSC),
+-    .out(CSVotedA),
++    .out({CSVotedA}),
+     .tmrErr(CSTmrErrorA)
+   );
+ 
+@@ -1586,7 +1600,7 @@ majorityVoter #(.WIDTH(2)) CSVoterB (
+     .inA(CSA),
+     .inB(CSB),
+     .inC(CSC),
+-    .out(CSVotedB),
++    .out({CSVotedB}),
+     .tmrErr(CSTmrErrorB)
+   );
+ 
+@@ -1691,7 +1705,7 @@ majorityVoter #(.WIDTH(2)) CSVoterC (
+     .inA(CSA),
+     .inB(CSB),
+     .inC(CSC),
+-    .out(CSVotedC),
++    .out({CSVotedC}),
+     .tmrErr(CSTmrErrorC)
+   );
+ 

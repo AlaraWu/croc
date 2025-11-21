@@ -56,6 +56,8 @@ module spill_register_flushable #(
         a_data_q <= T'('0);
       else if (a_fill)
         a_data_q <= data_i;
+      else
+        a_data_q <= a_data_qVoted;
     end
 
     always_ff @(posedge clk_i or negedge rst_ni) begin : ps_a_full
@@ -63,6 +65,8 @@ module spill_register_flushable #(
         a_full_q <= 0;
       else if (a_fill || a_drain)
         a_full_q <= a_fill;
+      else
+        a_full_q <= a_full_qVoted;
     end
 
 
@@ -71,6 +75,8 @@ module spill_register_flushable #(
         b_data_q <= T'('0);
       else if (b_fill)
         b_data_q <= a_data_qVoted;
+      else
+        b_data_q <= b_data_qVoted;
     end
 
     always_ff @(posedge clk_i or negedge rst_ni) begin : ps_b_full
@@ -78,6 +84,8 @@ module spill_register_flushable #(
         b_full_q <= 0;
       else if (b_fill || b_drain)
         b_full_q <= b_fill;
+      else
+        b_full_q <= b_full_qVoted;
     end
 
     // Fill the A register when the A or B register is empty. Drain the A register

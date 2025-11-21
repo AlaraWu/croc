@@ -6,7 +6,7 @@
  *                                                                                                  *
  * user    : chenwu                                                                                 *
  * host    : badwater.ee.ethz.ch                                                                    *
- * date    : 12/11/2025 14:57:18                                                                    *
+ * date    : 21/11/2025 17:11:25                                                                    *
  *                                                                                                  *
  * workdir : /scratch/chenwu/tmrg_croc                                                              *
  * cmd     : /scratch/chenwu/tmrg/venv/bin/tmrg tmrg_src/addr_decode.sv tmrg_src/addr_decode_dync.sv *
@@ -18,7 +18,7 @@
  *           tmrg_src/spill_register.sv tmrg_src/spill_register_flushable.sv tmrg_src/obi_uart.sv   *
  *           tmrg_src/obi_uart_baudgen.sv tmrg_src/counter.sv tmrg_src/obi_uart_interrupts.sv       *
  *           tmrg_src/obi_uart_modem.sv tmrg_src/obi_uart_register.sv tmrg_src/obi_uart_rx.sv       *
- *           tmrg_src/obi_uart_tx.sv tmrg_src/obi_sram_shim.sv tmrg_src/gpio.sv                     *
+ *           tmrg_src/obi_uart_tx.sv tmrg_src/obi_cut.sv tmrg_src/obi_sram_shim.sv tmrg_src/gpio.sv *
  *           tmrg_src/gpio_reg_top.sv tmrg_src/sync.sv tmrg_src/dmi_jtag.sv tmrg_src/dm_obi_top.sv  *
  *           tmrg_src/core_wrap.sv tmrg_src/cve2_core.sv tmrg_src/cve2_cs_registers.sv              *
  *           tmrg_src/cve2_counter.sv tmrg_src/cve2_csr.sv tmrg_src/cve2_ex_block.sv                *
@@ -32,10 +32,10 @@
  * tmrg rev: b94addac7490a9efad5a56e12a3ab232d01f4c92                                               *
  *                                                                                                  *
  * src file: tmrg_src/cve2_load_store_unit.sv                                                       *
- *           Git SHA           : 513877024c58ce622d9f33836c5b6fe0e7ba47dc ( M tmrg_src/cve2_load_store_unit.sv) *
- *           Modification time : 2025-11-12 14:35:26.225271                                         *
- *           File Size         : 18411                                                              *
- *           MD5 hash          : c9b905077ce1f72a02af3a04fef392ac                                   *
+ *           Git SHA           : 447415eb81dc2b4b7207859bd13a526ebb52ed0b                           *
+ *           Modification time : 2025-11-21 16:42:19.886487                                         *
+ *           File Size         : 18715                                                              *
+ *           MD5 hash          : b3a34f6baa576aadb80e4fdcab79cbde                                   *
  *                                                                                                  *
  ****************************************************************************************************/
 
@@ -495,7 +495,10 @@ always_ff @( posedge clk_iA or negedge rst_niA )
         begin
           rdata_qA <= data_rdata_iA[31:8];
         end
-
+      else
+        begin
+          rdata_qA <= rdata_qVotedA;
+        end
   end
 
 always_ff @( posedge clk_iB or negedge rst_niB )
@@ -509,7 +512,10 @@ always_ff @( posedge clk_iB or negedge rst_niB )
         begin
           rdata_qB <= data_rdata_iB[31:8];
         end
-
+      else
+        begin
+          rdata_qB <= rdata_qVotedB;
+        end
   end
 
 always_ff @( posedge clk_iC or negedge rst_niC )
@@ -523,7 +529,10 @@ always_ff @( posedge clk_iC or negedge rst_niC )
         begin
           rdata_qC <= data_rdata_iC[31:8];
         end
-
+      else
+        begin
+          rdata_qC <= rdata_qVotedC;
+        end
   end
 
 always_ff @( posedge clk_iA or negedge rst_niA )
@@ -543,7 +552,13 @@ always_ff @( posedge clk_iA or negedge rst_niA )
           data_sign_ext_qA <= lsu_sign_ext_iA;
           data_we_qA <= lsu_we_iA;
         end
-
+      else
+        begin
+          rdata_offset_qA <= rdata_offset_qVotedA;
+          data_type_qA <= data_type_qVotedA;
+          data_sign_ext_qA <= data_sign_ext_qVotedA;
+          data_we_qA <= data_we_qVotedA;
+        end
   end
 
 always_ff @( posedge clk_iB or negedge rst_niB )
@@ -563,7 +578,13 @@ always_ff @( posedge clk_iB or negedge rst_niB )
           data_sign_ext_qB <= lsu_sign_ext_iB;
           data_we_qB <= lsu_we_iB;
         end
-
+      else
+        begin
+          rdata_offset_qB <= rdata_offset_qVotedB;
+          data_type_qB <= data_type_qVotedB;
+          data_sign_ext_qB <= data_sign_ext_qVotedB;
+          data_we_qB <= data_we_qVotedB;
+        end
   end
 
 always_ff @( posedge clk_iC or negedge rst_niC )
@@ -583,7 +604,13 @@ always_ff @( posedge clk_iC or negedge rst_niC )
           data_sign_ext_qC <= lsu_sign_ext_iC;
           data_we_qC <= lsu_we_iC;
         end
-
+      else
+        begin
+          rdata_offset_qC <= rdata_offset_qVotedC;
+          data_type_qC <= data_type_qVotedC;
+          data_sign_ext_qC <= data_sign_ext_qVotedC;
+          data_we_qC <= data_we_qVotedC;
+        end
   end
 assign addr_last_dA = addr_incr_req_oA ? data_addr_w_alignedA : data_addrA;
 assign addr_last_dB = addr_incr_req_oB ? data_addr_w_alignedB : data_addrB;
@@ -600,7 +627,10 @@ always_ff @( posedge clk_iA or negedge rst_niA )
         begin
           addr_last_qA <= addr_last_dA;
         end
-
+      else
+        begin
+          addr_last_qA <= addr_last_qVotedA;
+        end
   end
 
 always_ff @( posedge clk_iB or negedge rst_niB )
@@ -614,7 +644,10 @@ always_ff @( posedge clk_iB or negedge rst_niB )
         begin
           addr_last_qB <= addr_last_dB;
         end
-
+      else
+        begin
+          addr_last_qB <= addr_last_qVotedB;
+        end
   end
 
 always_ff @( posedge clk_iC or negedge rst_niC )
@@ -628,7 +661,10 @@ always_ff @( posedge clk_iC or negedge rst_niC )
         begin
           addr_last_qC <= addr_last_dC;
         end
-
+      else
+        begin
+          addr_last_qC <= addr_last_qVotedC;
+        end
   end
 
 always_comb

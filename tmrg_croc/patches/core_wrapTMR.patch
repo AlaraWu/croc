@@ -1,0 +1,17 @@
+diff --git a/tmrg_files/core_wrapTMR.sv b/tmrg_files/core_wrapTMR.sv
+index dee2152..f52cd3e 100644
+--- a/tmrg_files/core_wrapTMR.sv
++++ b/tmrg_files/core_wrapTMR.sv
+@@ -119,9 +119,9 @@ module core_wrapTMR import croc_pkg::*; (
+   output tmrErrorB,
+   output tmrErrorC
+ );
+-wor i_ibextmrErrorC;
+-wor i_ibextmrErrorB;
+-wor i_ibextmrErrorA;
++wire i_ibextmrErrorC;
++wire i_ibextmrErrorB;
++wire i_ibextmrErrorA;
+ logic [31:0] ibex_boot_addrA;
+ logic [31:0] ibex_boot_addrB;
+ logic [31:0] ibex_boot_addrC;

@@ -1,0 +1,74 @@
+diff --git a/tmrg_files/obi_uart_txTMR.sv b/tmrg_files/obi_uart_txTMR.sv
+index 3037fa8..5bb10a6 100644
+--- a/tmrg_files/obi_uart_txTMR.sv
++++ b/tmrg_files/obi_uart_txTMR.sv
+@@ -67,24 +67,24 @@ module obi_uart_txTMR (
+   output tmrErrorC
+ );
+ import obi_uart_pkg::*;
+-wor txd_qTmrErrorC;
+-wor tsr_qTmrErrorC;
+-wor tsr_count_qTmrErrorC;
+-wor thr_full_qTmrErrorC;
+-wor state_qTmrErrorC;
+-wor i_fifo_v3tmrErrorC;
+-wor txd_qTmrErrorB;
+-wor tsr_qTmrErrorB;
+-wor tsr_count_qTmrErrorB;
+-wor thr_full_qTmrErrorB;
+-wor state_qTmrErrorB;
+-wor i_fifo_v3tmrErrorB;
+-wor txd_qTmrErrorA;
+-wor tsr_qTmrErrorA;
+-wor tsr_count_qTmrErrorA;
+-wor thr_full_qTmrErrorA;
+-wor state_qTmrErrorA;
+-wor i_fifo_v3tmrErrorA;
++wire txd_qTmrErrorC;
++wire tsr_qTmrErrorC;
++wire tsr_count_qTmrErrorC;
++wire thr_full_qTmrErrorC;
++wire state_qTmrErrorC;
++wire i_fifo_v3tmrErrorC;
++wire txd_qTmrErrorB;
++wire tsr_qTmrErrorB;
++wire tsr_count_qTmrErrorB;
++wire thr_full_qTmrErrorB;
++wire state_qTmrErrorB;
++wire i_fifo_v3tmrErrorB;
++wire txd_qTmrErrorA;
++wire tsr_qTmrErrorA;
++wire tsr_count_qTmrErrorA;
++wire thr_full_qTmrErrorA;
++wire state_qTmrErrorA;
++wire i_fifo_v3tmrErrorA;
+ logic fifo_clearA;
+ logic fifo_clearB;
+ logic fifo_clearC;
+@@ -990,7 +990,7 @@ majorityVoter #(.WIDTH( ($size(state_qVotedA)) )) state_qVoterA (
+     .inA(state_qA),
+     .inB(state_qB),
+     .inC(state_qC),
+-    .out(state_qVotedA),
++    .out({state_qVotedA}),
+     .tmrErr(state_qTmrErrorA)
+   );
+ 
+@@ -1031,7 +1031,7 @@ majorityVoter #(.WIDTH( ($size(state_qVotedA)) )) state_qVoterB (
+     .inA(state_qA),
+     .inB(state_qB),
+     .inC(state_qC),
+-    .out(state_qVotedB),
++    .out({state_qVotedB}),
+     .tmrErr(state_qTmrErrorB)
+   );
+ 
+@@ -1072,7 +1072,7 @@ majorityVoter #(.WIDTH( ($size(state_qVotedA)) )) state_qVoterC (
+     .inA(state_qA),
+     .inB(state_qB),
+     .inC(state_qC),
+-    .out(state_qVotedC),
++    .out({state_qVotedC}),
+     .tmrErr(state_qTmrErrorC)
+   );
+ 

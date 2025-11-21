@@ -6,7 +6,7 @@
  *                                                                                                  *
  * user    : chenwu                                                                                 *
  * host    : badwater.ee.ethz.ch                                                                    *
- * date    : 12/11/2025 14:57:13                                                                    *
+ * date    : 21/11/2025 17:11:19                                                                    *
  *                                                                                                  *
  * workdir : /scratch/chenwu/tmrg_croc                                                              *
  * cmd     : /scratch/chenwu/tmrg/venv/bin/tmrg tmrg_src/addr_decode.sv tmrg_src/addr_decode_dync.sv *
@@ -18,7 +18,7 @@
  *           tmrg_src/spill_register.sv tmrg_src/spill_register_flushable.sv tmrg_src/obi_uart.sv   *
  *           tmrg_src/obi_uart_baudgen.sv tmrg_src/counter.sv tmrg_src/obi_uart_interrupts.sv       *
  *           tmrg_src/obi_uart_modem.sv tmrg_src/obi_uart_register.sv tmrg_src/obi_uart_rx.sv       *
- *           tmrg_src/obi_uart_tx.sv tmrg_src/obi_sram_shim.sv tmrg_src/gpio.sv                     *
+ *           tmrg_src/obi_uart_tx.sv tmrg_src/obi_cut.sv tmrg_src/obi_sram_shim.sv tmrg_src/gpio.sv *
  *           tmrg_src/gpio_reg_top.sv tmrg_src/sync.sv tmrg_src/dmi_jtag.sv tmrg_src/dm_obi_top.sv  *
  *           tmrg_src/core_wrap.sv tmrg_src/cve2_core.sv tmrg_src/cve2_cs_registers.sv              *
  *           tmrg_src/cve2_counter.sv tmrg_src/cve2_csr.sv tmrg_src/cve2_ex_block.sv                *
@@ -32,10 +32,10 @@
  * tmrg rev: b94addac7490a9efad5a56e12a3ab232d01f4c92                                               *
  *                                                                                                  *
  * src file: tmrg_src/cve2_multdiv_fast.sv                                                          *
- *           Git SHA           : 513877024c58ce622d9f33836c5b6fe0e7ba47dc ( M tmrg_src/cve2_multdiv_fast.sv) *
- *           Modification time : 2025-11-12 14:35:26.242271                                         *
- *           File Size         : 18436                                                              *
- *           MD5 hash          : 0183446feefc971566f6240c57ede520                                   *
+ *           Git SHA           : 447415eb81dc2b4b7207859bd13a526ebb52ed0b                           *
+ *           Modification time : 2025-11-21 16:43:46.448330                                         *
+ *           File Size         : 18759                                                              *
+ *           MD5 hash          : 55187466db2ddf52d63070e9820c0499                                   *
  *                                                                                                  *
  ****************************************************************************************************/
 
@@ -282,7 +282,14 @@ always_ff @( posedge clk_iA or negedge rst_niA )
           md_state_qA <= md_state_dA;
           div_by_zero_qA <= div_by_zero_dA;
         end
-
+      else
+        begin
+          div_counter_qA <= div_counter_qVotedA;
+          op_numerator_qA <= op_numerator_qVotedA;
+          op_quotient_qA <= op_quotient_qVotedA;
+          md_state_qA <= md_state_qVotedA;
+          div_by_zero_qA <= div_by_zero_qVotedA;
+        end
   end
 
 always_ff @( posedge clk_iB or negedge rst_niB )
@@ -304,7 +311,14 @@ always_ff @( posedge clk_iB or negedge rst_niB )
           md_state_qB <= md_state_dB;
           div_by_zero_qB <= div_by_zero_dB;
         end
-
+      else
+        begin
+          div_counter_qB <= div_counter_qVotedB;
+          op_numerator_qB <= op_numerator_qVotedB;
+          op_quotient_qB <= op_quotient_qVotedB;
+          md_state_qB <= md_state_qVotedB;
+          div_by_zero_qB <= div_by_zero_qVotedB;
+        end
   end
 
 always_ff @( posedge clk_iC or negedge rst_niC )
@@ -326,7 +340,14 @@ always_ff @( posedge clk_iC or negedge rst_niC )
           md_state_qC <= md_state_dC;
           div_by_zero_qC <= div_by_zero_dC;
         end
-
+      else
+        begin
+          div_counter_qC <= div_counter_qVotedC;
+          op_numerator_qC <= op_numerator_qVotedC;
+          op_quotient_qC <= op_quotient_qVotedC;
+          md_state_qC <= md_state_qVotedC;
+          div_by_zero_qC <= div_by_zero_qVotedC;
+        end
   end
 assign multdiv_enA = mult_en_internalA|div_en_internalA;
 assign multdiv_enB = mult_en_internalB|div_en_internalB;
@@ -649,13 +670,14 @@ logic [33:0] summand3C;
             mult_state_qA <= MULL;
           end
         else
-          begin
-            if (mult_en_internalA)
-              begin
-                mult_state_qA <= mult_state_dA;
-              end
-
-          end
+          if (mult_en_internalA)
+            begin
+              mult_state_qA <= mult_state_dA;
+            end
+          else
+            begin
+              mult_state_qA <= mult_state_qVotedA;
+            end
       end
 
     always_ff @( posedge clk_iB or negedge rst_niB )
@@ -665,13 +687,14 @@ logic [33:0] summand3C;
             mult_state_qB <= MULL;
           end
         else
-          begin
-            if (mult_en_internalB)
-              begin
-                mult_state_qB <= mult_state_dB;
-              end
-
-          end
+          if (mult_en_internalB)
+            begin
+              mult_state_qB <= mult_state_dB;
+            end
+          else
+            begin
+              mult_state_qB <= mult_state_qVotedB;
+            end
       end
 
     always_ff @( posedge clk_iC or negedge rst_niC )
@@ -681,13 +704,14 @@ logic [33:0] summand3C;
             mult_state_qC <= MULL;
           end
         else
-          begin
-            if (mult_en_internalC)
-              begin
-                mult_state_qC <= mult_state_dC;
-              end
-
-          end
+          if (mult_en_internalC)
+            begin
+              mult_state_qC <= mult_state_dC;
+            end
+          else
+            begin
+              mult_state_qC <= mult_state_qVotedC;
+            end
       end
     assign unused_mult1_res_unsA = mult1_res_unsA[33:32];
     assign unused_mult1_res_unsB = mult1_res_unsB[33:32];
@@ -963,13 +987,14 @@ parameter AHBH = 2'b11;
             mult_state_qA <= ALBL;
           end
         else
-          begin
-            if (mult_en_internalA)
-              begin
-                mult_state_qA <= mult_state_dA;
-              end
-
-          end
+          if (mult_en_internalA)
+            begin
+              mult_state_qA <= mult_state_dA;
+            end
+          else
+            begin
+              mult_state_qA <= mult_state_qVotedA;
+            end
       end
 
     always_ff @( posedge clk_iB or negedge rst_niB )
@@ -979,13 +1004,14 @@ parameter AHBH = 2'b11;
             mult_state_qB <= ALBL;
           end
         else
-          begin
-            if (mult_en_internalB)
-              begin
-                mult_state_qB <= mult_state_dB;
-              end
-
-          end
+          if (mult_en_internalB)
+            begin
+              mult_state_qB <= mult_state_dB;
+            end
+          else
+            begin
+              mult_state_qB <= mult_state_qVotedB;
+            end
       end
 
     always_ff @( posedge clk_iC or negedge rst_niC )
@@ -995,13 +1021,14 @@ parameter AHBH = 2'b11;
             mult_state_qC <= ALBL;
           end
         else
-          begin
-            if (mult_en_internalC)
-              begin
-                mult_state_qC <= mult_state_dC;
-              end
-
-          end
+          if (mult_en_internalC)
+            begin
+              mult_state_qC <= mult_state_dC;
+            end
+          else
+            begin
+              mult_state_qC <= mult_state_qVotedC;
+            end
       end
   end
 assign res_adder_hA = alu_adder_ext_iA[32:1];

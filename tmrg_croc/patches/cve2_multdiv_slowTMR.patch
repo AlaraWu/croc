@@ -1,8 +1,8 @@
 diff --git a/tmrg_files/cve2_multdiv_slowTMR.sv b/tmrg_files/cve2_multdiv_slowTMR.sv
-index 28ab459..9c8427e 100644
+index c1e4967..594bebb 100644
 --- a/tmrg_files/cve2_multdiv_slowTMR.sv
 +++ b/tmrg_files/cve2_multdiv_slowTMR.sv
-@@ -108,13 +108,9 @@ module cve2_multdiv_slowTMR (
+@@ -108,37 +108,27 @@ module cve2_multdiv_slowTMR (
    output tmrErrorC
  );
  import cve2_pkg::*;
@@ -13,16 +13,21 @@ index 28ab459..9c8427e 100644
 -parameter MD_LAST = 3'b100;
 -parameter MD_CHANGE_SIGN = 3'b101;
 -parameter MD_FINISH = 3'b110;
-+typedef enum logic [2:0] {
-+  MD_IDLE, MD_ABS_A, MD_ABS_B, MD_COMP, MD_LAST, MD_CHANGE_SIGN, MD_FINISH
-+} md_fsm_e;
- wor op_b_shift_qTmrErrorC;
- wor op_a_shift_qTmrErrorC;
- wor multdiv_count_qTmrErrorC;
-@@ -130,15 +126,9 @@ wor op_a_shift_qTmrErrorA;
- wor multdiv_count_qTmrErrorA;
- wor md_state_qTmrErrorA;
- wor div_by_zero_qTmrErrorA;
+-wor op_b_shift_qTmrErrorC;
+-wor op_a_shift_qTmrErrorC;
+-wor multdiv_count_qTmrErrorC;
+-wor md_state_qTmrErrorC;
+-wor div_by_zero_qTmrErrorC;
+-wor op_b_shift_qTmrErrorB;
+-wor op_a_shift_qTmrErrorB;
+-wor multdiv_count_qTmrErrorB;
+-wor md_state_qTmrErrorB;
+-wor div_by_zero_qTmrErrorB;
+-wor op_b_shift_qTmrErrorA;
+-wor op_a_shift_qTmrErrorA;
+-wor multdiv_count_qTmrErrorA;
+-wor md_state_qTmrErrorA;
+-wor div_by_zero_qTmrErrorA;
 -reg [2:0] md_state_qA;
 -reg [2:0] md_state_qB;
 -reg [2:0] md_state_qC;
@@ -32,6 +37,24 @@ index 28ab459..9c8427e 100644
 -reg [2:0] md_state_qVotedA;
 -reg [2:0] md_state_qVotedB;
 -reg [2:0] md_state_qVotedC;
++typedef enum logic [2:0] {
++  MD_IDLE, MD_ABS_A, MD_ABS_B, MD_COMP, MD_LAST, MD_CHANGE_SIGN, MD_FINISH
++} md_fsm_e;
++wire op_b_shift_qTmrErrorC;
++wire op_a_shift_qTmrErrorC;
++wire multdiv_count_qTmrErrorC;
++wire md_state_qTmrErrorC;
++wire div_by_zero_qTmrErrorC;
++wire op_b_shift_qTmrErrorB;
++wire op_a_shift_qTmrErrorB;
++wire multdiv_count_qTmrErrorB;
++wire md_state_qTmrErrorB;
++wire div_by_zero_qTmrErrorB;
++wire op_b_shift_qTmrErrorA;
++wire op_a_shift_qTmrErrorA;
++wire multdiv_count_qTmrErrorA;
++wire md_state_qTmrErrorA;
++wire div_by_zero_qTmrErrorA;
 +md_fsm_e md_state_qA, md_state_dA, md_state_qVotedA;
 +md_fsm_e md_state_qB, md_state_dB, md_state_qVotedB;
 +md_fsm_e md_state_qC, md_state_dC, md_state_qVotedC;

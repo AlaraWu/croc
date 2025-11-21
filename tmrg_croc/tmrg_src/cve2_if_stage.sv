@@ -283,6 +283,15 @@ module cve2_if_stage import cve2_pkg::*; #(
       instr_is_compressed_id_q <= instr_is_compressed;
       illegal_c_insn_id_q      <= illegal_c_insn;
       pc_id_q                  <= pc_if_o;
+    end else begin
+      instr_rdata_id_q         <= instr_rdata_id_qVoted;
+      instr_rdata_alu_id_q     <= instr_rdata_alu_id_qVoted;
+      instr_fetch_err_q        <= instr_fetch_err_qVoted;
+      instr_fetch_err_plus2_q  <= instr_fetch_err_plus2_qVoted;
+      instr_rdata_c_id_q       <= instr_rdata_c_id_qVoted;
+      instr_is_compressed_id_q <= instr_is_compressed_id_qVoted;
+      illegal_c_insn_id_q      <= illegal_c_insn_id_qVoted;
+      pc_id_q                  <= pc_id_qVoted;
     end
   end
 

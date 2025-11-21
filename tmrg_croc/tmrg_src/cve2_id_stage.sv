@@ -310,6 +310,8 @@ module cve2_id_stage #(
         imd_val_q[i] <= '0;
       end else if (imd_val_we_ex_i[i]) begin
         imd_val_q[i] <= imd_val_d_ex_i[i];
+      end else begin
+        imd_val_q[i] <= imd_val_qVoted[i];
       end
     end
   end
@@ -618,6 +620,8 @@ reg id_fsm_q, id_fsm_d, id_fsm_qVoted;
       id_fsm_q <= FIRST_CYCLE;
     end else if (instr_executing) begin
       id_fsm_q <= id_fsm_d;
+    end else begin
+      id_fsm_q <= id_fsm_qVoted;
     end
   end
 

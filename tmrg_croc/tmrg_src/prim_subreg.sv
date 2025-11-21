@@ -65,6 +65,8 @@ module prim_subreg #(
       q <= RESVAL;
     end else if (wr_en) begin
       q <= wr_data;
+    end else begin
+      q <= qVoted;
     end
   end
 

@@ -1,5 +1,5 @@
 diff --git a/tmrg_files/fifo_v3TMR.sv b/tmrg_files/fifo_v3TMR.sv
-index 17a298a..d8366e1 100644
+index 31a5768..6b42d94 100644
 --- a/tmrg_files/fifo_v3TMR.sv
 +++ b/tmrg_files/fifo_v3TMR.sv
 @@ -43,6 +43,7 @@ module fifo_v3TMR #(
@@ -10,8 +10,39 @@ index 17a298a..d8366e1 100644
    parameter int unsigned ADDR_DEPTH = (DEPTH>1) ? $clog2(DEPTH) : 1
  ) (
    input logic clk_iA,
-@@ -409,7 +410,7 @@ always_ff @( posedge clk_iC or negedge rst_niC )
- 
+@@ -83,18 +84,18 @@ module fifo_v3TMR #(
+   output tmrErrorC
+ );
+ localparam int unsigned FifoDepth = (DEPTH>0) ? DEPTH : 1;
+-wor write_pointer_qTmrErrorC;
+-wor status_cnt_qTmrErrorC;
+-wor read_pointer_qTmrErrorC;
+-wor mem_qTmrErrorC;
+-wor write_pointer_qTmrErrorB;
+-wor status_cnt_qTmrErrorB;
+-wor read_pointer_qTmrErrorB;
+-wor mem_qTmrErrorB;
+-wor write_pointer_qTmrErrorA;
+-wor status_cnt_qTmrErrorA;
+-wor read_pointer_qTmrErrorA;
+-wor mem_qTmrErrorA;
++wire write_pointer_qTmrErrorC;
++wire status_cnt_qTmrErrorC;
++wire read_pointer_qTmrErrorC;
++wire mem_qTmrErrorC;
++wire write_pointer_qTmrErrorB;
++wire status_cnt_qTmrErrorB;
++wire read_pointer_qTmrErrorB;
++wire mem_qTmrErrorB;
++wire write_pointer_qTmrErrorA;
++wire status_cnt_qTmrErrorA;
++wire read_pointer_qTmrErrorA;
++wire mem_qTmrErrorA;
+ logic gate_clockA;
+ logic gate_clockB;
+ logic gate_clockC;
+@@ -418,7 +419,7 @@ always_ff @( posedge clk_iC or negedge rst_niC )
+         end
    end
  
 -majorityVoter #(.WIDTH( ($size(mem_qVotedA))  *  ((((FifoDepth-1)>0) ? (FifoDepth-1) : - ( FifoDepth-1 ) )+1) )) mem_qVoterA (
@@ -19,7 +50,7 @@ index 17a298a..d8366e1 100644
      .inA(mem_qA),
      .inB(mem_qB),
      .inC(mem_qC),
-@@ -442,7 +443,7 @@ majorityVoter #(.WIDTH( ((((ADDR_DEPTH-1)>0) ? (ADDR_DEPTH-1) : - ( ADDR_DEPTH-1
+@@ -451,7 +452,7 @@ majorityVoter #(.WIDTH( ((((ADDR_DEPTH-1)>0) ? (ADDR_DEPTH-1) : - ( ADDR_DEPTH-1
    );
  assign tmrErrorA = mem_qTmrErrorA|read_pointer_qTmrErrorA|status_cnt_qTmrErrorA|write_pointer_qTmrErrorA;
  
@@ -28,7 +59,7 @@ index 17a298a..d8366e1 100644
      .inA(mem_qA),
      .inB(mem_qB),
      .inC(mem_qC),
-@@ -475,7 +476,7 @@ majorityVoter #(.WIDTH( ((((ADDR_DEPTH-1)>0) ? (ADDR_DEPTH-1) : - ( ADDR_DEPTH-1
+@@ -484,7 +485,7 @@ majorityVoter #(.WIDTH( ((((ADDR_DEPTH-1)>0) ? (ADDR_DEPTH-1) : - ( ADDR_DEPTH-1
    );
  assign tmrErrorB = mem_qTmrErrorB|read_pointer_qTmrErrorB|status_cnt_qTmrErrorB|write_pointer_qTmrErrorB;
  

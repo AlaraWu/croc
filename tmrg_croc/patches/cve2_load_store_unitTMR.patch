@@ -1,8 +1,8 @@
 diff --git a/tmrg_files/cve2_load_store_unitTMR.sv b/tmrg_files/cve2_load_store_unitTMR.sv
-index 1aba8eb..0f47dca 100644
+index 0438ea5..fd7569b 100644
 --- a/tmrg_files/cve2_load_store_unitTMR.sv
 +++ b/tmrg_files/cve2_load_store_unitTMR.sv
-@@ -128,11 +128,10 @@ module cve2_load_store_unitTMR (
+@@ -128,41 +128,40 @@ module cve2_load_store_unitTMR (
    output tmrErrorB,
    output tmrErrorC
  );
@@ -11,13 +11,73 @@ index 1aba8eb..0f47dca 100644
 -parameter WAIT_RVALID_MIS = 3'b010;
 -parameter WAIT_GNT = 3'b011;
 -parameter WAIT_RVALID_MIS_GNTS_DONE = 3'b100;
+-wor rdata_qTmrErrorC;
+-wor rdata_offset_qTmrErrorC;
+-wor pmp_err_qTmrErrorC;
+-wor lsu_err_qTmrErrorC;
+-wor ls_fsm_csTmrErrorC;
+-wor handle_misaligned_qTmrErrorC;
+-wor data_we_qTmrErrorC;
+-wor data_type_qTmrErrorC;
+-wor data_sign_ext_qTmrErrorC;
+-wor addr_last_qTmrErrorC;
+-wor rdata_qTmrErrorB;
+-wor rdata_offset_qTmrErrorB;
+-wor pmp_err_qTmrErrorB;
+-wor lsu_err_qTmrErrorB;
+-wor ls_fsm_csTmrErrorB;
+-wor handle_misaligned_qTmrErrorB;
+-wor data_we_qTmrErrorB;
+-wor data_type_qTmrErrorB;
+-wor data_sign_ext_qTmrErrorB;
+-wor addr_last_qTmrErrorB;
+-wor rdata_qTmrErrorA;
+-wor rdata_offset_qTmrErrorA;
+-wor pmp_err_qTmrErrorA;
+-wor lsu_err_qTmrErrorA;
+-wor ls_fsm_csTmrErrorA;
+-wor handle_misaligned_qTmrErrorA;
+-wor data_we_qTmrErrorA;
+-wor data_type_qTmrErrorA;
+-wor data_sign_ext_qTmrErrorA;
+-wor addr_last_qTmrErrorA;
 +typedef enum logic [2:0]  {
 +  IDLE, WAIT_GNT_MIS, WAIT_RVALID_MIS, WAIT_GNT,
 +  WAIT_RVALID_MIS_GNTS_DONE
 +} ls_fsm_e;
- wor rdata_qTmrErrorC;
- wor rdata_offset_qTmrErrorC;
- wor pmp_err_qTmrErrorC;
++wire rdata_qTmrErrorC;
++wire rdata_offset_qTmrErrorC;
++wire pmp_err_qTmrErrorC;
++wire lsu_err_qTmrErrorC;
++wire ls_fsm_csTmrErrorC;
++wire handle_misaligned_qTmrErrorC;
++wire data_we_qTmrErrorC;
++wire data_type_qTmrErrorC;
++wire data_sign_ext_qTmrErrorC;
++wire addr_last_qTmrErrorC;
++wire rdata_qTmrErrorB;
++wire rdata_offset_qTmrErrorB;
++wire pmp_err_qTmrErrorB;
++wire lsu_err_qTmrErrorB;
++wire ls_fsm_csTmrErrorB;
++wire handle_misaligned_qTmrErrorB;
++wire data_we_qTmrErrorB;
++wire data_type_qTmrErrorB;
++wire data_sign_ext_qTmrErrorB;
++wire addr_last_qTmrErrorB;
++wire rdata_qTmrErrorA;
++wire rdata_offset_qTmrErrorA;
++wire pmp_err_qTmrErrorA;
++wire lsu_err_qTmrErrorA;
++wire ls_fsm_csTmrErrorA;
++wire handle_misaligned_qTmrErrorA;
++wire data_we_qTmrErrorA;
++wire data_type_qTmrErrorA;
++wire data_sign_ext_qTmrErrorA;
++wire addr_last_qTmrErrorA;
+ logic [31:0] data_addrA;
+ logic [31:0] data_addrB;
+ logic [31:0] data_addrC;
 @@ -271,15 +270,9 @@ logic lsu_err_qVotedC;
  logic data_or_pmp_errA;
  logic data_or_pmp_errB;
@@ -37,3 +97,30 @@ index 1aba8eb..0f47dca 100644
  assign data_addrA = adder_result_ex_iA;
  assign data_addrB = adder_result_ex_iB;
  assign data_addrC = adder_result_ex_iC;
+@@ -1501,7 +1494,7 @@ majorityVoter #(.WIDTH(3)) ls_fsm_csVoterA (
+     .inA(ls_fsm_csA),
+     .inB(ls_fsm_csB),
+     .inC(ls_fsm_csC),
+-    .out(ls_fsm_csVotedA),
++    .out({ls_fsm_csVotedA}),
+     .tmrErr(ls_fsm_csTmrErrorA)
+   );
+ 
+@@ -1582,7 +1575,7 @@ majorityVoter #(.WIDTH(3)) ls_fsm_csVoterB (
+     .inA(ls_fsm_csA),
+     .inB(ls_fsm_csB),
+     .inC(ls_fsm_csC),
+-    .out(ls_fsm_csVotedB),
++    .out({ls_fsm_csVotedB}),
+     .tmrErr(ls_fsm_csTmrErrorB)
+   );
+ 
+@@ -1663,7 +1656,7 @@ majorityVoter #(.WIDTH(3)) ls_fsm_csVoterC (
+     .inA(ls_fsm_csA),
+     .inB(ls_fsm_csB),
+     .inC(ls_fsm_csC),
+-    .out(ls_fsm_csVotedC),
++    .out({ls_fsm_csVotedC}),
+     .tmrErr(ls_fsm_csTmrErrorC)
+   );
+ 

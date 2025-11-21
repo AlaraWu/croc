@@ -1,0 +1,128 @@
+diff --git a/tmrg_files/obi_uart_rxTMR.sv b/tmrg_files/obi_uart_rxTMR.sv
+index 70f55d0..a731726 100644
+--- a/tmrg_files/obi_uart_rxTMR.sv
++++ b/tmrg_files/obi_uart_rxTMR.sv
+@@ -71,51 +71,51 @@ module obi_uart_rxTMR import obi_uart_pkg::*; (
+   output tmrErrorB,
+   output tmrErrorC
+ );
+-wor timing_bit_center_qTmrErrorC;
+-wor timeout_count_qTmrErrorC;
+-wor state_qTmrErrorC;
+-wor rsr_qTmrErrorC;
+-wor rhr_full_qTmrErrorC;
+-wor parity_err_qTmrErrorC;
+-wor i_synctmrErrorC;
+-wor i_fifo_v3tmrErrorC;
+-wor i_countertmrErrorC;
+-wor high_count_qTmrErrorC;
+-wor framing_err_qTmrErrorC;
+-wor filtered_rxd_qTmrErrorC;
+-wor fifo_error_index_qTmrErrorC;
+-wor break_qTmrErrorC;
+-wor bitcount_qTmrErrorC;
+-wor timing_bit_center_qTmrErrorB;
+-wor timeout_count_qTmrErrorB;
+-wor state_qTmrErrorB;
+-wor rsr_qTmrErrorB;
+-wor rhr_full_qTmrErrorB;
+-wor parity_err_qTmrErrorB;
+-wor i_synctmrErrorB;
+-wor i_fifo_v3tmrErrorB;
+-wor i_countertmrErrorB;
+-wor high_count_qTmrErrorB;
+-wor framing_err_qTmrErrorB;
+-wor filtered_rxd_qTmrErrorB;
+-wor fifo_error_index_qTmrErrorB;
+-wor break_qTmrErrorB;
+-wor bitcount_qTmrErrorB;
+-wor timing_bit_center_qTmrErrorA;
+-wor timeout_count_qTmrErrorA;
+-wor state_qTmrErrorA;
+-wor rsr_qTmrErrorA;
+-wor rhr_full_qTmrErrorA;
+-wor parity_err_qTmrErrorA;
+-wor i_synctmrErrorA;
+-wor i_fifo_v3tmrErrorA;
+-wor i_countertmrErrorA;
+-wor high_count_qTmrErrorA;
+-wor framing_err_qTmrErrorA;
+-wor filtered_rxd_qTmrErrorA;
+-wor fifo_error_index_qTmrErrorA;
+-wor break_qTmrErrorA;
+-wor bitcount_qTmrErrorA;
++wire timing_bit_center_qTmrErrorC;
++wire timeout_count_qTmrErrorC;
++wire state_qTmrErrorC;
++wire rsr_qTmrErrorC;
++wire rhr_full_qTmrErrorC;
++wire parity_err_qTmrErrorC;
++wire i_synctmrErrorC;
++wire i_fifo_v3tmrErrorC;
++wire i_countertmrErrorC;
++wire high_count_qTmrErrorC;
++wire framing_err_qTmrErrorC;
++wire filtered_rxd_qTmrErrorC;
++wire fifo_error_index_qTmrErrorC;
++wire break_qTmrErrorC;
++wire bitcount_qTmrErrorC;
++wire timing_bit_center_qTmrErrorB;
++wire timeout_count_qTmrErrorB;
++wire state_qTmrErrorB;
++wire rsr_qTmrErrorB;
++wire rhr_full_qTmrErrorB;
++wire parity_err_qTmrErrorB;
++wire i_synctmrErrorB;
++wire i_fifo_v3tmrErrorB;
++wire i_countertmrErrorB;
++wire high_count_qTmrErrorB;
++wire framing_err_qTmrErrorB;
++wire filtered_rxd_qTmrErrorB;
++wire fifo_error_index_qTmrErrorB;
++wire break_qTmrErrorB;
++wire bitcount_qTmrErrorB;
++wire timing_bit_center_qTmrErrorA;
++wire timeout_count_qTmrErrorA;
++wire state_qTmrErrorA;
++wire rsr_qTmrErrorA;
++wire rhr_full_qTmrErrorA;
++wire parity_err_qTmrErrorA;
++wire i_synctmrErrorA;
++wire i_fifo_v3tmrErrorA;
++wire i_countertmrErrorA;
++wire high_count_qTmrErrorA;
++wire framing_err_qTmrErrorA;
++wire filtered_rxd_qTmrErrorA;
++wire fifo_error_index_qTmrErrorA;
++wire break_qTmrErrorA;
++wire bitcount_qTmrErrorA;
+ logic timing_bit_center_qA;
+ logic timing_bit_center_qB;
+ logic timing_bit_center_qC;
+@@ -1981,7 +1981,7 @@ majorityVoter #(.WIDTH( ($size(state_qVotedA)) )) state_qVoterA (
+     .inA(state_qA),
+     .inB(state_qB),
+     .inC(state_qC),
+-    .out(state_qVotedA),
++    .out({state_qVotedA}),
+     .tmrErr(state_qTmrErrorA)
+   );
+ 
+@@ -2078,7 +2078,7 @@ majorityVoter #(.WIDTH( ($size(state_qVotedA)) )) state_qVoterB (
+     .inA(state_qA),
+     .inB(state_qB),
+     .inC(state_qC),
+-    .out(state_qVotedB),
++    .out({state_qVotedB}),
+     .tmrErr(state_qTmrErrorB)
+   );
+ 
+@@ -2175,7 +2175,7 @@ majorityVoter #(.WIDTH( ($size(state_qVotedA)) )) state_qVoterC (
+     .inA(state_qA),
+     .inB(state_qB),
+     .inC(state_qC),
+-    .out(state_qVotedC),
++    .out({state_qVotedC}),
+     .tmrErr(state_qTmrErrorC)
+   );
+ 

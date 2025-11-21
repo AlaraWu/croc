@@ -6,7 +6,7 @@
  *                                                                                                  *
  * user    : chenwu                                                                                 *
  * host    : badwater.ee.ethz.ch                                                                    *
- * date    : 12/11/2025 14:57:06                                                                    *
+ * date    : 21/11/2025 17:11:12                                                                    *
  *                                                                                                  *
  * workdir : /scratch/chenwu/tmrg_croc                                                              *
  * cmd     : /scratch/chenwu/tmrg/venv/bin/tmrg tmrg_src/addr_decode.sv tmrg_src/addr_decode_dync.sv *
@@ -18,7 +18,7 @@
  *           tmrg_src/spill_register.sv tmrg_src/spill_register_flushable.sv tmrg_src/obi_uart.sv   *
  *           tmrg_src/obi_uart_baudgen.sv tmrg_src/counter.sv tmrg_src/obi_uart_interrupts.sv       *
  *           tmrg_src/obi_uart_modem.sv tmrg_src/obi_uart_register.sv tmrg_src/obi_uart_rx.sv       *
- *           tmrg_src/obi_uart_tx.sv tmrg_src/obi_sram_shim.sv tmrg_src/gpio.sv                     *
+ *           tmrg_src/obi_uart_tx.sv tmrg_src/obi_cut.sv tmrg_src/obi_sram_shim.sv tmrg_src/gpio.sv *
  *           tmrg_src/gpio_reg_top.sv tmrg_src/sync.sv tmrg_src/dmi_jtag.sv tmrg_src/dm_obi_top.sv  *
  *           tmrg_src/core_wrap.sv tmrg_src/cve2_core.sv tmrg_src/cve2_cs_registers.sv              *
  *           tmrg_src/cve2_counter.sv tmrg_src/cve2_csr.sv tmrg_src/cve2_ex_block.sv                *
@@ -32,10 +32,10 @@
  * tmrg rev: b94addac7490a9efad5a56e12a3ab232d01f4c92                                               *
  *                                                                                                  *
  * src file: tmrg_src/fifo_v3.sv                                                                    *
- *           Git SHA           : 513877024c58ce622d9f33836c5b6fe0e7ba47dc                           *
- *           Modification time : 2025-11-12 14:35:26.385273                                         *
- *           File Size         : 6313                                                               *
- *           MD5 hash          : ea5763592545bce1a265de24cf2438bc                                   *
+ *           Git SHA           : 447415eb81dc2b4b7207859bd13a526ebb52ed0b                           *
+ *           Modification time : 2025-11-21 16:45:24.249282                                         *
+ *           File Size         : 6369                                                               *
+ *           MD5 hash          : 5f82663a10a75b5c12be9fdcbfbcbca3                                   *
  *                                                                                                  *
  ****************************************************************************************************/
 
@@ -379,7 +379,10 @@ always_ff @( posedge clk_iA or negedge rst_niA )
         begin
           mem_qA <= mem_nA;
         end
-
+      else
+        begin
+          mem_qA <= mem_qVotedA;
+        end
   end
 
 always_ff @( posedge clk_iB or negedge rst_niB )
@@ -393,7 +396,10 @@ always_ff @( posedge clk_iB or negedge rst_niB )
         begin
           mem_qB <= mem_nB;
         end
-
+      else
+        begin
+          mem_qB <= mem_qVotedB;
+        end
   end
 
 always_ff @( posedge clk_iC or negedge rst_niC )
@@ -407,7 +413,10 @@ always_ff @( posedge clk_iC or negedge rst_niC )
         begin
           mem_qC <= mem_nC;
         end
-
+      else
+        begin
+          mem_qC <= mem_qVotedC;
+        end
   end
 
 majorityVoter #(.WIDTH( $size(dtype)*FifoDepth)) mem_qVoterA (

@@ -6,7 +6,7 @@
  *                                                                                                  *
  * user    : chenwu                                                                                 *
  * host    : badwater.ee.ethz.ch                                                                    *
- * date    : 12/11/2025 14:57:11                                                                    *
+ * date    : 21/11/2025 17:11:17                                                                    *
  *                                                                                                  *
  * workdir : /scratch/chenwu/tmrg_croc                                                              *
  * cmd     : /scratch/chenwu/tmrg/venv/bin/tmrg tmrg_src/addr_decode.sv tmrg_src/addr_decode_dync.sv *
@@ -18,7 +18,7 @@
  *           tmrg_src/spill_register.sv tmrg_src/spill_register_flushable.sv tmrg_src/obi_uart.sv   *
  *           tmrg_src/obi_uart_baudgen.sv tmrg_src/counter.sv tmrg_src/obi_uart_interrupts.sv       *
  *           tmrg_src/obi_uart_modem.sv tmrg_src/obi_uart_register.sv tmrg_src/obi_uart_rx.sv       *
- *           tmrg_src/obi_uart_tx.sv tmrg_src/obi_sram_shim.sv tmrg_src/gpio.sv                     *
+ *           tmrg_src/obi_uart_tx.sv tmrg_src/obi_cut.sv tmrg_src/obi_sram_shim.sv tmrg_src/gpio.sv *
  *           tmrg_src/gpio_reg_top.sv tmrg_src/sync.sv tmrg_src/dmi_jtag.sv tmrg_src/dm_obi_top.sv  *
  *           tmrg_src/core_wrap.sv tmrg_src/cve2_core.sv tmrg_src/cve2_cs_registers.sv              *
  *           tmrg_src/cve2_counter.sv tmrg_src/cve2_csr.sv tmrg_src/cve2_ex_block.sv                *
@@ -32,10 +32,10 @@
  * tmrg rev: b94addac7490a9efad5a56e12a3ab232d01f4c92                                               *
  *                                                                                                  *
  * src file: tmrg_src/cve2_csr.sv                                                                   *
- *           Git SHA           : 513877024c58ce622d9f33836c5b6fe0e7ba47dc ( M tmrg_src/cve2_csr.sv) *
- *           Modification time : 2025-11-12 14:35:26.127270                                         *
- *           File Size         : 1452                                                               *
- *           MD5 hash          : 826433613eada94d8a2f896e9142f452                                   *
+ *           Git SHA           : 447415eb81dc2b4b7207859bd13a526ebb52ed0b                           *
+ *           Modification time : 2025-11-21 16:38:01.164968                                         *
+ *           File Size         : 1558                                                               *
+ *           MD5 hash          : 10d973e9bde6b08e06ae3d5fa64314b3                                   *
  *                                                                                                  *
  ****************************************************************************************************/
 
@@ -90,7 +90,10 @@ always_ff @( posedge clk_iA or negedge rst_niA )
         begin
           rdata_qA <= wr_data_iA;
         end
-
+      else
+        begin
+          rdata_qA <= rdata_qVotedA;
+        end
   end
 
 always_ff @( posedge clk_iB or negedge rst_niB )
@@ -104,7 +107,10 @@ always_ff @( posedge clk_iB or negedge rst_niB )
         begin
           rdata_qB <= wr_data_iB;
         end
-
+      else
+        begin
+          rdata_qB <= rdata_qVotedB;
+        end
   end
 
 always_ff @( posedge clk_iC or negedge rst_niC )
@@ -118,7 +124,10 @@ always_ff @( posedge clk_iC or negedge rst_niC )
         begin
           rdata_qC <= wr_data_iC;
         end
-
+      else
+        begin
+          rdata_qC <= rdata_qVotedC;
+        end
   end
 assign rd_data_oA = rdata_qVotedA;
 assign rd_data_oB = rdata_qVotedB;
@@ -143,7 +152,10 @@ if (ShadowCopy)
             begin
               shadow_qA <= ~wr_data_iA;
             end
-
+          else
+            begin
+              shadow_qA <= shadow_qVotedA;
+            end
       end
 
     always_ff @( posedge clk_iB or negedge rst_niB )
@@ -157,7 +169,10 @@ if (ShadowCopy)
             begin
               shadow_qB <= ~wr_data_iB;
             end
-
+          else
+            begin
+              shadow_qB <= shadow_qVotedB;
+            end
       end
 
     always_ff @( posedge clk_iC or negedge rst_niC )
@@ -171,7 +186,10 @@ if (ShadowCopy)
             begin
               shadow_qC <= ~wr_data_iC;
             end
-
+          else
+            begin
+              shadow_qC <= shadow_qVotedC;
+            end
       end
     assign rd_error_oA = rdata_qVotedA!=~shadow_qVotedA;
     assign rd_error_oB = rdata_qVotedB!=~shadow_qVotedB;

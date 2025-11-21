@@ -15,3 +15,22 @@ index 8811031..45c8eae 100644
  ) (
    input logic clk_iA,
    input logic clk_iB,
+@@ -70,12 +73,12 @@ module obi_demuxTMR #(
+   output tmrErrorC
+ );
+ localparam int unsigned CounterWidth = cf_math_pkg::idx_width(NumMaxTrans);
+-wor select_qTmrErrorC;
+-wor i_countertmrErrorC;
+-wor select_qTmrErrorB;
+-wor i_countertmrErrorB;
+-wor select_qTmrErrorA;
+-wor i_countertmrErrorA;
++wire select_qTmrErrorC;
++wire i_countertmrErrorC;
++wire select_qTmrErrorB;
++wire i_countertmrErrorB;
++wire select_qTmrErrorA;
++wire i_countertmrErrorA;
+ logic cnt_upA;
+ logic cnt_upB;
+ logic cnt_upC;

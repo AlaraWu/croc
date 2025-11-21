@@ -162,6 +162,8 @@ module cve2_prefetch_buffer #(
       stored_addr_q <= '0;
     end else if (stored_addr_en) begin
       stored_addr_q <= stored_addr_d;
+    end else begin
+      stored_addr_q <= stored_addr_qVoted;
     end
   end
   // 2. fetch_addr_q
@@ -179,6 +181,8 @@ module cve2_prefetch_buffer #(
       fetch_addr_q <= '0;
     end else if (fetch_addr_en) begin
       fetch_addr_q <= fetch_addr_d;
+    end else begin
+      fetch_addr_q <= fetch_addr_qVoted;
     end
   end
 

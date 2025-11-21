@@ -1,0 +1,47 @@
+diff --git a/tmrg_files/cve2_coreTMR.sv b/tmrg_files/cve2_coreTMR.sv
+index ce94b62..9cfa8e1 100644
+--- a/tmrg_files/cve2_coreTMR.sv
++++ b/tmrg_files/cve2_coreTMR.sv
+@@ -148,24 +148,24 @@ module cve2_coreTMR import cve2_pkg::*; #(
+   output tmrErrorC
+ );
+ localparam int unsigned PMP_NUM_CHAN = 3;
+-wor register_file_itmrErrorC;
+-wor load_store_unit_itmrErrorC;
+-wor if_stage_itmrErrorC;
+-wor id_stage_itmrErrorC;
+-wor ex_block_itmrErrorC;
+-wor cs_registers_itmrErrorC;
+-wor register_file_itmrErrorB;
+-wor load_store_unit_itmrErrorB;
+-wor if_stage_itmrErrorB;
+-wor id_stage_itmrErrorB;
+-wor ex_block_itmrErrorB;
+-wor cs_registers_itmrErrorB;
+-wor register_file_itmrErrorA;
+-wor load_store_unit_itmrErrorA;
+-wor if_stage_itmrErrorA;
+-wor id_stage_itmrErrorA;
+-wor ex_block_itmrErrorA;
+-wor cs_registers_itmrErrorA;
++wire register_file_itmrErrorC;
++wire load_store_unit_itmrErrorC;
++wire if_stage_itmrErrorC;
++wire id_stage_itmrErrorC;
++wire ex_block_itmrErrorC;
++wire cs_registers_itmrErrorC;
++wire register_file_itmrErrorB;
++wire load_store_unit_itmrErrorB;
++wire if_stage_itmrErrorB;
++wire id_stage_itmrErrorB;
++wire ex_block_itmrErrorB;
++wire cs_registers_itmrErrorB;
++wire register_file_itmrErrorA;
++wire load_store_unit_itmrErrorA;
++wire if_stage_itmrErrorA;
++wire id_stage_itmrErrorA;
++wire ex_block_itmrErrorA;
++wire cs_registers_itmrErrorA;
+ logic instr_valid_idA;
+ logic instr_valid_idB;
+ logic instr_valid_idC;

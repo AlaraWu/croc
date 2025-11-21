@@ -6,7 +6,7 @@
  *                                                                                                  *
  * user    : chenwu                                                                                 *
  * host    : badwater.ee.ethz.ch                                                                    *
- * date    : 12/11/2025 14:57:07                                                                    *
+ * date    : 21/11/2025 17:11:12                                                                    *
  *                                                                                                  *
  * workdir : /scratch/chenwu/tmrg_croc                                                              *
  * cmd     : /scratch/chenwu/tmrg/venv/bin/tmrg tmrg_src/addr_decode.sv tmrg_src/addr_decode_dync.sv *
@@ -18,7 +18,7 @@
  *           tmrg_src/spill_register.sv tmrg_src/spill_register_flushable.sv tmrg_src/obi_uart.sv   *
  *           tmrg_src/obi_uart_baudgen.sv tmrg_src/counter.sv tmrg_src/obi_uart_interrupts.sv       *
  *           tmrg_src/obi_uart_modem.sv tmrg_src/obi_uart_register.sv tmrg_src/obi_uart_rx.sv       *
- *           tmrg_src/obi_uart_tx.sv tmrg_src/obi_sram_shim.sv tmrg_src/gpio.sv                     *
+ *           tmrg_src/obi_uart_tx.sv tmrg_src/obi_cut.sv tmrg_src/obi_sram_shim.sv tmrg_src/gpio.sv *
  *           tmrg_src/gpio_reg_top.sv tmrg_src/sync.sv tmrg_src/dmi_jtag.sv tmrg_src/dm_obi_top.sv  *
  *           tmrg_src/core_wrap.sv tmrg_src/cve2_core.sv tmrg_src/cve2_cs_registers.sv              *
  *           tmrg_src/cve2_counter.sv tmrg_src/cve2_csr.sv tmrg_src/cve2_ex_block.sv                *
@@ -32,10 +32,10 @@
  * tmrg rev: b94addac7490a9efad5a56e12a3ab232d01f4c92                                               *
  *                                                                                                  *
  * src file: tmrg_src/spill_register_flushable.sv                                                   *
- *           Git SHA           : 513877024c58ce622d9f33836c5b6fe0e7ba47dc                           *
- *           Modification time : 2025-11-12 14:35:25.790267                                         *
- *           File Size         : 3656                                                               *
- *           MD5 hash          : 9e46932562c919aab48ab136d301f966                                   *
+ *           Git SHA           : 447415eb81dc2b4b7207859bd13a526ebb52ed0b                           *
+ *           Modification time : 2025-11-21 16:48:03.657839                                         *
+ *           File Size         : 3840                                                               *
+ *           MD5 hash          : 94e9b61fd79d00c449706fc60c68b7e5                                   *
  *                                                                                                  *
  ****************************************************************************************************/
 
@@ -145,7 +145,8 @@ else
         else
           if (a_fillA)
             a_data_qA <= data_iA;
-
+          else
+            a_data_qA <= a_data_qVotedA;
       end
 
     always_ff @( posedge clk_iB or negedge rst_niB )
@@ -155,7 +156,8 @@ else
         else
           if (a_fillB)
             a_data_qB <= data_iB;
-
+          else
+            a_data_qB <= a_data_qVotedB;
       end
 
     always_ff @( posedge clk_iC or negedge rst_niC )
@@ -165,7 +167,8 @@ else
         else
           if (a_fillC)
             a_data_qC <= data_iC;
-
+          else
+            a_data_qC <= a_data_qVotedC;
       end
 
     always_ff @( posedge clk_iA or negedge rst_niA )
@@ -175,7 +178,8 @@ else
         else
           if (a_fillA||a_drainA)
             a_full_qA <= a_fillA;
-
+          else
+            a_full_qA <= a_full_qVotedA;
       end
 
     always_ff @( posedge clk_iB or negedge rst_niB )
@@ -185,7 +189,8 @@ else
         else
           if (a_fillB||a_drainB)
             a_full_qB <= a_fillB;
-
+          else
+            a_full_qB <= a_full_qVotedB;
       end
 
     always_ff @( posedge clk_iC or negedge rst_niC )
@@ -195,7 +200,8 @@ else
         else
           if (a_fillC||a_drainC)
             a_full_qC <= a_fillC;
-
+          else
+            a_full_qC <= a_full_qVotedC;
       end
 
     always_ff @( posedge clk_iA or negedge rst_niA )
@@ -205,7 +211,8 @@ else
         else
           if (b_fillA)
             b_data_qA <= a_data_qVotedA;
-
+          else
+            b_data_qA <= b_data_qVotedA;
       end
 
     always_ff @( posedge clk_iB or negedge rst_niB )
@@ -215,7 +222,8 @@ else
         else
           if (b_fillB)
             b_data_qB <= a_data_qVotedB;
-
+          else
+            b_data_qB <= b_data_qVotedB;
       end
 
     always_ff @( posedge clk_iC or negedge rst_niC )
@@ -225,7 +233,8 @@ else
         else
           if (b_fillC)
             b_data_qC <= a_data_qVotedC;
-
+          else
+            b_data_qC <= b_data_qVotedC;
       end
 
     always_ff @( posedge clk_iA or negedge rst_niA )
@@ -235,7 +244,8 @@ else
         else
           if (b_fillA||b_drainA)
             b_full_qA <= b_fillA;
-
+          else
+            b_full_qA <= b_full_qVotedA;
       end
 
     always_ff @( posedge clk_iB or negedge rst_niB )
@@ -245,7 +255,8 @@ else
         else
           if (b_fillB||b_drainB)
             b_full_qB <= b_fillB;
-
+          else
+            b_full_qB <= b_full_qVotedB;
       end
 
     always_ff @( posedge clk_iC or negedge rst_niC )
@@ -255,7 +266,8 @@ else
         else
           if (b_fillC||b_drainC)
             b_full_qC <= b_fillC;
-
+          else
+            b_full_qC <= b_full_qVotedC;
       end
     assign a_fillA = valid_iA&&ready_oA&& (! flush_iA ) ;
     assign a_fillB = valid_iB&&ready_oB&& (! flush_iB ) ;

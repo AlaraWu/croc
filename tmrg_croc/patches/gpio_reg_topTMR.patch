@@ -1,5 +1,5 @@
 diff --git a/tmrg_files/gpio_reg_topTMR.sv b/tmrg_files/gpio_reg_topTMR.sv
-index 43d64c5..986aeb5 100644
+index 36fd3d6..2dfa42a 100644
 --- a/tmrg_files/gpio_reg_topTMR.sv
 +++ b/tmrg_files/gpio_reg_topTMR.sv
 @@ -41,6 +41,8 @@
@@ -11,6 +11,55 @@ index 43d64c5..986aeb5 100644
    parameter int unsigned GpioCount = 16
  ) (
    input logic clk_iA,
+@@ -75,27 +77,27 @@ typedef struct packed {
+   logic [GpioCount - 1:0] intrpt;
+   logic [GpioCount - 1:0] intrpt_edge;
+ } gpio_reg_fields_t;
+-wor we_qTmrErrorC;
+-wor w_err_qTmrErrorC;
+-wor valid_qTmrErrorC;
+-wor req_qTmrErrorC;
+-wor reg_qTmrErrorC;
+-wor read_addr_qTmrErrorC;
+-wor id_qTmrErrorC;
+-wor we_qTmrErrorB;
+-wor w_err_qTmrErrorB;
+-wor valid_qTmrErrorB;
+-wor req_qTmrErrorB;
+-wor reg_qTmrErrorB;
+-wor read_addr_qTmrErrorB;
+-wor id_qTmrErrorB;
+-wor we_qTmrErrorA;
+-wor w_err_qTmrErrorA;
+-wor valid_qTmrErrorA;
+-wor req_qTmrErrorA;
+-wor reg_qTmrErrorA;
+-wor read_addr_qTmrErrorA;
+-wor id_qTmrErrorA;
++wire we_qTmrErrorC;
++wire w_err_qTmrErrorC;
++wire valid_qTmrErrorC;
++wire req_qTmrErrorC;
++wire reg_qTmrErrorC;
++wire read_addr_qTmrErrorC;
++wire id_qTmrErrorC;
++wire we_qTmrErrorB;
++wire w_err_qTmrErrorB;
++wire valid_qTmrErrorB;
++wire req_qTmrErrorB;
++wire reg_qTmrErrorB;
++wire read_addr_qTmrErrorB;
++wire id_qTmrErrorB;
++wire we_qTmrErrorA;
++wire w_err_qTmrErrorA;
++wire valid_qTmrErrorA;
++wire req_qTmrErrorA;
++wire reg_qTmrErrorA;
++wire read_addr_qTmrErrorA;
++wire id_qTmrErrorA;
+ logic valid_dA;
+ logic valid_dB;
+ logic valid_dC;
 @@ -498,18 +500,11 @@ logic [GpioCount - 1:0] toggle_outC;
  logic [ObiCfg.DataWidth - 1:0] bit_maskA;
  logic [ObiCfg.DataWidth - 1:0] bit_maskB;

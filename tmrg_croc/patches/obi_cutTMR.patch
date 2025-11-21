@@ -1,0 +1,34 @@
+diff --git a/tmrg_files/obi_cutTMR.sv b/tmrg_files/obi_cutTMR.sv
+index 6d178dd..de2b74a 100644
+--- a/tmrg_files/obi_cutTMR.sv
++++ b/tmrg_files/obi_cutTMR.sv
+@@ -41,6 +41,10 @@
+ 
+ module obi_cutTMR #(
+   parameter obi_pkg::obi_cfg_t ObiCfg = obi_pkg::ObiDefaultConfig,
++  parameter type               obi_a_chan_t = logic,
++  parameter type               obi_r_chan_t = logic,
++  parameter type               obi_req_t    = logic,
++  parameter type               obi_rsp_t    = logic,
+   parameter bit Bypass = 1'b0,
+   parameter bit BypassReq = Bypass,
+   parameter bit BypassRsp = Bypass
+@@ -67,12 +71,12 @@ module obi_cutTMR #(
+   output tmrErrorB,
+   output tmrErrorC
+ );
+-wor i_req_rtmrErrorC;
+-wor i_reg_atmrErrorC;
+-wor i_req_rtmrErrorB;
+-wor i_reg_atmrErrorB;
+-wor i_req_rtmrErrorA;
+-wor i_reg_atmrErrorA;
++wire i_req_rtmrErrorC;
++wire i_reg_atmrErrorC;
++wire i_req_rtmrErrorB;
++wire i_reg_atmrErrorB;
++wire i_req_rtmrErrorA;
++wire i_reg_atmrErrorA;
+ 
+ spill_registerTMR #(.T(obi_a_chan_t), .Bypass(BypassReq)) i_reg_a (
+     .clk_iA(clk_iA),

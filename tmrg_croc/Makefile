@@ -35,6 +35,7 @@ FILES += tmrg_src/obi_uart_modem.sv
 FILES += tmrg_src/obi_uart_register.sv
 FILES += tmrg_src/obi_uart_rx.sv
 FILES += tmrg_src/obi_uart_tx.sv
+FILES += tmrg_src/obi_cut.sv
 
 FILES += tmrg_src/obi_sram_shim.sv
 
@@ -103,29 +104,51 @@ tmrg:
 patch:
 	patch tmrg_files/addr_decodeTMR.sv patches/addr_decodeTMR.patch
 	patch tmrg_files/addr_decode_dyncTMR.sv patches/addr_decode_dyncTMR.patch
+	patch tmrg_files/core_wrapTMR.sv patches/core_wrapTMR.patch
+	patch tmrg_files/counterTMR.sv patches/counterTMR.patch
 	patch tmrg_files/croc_domainTMR.sv patches/croc_domainTMR.patch
+	patch tmrg_files/croc_socTMR.sv patches/croc_socTMR.patch
 	patch tmrg_files/cve2_controllerTMR.sv patches/cve2_controllerTMR.patch
+	patch tmrg_files/cve2_coreTMR.sv patches/cve2_coreTMR.patch
+	patch tmrg_files/cve2_counterTMR.sv patches/cve2_counterTMR.patch
 	patch tmrg_files/cve2_cs_registersTMR.sv patches/cve2_cs_registersTMR.patch
+	patch tmrg_files/cve2_csrTMR.sv patches/cve2_csrTMR.patch
+	patch tmrg_files/cve2_decoderTMR.sv patches/cve2_decoderTMR.patch
 	patch tmrg_files/cve2_ex_blockTMR.sv patches/cve2_ex_blockTMR.patch
+	patch tmrg_files/cve2_fetch_fifoTMR.sv patches/cve2_fetch_fifoTMR.patch
 	patch tmrg_files/cve2_id_stageTMR.sv patches/cve2_id_stageTMR.patch
+	patch tmrg_files/cve2_if_stageTMR.sv patches/cve2_if_stageTMR.patch
 	patch tmrg_files/cve2_load_store_unitTMR.sv patches/cve2_load_store_unitTMR.patch
 	patch tmrg_files/cve2_multdiv_fastTMR.sv patches/cve2_multdiv_fastTMR.patch
 	patch tmrg_files/cve2_multdiv_slowTMR.sv patches/cve2_multdiv_slowTMR.patch
+	patch tmrg_files/cve2_prefetch_bufferTMR.sv patches/cve2_prefetch_bufferTMR.patch
+	patch tmrg_files/cve2_register_file_ffTMR.sv patches/cve2_register_file_ffTMR.patch
+	patch tmrg_files/delta_counterTMR.sv patches/delta_counterTMR.patch
 	patch tmrg_files/fifo_v3TMR.sv patches/fifo_v3TMR.patch
 	patch tmrg_files/gpio_reg_topTMR.sv patches/gpio_reg_topTMR.patch
 	patch tmrg_files/gpioTMR.sv patches/gpioTMR.patch
+	patch tmrg_files/obi_cutTMR.sv patches/obi_cutTMR.patch
 	patch tmrg_files/obi_demuxTMR.sv patches/obi_demuxTMR.patch
 	patch tmrg_files/obi_err_sbrTMR.sv patches/obi_err_sbrTMR.patch
 	patch tmrg_files/obi_muxTMR.sv patches/obi_muxTMR.patch
 	patch tmrg_files/obi_sram_shimTMR.sv patches/obi_sram_shimTMR.patch
+	patch tmrg_files/obi_uart_baudgenTMR.sv patches/obi_uart_baudgenTMR.patch
+	patch tmrg_files/obi_uart_interruptsTMR.sv patches/obi_uart_interruptsTMR.patch
+	patch tmrg_files/obi_uart_modemTMR.sv patches/obi_uart_modemTMR.patch
 	patch tmrg_files/obi_uart_registerTMR.sv patches/obi_uart_registerTMR.patch
+	patch tmrg_files/obi_uart_rxTMR.sv patches/obi_uart_rxTMR.patch
+	patch tmrg_files/obi_uart_txTMR.sv patches/obi_uart_txTMR.patch
 	patch tmrg_files/obi_uartTMR.sv patches/obi_uartTMR.patch
 	patch tmrg_files/obi_xbarTMR.sv patches/obi_xbarTMR.patch
 	patch tmrg_files/periph_to_regTMR.sv patches/periph_to_regTMR.patch
+	patch tmrg_files/prim_subregTMR.sv patches/prim_subregTMR.patch
 	patch tmrg_files/rr_arb_treeTMR.sv patches/rr_arb_treeTMR.patch
 	patch tmrg_files/soc_ctrl_reg_topTMR.sv patches/soc_ctrl_reg_topTMR.patch
 	patch tmrg_files/spill_register_flushableTMR.sv patches/spill_register_flushableTMR.patch
 	patch tmrg_files/spill_registerTMR.sv patches/spill_registerTMR.patch
+	patch tmrg_files/syncTMR.sv patches/syncTMR.patch
 	patch tmrg_files/tc_sram_implTMR.sv patches/tc_sram_implTMR.patch
+	patch tmrg_files/timer_unit_counter_prescTMR.sv patches/timer_unit_counter_prescTMR.patch
+	patch tmrg_files/timer_unit_counterTMR.sv patches/timer_unit_counterTMR.patch
 	patch tmrg_files/timer_unitTMR.sv patches/timer_unitTMR.patch
 	patch tmrg_files/user_domainTMR.sv patches/user_domainTMR.patch

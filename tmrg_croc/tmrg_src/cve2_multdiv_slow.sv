@@ -356,6 +356,12 @@ module cve2_multdiv_slow
       op_a_shift_q     <= op_a_shift_d;
       md_state_q       <= md_state_d;
       div_by_zero_q    <= div_by_zero_d;
+    end else begin
+      multdiv_count_q  <= multdiv_count_qVoted;
+      op_b_shift_q     <= op_b_shift_qVoted;
+      op_a_shift_q     <= op_a_shift_qVoted;
+      md_state_q       <= md_state_qVoted;
+      div_by_zero_q    <= div_by_zero_qVoted;
     end
   end
 

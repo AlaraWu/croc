@@ -1,5 +1,5 @@
 diff --git a/tmrg_files/gpioTMR.sv b/tmrg_files/gpioTMR.sv
-index 8b8776a..76039bd 100644
+index a5dd11f..88353d1 100644
 --- a/tmrg_files/gpioTMR.sv
 +++ b/tmrg_files/gpioTMR.sv
 @@ -42,6 +42,8 @@
@@ -11,27 +11,31 @@ index 8b8776a..76039bd 100644
    parameter int NrSyncStages = 2,
    parameter int unsigned GpioCount = 16
  ) (
-@@ -77,14 +79,14 @@ module gpioTMR #(
+@@ -77,15 +79,15 @@ module gpioTMR #(
    output tmrErrorC
  );
  import gpio_reg_pkg::*;
 -wor serial_qTmrErrorC;
 -wor i_synctmrErrorC;
-+wor [GpioCount-1:0] serial_qTmrErrorC;
-+wor [GpioCount-1:0] i_synctmrErrorC;
- wor i_reg_filetmrErrorC;
+-wor i_reg_filetmrErrorC;
 -wor serial_qTmrErrorB;
 -wor i_synctmrErrorB;
-+wor [GpioCount-1:0] serial_qTmrErrorB;
-+wor [GpioCount-1:0] i_synctmrErrorB;
- wor i_reg_filetmrErrorB;
+-wor i_reg_filetmrErrorB;
 -wor serial_qTmrErrorA;
 -wor i_synctmrErrorA;
-+wor [GpioCount-1:0] serial_qTmrErrorA;
-+wor [GpioCount-1:0] i_synctmrErrorA;
- wor i_reg_filetmrErrorA;
+-wor i_reg_filetmrErrorA;
++wire [GpioCount-1:0] serial_qTmrErrorC;
++wire [GpioCount-1:0] i_synctmrErrorC;
++wire i_reg_filetmrErrorC;
++wire [GpioCount-1:0] serial_qTmrErrorB;
++wire [GpioCount-1:0] i_synctmrErrorB;
++wire i_reg_filetmrErrorB;
++wire [GpioCount-1:0] serial_qTmrErrorA;
++wire [GpioCount-1:0] i_synctmrErrorA;
++wire i_reg_filetmrErrorA;
  gpio_reg2hw_t [GpioCount - 1:0] reg2hwA;
  gpio_reg2hw_t [GpioCount - 1:0] reg2hwB;
+ gpio_reg2hw_t [GpioCount - 1:0] reg2hwC;
 @@ -162,9 +164,9 @@ logic serial_qVotedC;
          .serial_oA(serial_dA),
          .serial_oB(serial_dB),

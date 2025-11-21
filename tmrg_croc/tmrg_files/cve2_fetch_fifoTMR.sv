@@ -6,7 +6,7 @@
  *                                                                                                  *
  * user    : chenwu                                                                                 *
  * host    : badwater.ee.ethz.ch                                                                    *
- * date    : 12/11/2025 14:57:17                                                                    *
+ * date    : 21/11/2025 17:11:24                                                                    *
  *                                                                                                  *
  * workdir : /scratch/chenwu/tmrg_croc                                                              *
  * cmd     : /scratch/chenwu/tmrg/venv/bin/tmrg tmrg_src/addr_decode.sv tmrg_src/addr_decode_dync.sv *
@@ -18,7 +18,7 @@
  *           tmrg_src/spill_register.sv tmrg_src/spill_register_flushable.sv tmrg_src/obi_uart.sv   *
  *           tmrg_src/obi_uart_baudgen.sv tmrg_src/counter.sv tmrg_src/obi_uart_interrupts.sv       *
  *           tmrg_src/obi_uart_modem.sv tmrg_src/obi_uart_register.sv tmrg_src/obi_uart_rx.sv       *
- *           tmrg_src/obi_uart_tx.sv tmrg_src/obi_sram_shim.sv tmrg_src/gpio.sv                     *
+ *           tmrg_src/obi_uart_tx.sv tmrg_src/obi_cut.sv tmrg_src/obi_sram_shim.sv tmrg_src/gpio.sv *
  *           tmrg_src/gpio_reg_top.sv tmrg_src/sync.sv tmrg_src/dmi_jtag.sv tmrg_src/dm_obi_top.sv  *
  *           tmrg_src/core_wrap.sv tmrg_src/cve2_core.sv tmrg_src/cve2_cs_registers.sv              *
  *           tmrg_src/cve2_counter.sv tmrg_src/cve2_csr.sv tmrg_src/cve2_ex_block.sv                *
@@ -32,10 +32,10 @@
  * tmrg rev: b94addac7490a9efad5a56e12a3ab232d01f4c92                                               *
  *                                                                                                  *
  * src file: tmrg_src/cve2_fetch_fifo.sv                                                            *
- *           Git SHA           : 513877024c58ce622d9f33836c5b6fe0e7ba47dc ( M tmrg_src/cve2_fetch_fifo.sv) *
- *           Modification time : 2025-11-12 14:35:26.175271                                         *
- *           File Size         : 9750                                                               *
- *           MD5 hash          : 3ab1cdd7d59086b12f080b77c16d7ac8                                   *
+ *           Git SHA           : 447415eb81dc2b4b7207859bd13a526ebb52ed0b                           *
+ *           Modification time : 2025-11-21 16:39:32.541858                                         *
+ *           File Size         : 9913                                                               *
+ *           MD5 hash          : 587b765fbea0afd706c46d6817bc25a2                                   *
  *                                                                                                  *
  ****************************************************************************************************/
 
@@ -317,7 +317,10 @@ always_ff @( posedge clk_iA or negedge rst_niA )
         begin
           instr_addr_qA <= instr_addr_dA;
         end
-
+      else
+        begin
+          instr_addr_qA <= instr_addr_qVotedA;
+        end
   end
 
 always_ff @( posedge clk_iB or negedge rst_niB )
@@ -331,7 +334,10 @@ always_ff @( posedge clk_iB or negedge rst_niB )
         begin
           instr_addr_qB <= instr_addr_dB;
         end
-
+      else
+        begin
+          instr_addr_qB <= instr_addr_qVotedB;
+        end
   end
 
 always_ff @( posedge clk_iC or negedge rst_niC )
@@ -345,7 +351,10 @@ always_ff @( posedge clk_iC or negedge rst_niC )
         begin
           instr_addr_qC <= instr_addr_dC;
         end
-
+      else
+        begin
+          instr_addr_qC <= instr_addr_qVotedC;
+        end
   end
 assign out_addr_oA = {instr_addr_qVotedA, 1'b0};
 assign out_addr_oB = {instr_addr_qVotedB, 1'b0};
@@ -466,7 +475,11 @@ for(genvar i = 0; i<DEPTH; i++)
               rdata_qA[i] <= rdata_dA[i];
               err_qA[i] <= err_dA[i];
             end
-
+          else
+            begin
+              rdata_qA[i] <= rdata_qVotedA[i];
+              err_qA[i] <= err_qVotedA[i];
+            end
       end
 
     always_ff @( posedge clk_iB or negedge rst_niB )
@@ -482,7 +495,11 @@ for(genvar i = 0; i<DEPTH; i++)
               rdata_qB[i] <= rdata_dB[i];
               err_qB[i] <= err_dB[i];
             end
-
+          else
+            begin
+              rdata_qB[i] <= rdata_qVotedB[i];
+              err_qB[i] <= err_qVotedB[i];
+            end
       end
 
     always_ff @( posedge clk_iC or negedge rst_niC )
@@ -498,7 +515,11 @@ for(genvar i = 0; i<DEPTH; i++)
               rdata_qC[i] <= rdata_dC[i];
               err_qC[i] <= err_dC[i];
             end
-
+          else
+            begin
+              rdata_qC[i] <= rdata_qVotedC[i];
+              err_qC[i] <= err_qVotedC[i];
+            end
       end
   end
 

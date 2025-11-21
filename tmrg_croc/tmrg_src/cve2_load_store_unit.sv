@@ -204,6 +204,8 @@ reg [2:0] ls_fsm_cs, ls_fsm_ns, ls_fsm_csVoted;
       rdata_q <= '0;
     end else if (rdata_update) begin
       rdata_q <= data_rdata_i[31:8];
+    end else begin
+      rdata_q <= rdata_qVoted;
     end
   end
 
@@ -219,6 +221,11 @@ reg [2:0] ls_fsm_cs, ls_fsm_ns, ls_fsm_csVoted;
       data_type_q     <= lsu_type_i;
       data_sign_ext_q <= lsu_sign_ext_i;
       data_we_q       <= lsu_we_i;
+    end else begin
+      rdata_offset_q  <= rdata_offset_qVoted;
+      data_type_q     <= data_type_qVoted;
+      data_sign_ext_q <= data_sign_ext_qVoted;
+      data_we_q       <= data_we_qVoted;
     end
   end
 
@@ -233,6 +240,8 @@ reg [2:0] ls_fsm_cs, ls_fsm_ns, ls_fsm_csVoted;
       addr_last_q <= '0;
     end else if (addr_update) begin
       addr_last_q <= addr_last_d;
+    end else begin
+      addr_last_q <= addr_last_qVoted;
     end
   end
 
